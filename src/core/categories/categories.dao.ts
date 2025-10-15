@@ -1,12 +1,12 @@
-import { prisma } from "src/db/client";
-
+import { prisma } from "@/db/client";
+import { Category } from "@prisma/client";
 
 export const CategoriesDAO = {
-  getAll: async () => {
+  getAll: async (): Promise<Category[]> => {
     return prisma.category.findMany();
   },
 
-  getById: async (id: string) => {
+  getById: async (id: string): Promise<Category | null> => {
     return prisma.category.findUnique({
       where: { id },
       include: { products: {
@@ -15,20 +15,20 @@ export const CategoriesDAO = {
     });
   },
 
-  create: async (name: string) => {
+  create: async (name: string): Promise<Category> => {
     return prisma.category.create({
       data: { name },
     });
   },
 
-  update: async (id: string, name: string) => {
+  update: async (id: string, name: string): Promise<Category> => {
     return prisma.category.update({
       where: { id },
       data: { name },
     });
   },
 
-  delete: async (id: string) => {
+  delete: async (id: string): Promise<Category> => {
     return prisma.category.delete({
       where: { id },
     });

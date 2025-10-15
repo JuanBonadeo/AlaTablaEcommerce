@@ -1,65 +1,71 @@
-import { Product } from "@prisma/client";
 import { ProductDAO } from "./products.dao";
-import { ProductInput } from "./products.dtos.js";
+import { CreateProductInput, CreateProductSchema, ListSearchParams, ListSearchParamsSchema, ProductWithoutSlug, UpdateProductInput, UpdateProductSchema } from "../../lib/types/product.types";
+import { getSlug } from "../shared/getSlug";
+import { ErrorHandler, NotFoundError } from "../shared/errorHandler";
+import { ResponseHandler } from "../shared/responseHandler";
+import { cuidIdSchema } from "@/lib/types/shared.types";
+
+
 
 export const ProductService = {
   getAll: async () => {
-    return ProductDAO.getAll();
+    try {
+      const products = await ProductDAO.getAll();
+      return ResponseHandler.success(products);
+    } catch (error) {
+      return ErrorHandler.format(error);
+    }
   },
 
-  getById: async (id: string) => {
-    const product = await ProductDAO.getById(id);
-    if (!product) {
-      throw new Error("Producto no encontrado");
+  getBySlug: async (slug: string) => {
+    try {
+      const product = await ProductDAO.getBySlug(slug);
+      if (!product) throw new NotFoundError()
+      return ResponseHandler.success(product);
+    } catch (error) {
+      return ErrorHandler.format(error);
     }
-    return product;
   },
 
-  create: async (data: ProductInput) => {
-    if (!data.name || data.name.trim().length === 0) {
-      throw new Error("El nombre es obligatorio");
-    }
-    if (data.price <= 0) {
-      throw new Error("El precio debe ser mayor a 0");
-    }
-    if (data.stock < 0) {
-      throw new Error("El stock no puede ser negativo");
-    }
-    if (!data.categoryId) {
-      throw new Error("El producto debe pertenecer a una categoría");
-    }
+  create: async (data: ProductWithoutSlug) => {
+    try {
+      const product = CreateProductSchema.parse(data);
 
-    return ProductDAO.create(data);
+      const slug = getSlug(product.name);
+      const productWithSlug = { ...product, slug };
+
+      const createdProduct = await ProductDAO.create(productWithSlug);
+      return ResponseHandler.created(createdProduct);
+    } catch (error) {
+      return ErrorHandler.format(error);
+    }
   },
 
-  update: async (id: string, data: Partial<{
-    slug: string;
-    name: string;
-    description?: string;
-    price: number;
-    stock: number;
-    categoryId: string;
-  }>) => {
-    const product = await ProductDAO.getById(id);
-    if (!product) {
-      throw new Error("Producto no encontrado");
-    }
+  update: async (id: string, data: UpdateProductInput) => {
+    try {
+      cuidIdSchema.parse(id);
+      const product = UpdateProductSchema.parse(data);
 
-    if (data.price !== undefined && data.price <= 0) {
-      throw new Error("El precio debe ser mayor a 0");
+      const updatedProduct = await ProductDAO.update(id, product);
+      return ResponseHandler.updated(updatedProduct);
+    } catch (error) {
+      return ErrorHandler.format(error);
     }
-    if (data.stock !== undefined && data.stock < 0) {
-      throw new Error("El stock no puede ser negativo");
-    }
-
-    return ProductDAO.update(id, data);
   },
 
   delete: async (id: string) => {
-    const product = await ProductDAO.getById(id);
-    if (!product) {
-      throw new Error("Producto no encontrado");
+    try {
+
+      await ProductDAO.delete(id);
+      return ResponseHandler.deleted();
+    } catch (error) {
+      return ErrorHandler.format(error);
     }
-    return ProductDAO.delete(id);
+  },
+
+
+  listProducts: async (params: ListSearchParams) => {
+    const { page, limit } = ListSearchParamsSchema.parse(params);
+    return ProductDAO.list(page, limit);
   },
 };

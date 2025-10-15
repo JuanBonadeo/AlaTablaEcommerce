@@ -1,29 +1,27 @@
-import { prisma } from "src/db/client";
+import { Product } from "@prisma/client";
+import { prisma } from "@db/client";
+import { CreateProductInput, ProductList } from "@/lib/types/product.types";
+
+
 
 export const ProductDAO = {
-  getAll: async () => {
+  getAll: async (): Promise<Product[]> => {
     return prisma.product.findMany({
+      where: { deletedAt: null },
       include: { category: true, images: true, variants: true },
     });
   },
 
-  getById: async (id: string) => {
+  getBySlug: async (slug: string): Promise<Product | null> => {
     return prisma.product.findUnique({
-      where: { id },
+      where: { slug: slug,
+        deletedAt: null
+       },
       include: { category: true, images: true, variants: true },
     });
   },
 
-  create: async (data: {
-    slug: string;
-    name: string;
-    description?: string;
-    price: number;
-    stock: number;
-    categoryId: string;
-    images?: string[];
-    variants?: { slug: string; name: string; price?: number; stock?: number }[];
-  }) => {
+  create: async (data: CreateProductInput) : Promise<Product> => {
     return prisma.product.create({
       data: {
         slug: data.slug,
@@ -39,19 +37,40 @@ export const ProductDAO = {
           create: data.variants,
         },
       },
-      include: { category: true, images: true, variants: true },
+      
     });
   },
 
-  update: async (id: string, data: any) => {
+  update: async (id: string, data: any): Promise<Product> => {
     return prisma.product.update({
-      where: { id },
+      where: { id: id, deletedAt: null },
       data,
       include: { category: true, images: true, variants: true },
     });
   },
 
-  delete: async (id: string) => {
-    return prisma.product.delete({ where: { id } });
+  delete: async (id: string): Promise<Product> => {
+    return await prisma.product.update({ where: { id }, data: { deletedAt: new Date() } });
   },
+
+  list: async (page = 1, limit = 10): Promise<ProductList> => {
+    const skip = (page - 1) * limit;
+    const take = limit;
+    const [items, total] = await Promise.all([
+      prisma.product.findMany({
+        skip, 
+        take,
+        select: { id: true, name: true, slug: true, price: true, stock: true, images: true },
+      }),
+      prisma.product.count(),
+    ]);
+    return { 
+      items,
+      pagination : {
+        totalPages: Math.ceil(total / limit),
+        currentPage: page,
+        limit,
+      }
+      };
+  }
 };

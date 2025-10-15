@@ -1,15 +1,13 @@
-export const revalidate = 604800  // 7 dias
 
 import { notFound } from 'next/navigation';
+import { AddToCart } from '@/web/components/product/addToCart/AddToCart';
+import { ProductMobileSlideshow } from '@/web/components/product/slideshow/ProductMobileSlideshow';
+import { ProductSlideshow } from '@/web/components/product/slideshow/ProductSlideshow';
+import { Product as ProductInterface } from '@/lib/types/product.types.js';
+import { getProductBySlug } from '@/web/helpers/getProductBySlug';
 
-import { ProductMobileSlideshow } from 'src/components/product/slideshow/ProductMobileSlideshow';
-import { ProductSlideshow } from 'src/components/product/slideshow/ProductSlideshow';
-// import { getProductBySlug } from '@/actions/products/get-product-by-slug';
-import { Metadata, ResolvingMetadata } from 'next';
-import { StockLabel } from 'src/components/product/stock-label/StockLabel';
-import { AddToCart } from 'src/components/product/addToCart/AddToCart';
 
-const product = {
+const product: ProductInterface = {
   id: "1",
   name: "Product 1",
   slug: "product-1",
@@ -31,44 +29,18 @@ const product = {
   ],
 }
 
-interface Props {
-  params: {
+type PageProps = {
+  params: Promise<{
     slug: string;
-  };
-}
+  }>;
+};
 
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  // read route params
+export default async function Product({ params }: PageProps) {
 
-  const slug = (await params).slug
-
-  // fetch data
-  // const product = await getProductBySlug(slug)
-
-  // optionally access and extend (rather than replace) parent metadata
-  // const previousImages = (await parent).openGraph?.images || []
-
-  return {
-    title: product?.name ?? 'Producto no encontrado',
-    description: product?.description ?? '',
-    openGraph: {
-      title: product?.name ?? 'Producto no encontrado',
-      description: product?.description ?? '',
-      images: [`/products/${product?.images[1]}`],
-    },
-  }
-}
-
-
-export default async function Product({ params }: Props) {
-
-  const { slug } = params;
-  // const product = await getProductBySlug(slug)
-
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
+  
   if (!product) {
     notFound();
   }

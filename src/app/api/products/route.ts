@@ -1,19 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
-import { ProductsController } from '@/core/products/products.controller';
+import { ProductService } from "@/core/products/products.service";
+import { NextResponse } from "next/server";
 
 
-export async function GET(req: NextRequest) {
-  return ProductsController.get(req);
-}
+export async function GET() {
+  try {
+    const products = await ProductService.getAll();
 
-export async function POST(req: NextRequest) {
-  return ProductsController.post(req);
-}
-
-export async function PUT(req: NextRequest) {
-  return ProductsController.put(req);
-}
-
-export async function DELETE(req: NextRequest) {
-  return ProductsController.delete(req);
+    return NextResponse.json(products, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: "Error fetching products" }, { status: 500 });
+  }
 }

@@ -7,10 +7,14 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "dbpush": "npx prisma db push --schema=src/packages/db/schema.prisma",
-    "generate": "npx prisma generate --schema=src/packages/db/schema.prisma"
+    "dbpush": "npx prisma db push --schema=src/db/schema.prisma",
+    "generate": "npx prisma generate --schema=src/db/schema.prisma",
+    "studio": "npx prisma studio --schema=src/db/schema.prisma",
+    "seed": "node dist/db/seed.js"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "better-auth": "^1.3.27",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.14",
     "lucide-react": "^0.544.0",
@@ -19,7 +23,8 @@
     "react-dom": "19.1.0",
     "swiper": "^12.0.1",
     "winston": "^3.17.0",
-    "zod": "^4.1.9"
+    "zod": "^4.1.9",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
