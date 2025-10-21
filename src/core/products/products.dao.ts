@@ -20,6 +20,12 @@ export const ProductDAO = {
       include: { category: true, images: true, variants: true },
     });
   },
+  getById: async (id: string): Promise<Product | null> => {
+    return prisma.product.findUnique({
+      where: { id: id, deletedAt: null },
+      include: { category: true, images: true, variants: true },
+    });
+  },
 
   create: async (data: CreateProductInput) : Promise<Product> => {
     return prisma.product.create({
@@ -60,7 +66,7 @@ export const ProductDAO = {
       prisma.product.findMany({
         skip, 
         take,
-        select: { id: true, name: true, slug: true, price: true, stock: true, images: true },
+        select: { id: true, name: true, slug: true, price: true, stock: true, images: true, category: true },
       }),
       prisma.product.count(),
     ]);

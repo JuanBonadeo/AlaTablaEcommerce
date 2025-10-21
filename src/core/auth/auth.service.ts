@@ -70,11 +70,4 @@ export const AuthService = {
     }
   },
 
-//   async logout() {
-//     try {
-//       await auth.api.signOut();
-//     } catch (error: any) {
-//       throw new Error(error.message || "Error al cerrar sesión");
-//     }
-//   },
 };

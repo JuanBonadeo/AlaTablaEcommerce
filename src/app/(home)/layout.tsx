@@ -1,5 +1,5 @@
-import Navbar from "@web/components/ui/Navbar";
-import Footer from "@web/components/ui/Footer";
+import Navbar from "@/components/ui/Navbar";
+import Footer from "@/components/ui/Footer";
 
 export default function HomeLayout({
   children

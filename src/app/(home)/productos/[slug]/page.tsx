@@ -1,10 +1,10 @@
 
 import { notFound } from 'next/navigation';
-import { AddToCart } from '@/web/components/product/addToCart/AddToCart';
-import { ProductMobileSlideshow } from '@/web/components/product/slideshow/ProductMobileSlideshow';
-import { ProductSlideshow } from '@/web/components/product/slideshow/ProductSlideshow';
+import { AddToCart } from '@/components/product/addToCart/AddToCart';
+import { ProductMobileSlideshow } from '@/components/product/slideshow/ProductMobileSlideshow';
+import { ProductSlideshow } from '@/components/product/slideshow/ProductSlideshow';
 import { Product as ProductInterface } from '@/lib/types/product.types.js';
-import { getProductBySlug } from '@/web/helpers/getProductBySlug';
+import { getProductBySlug } from '@/lib/helpers/getProductBySlug';
 
 
 const product: ProductInterface = {

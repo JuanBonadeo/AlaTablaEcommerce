@@ -26,6 +26,15 @@ export const ProductService = {
       return ErrorHandler.format(error);
     }
   },
+  getById: async (id: string) => {
+    try {
+      const product = await ProductDAO.getById(id);
+      if (!product) throw new NotFoundError()
+      return ResponseHandler.success(product);
+    } catch (error) {
+      return ErrorHandler.format(error);
+    }
+  },
 
   create: async (data: ProductWithoutSlug) => {
     try {

@@ -1,7 +1,7 @@
 
-import { ProductGrid } from "@/web/components/products/product-grid/ProductGrid";
-import Banner from "@/web/components/ui/Banner";
-import CategoriesSection from "@/web/components/ui/Categories";
+import { ProductGrid } from "@/components/products/product-grid/ProductGrid";
+import Banner from "@/components/ui/Banner";
+import CategoriesSection from "@/components/ui/Categories";
 import { products } from "./productos/page";
 
 

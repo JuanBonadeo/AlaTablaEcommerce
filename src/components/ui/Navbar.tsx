@@ -14,15 +14,16 @@ const links = [
   { label: "Productos", href: "/productos" },
   { label: "Nosotros", href: "/nosotros" },
   { label: "Contacto", href: "/contacto" },
+
 ];
 
 export default function Navbar() {
-   const { 
-        data: session, 
-        isPending, //loading state
-        error, //error object
-        refetch //refetch the session
-    } = authClient.useSession() 
+  const {
+    data: session,
+    isPending, //loading state
+    error, //error object
+    refetch //refetch the session
+  } = authClient.useSession()
   console.log({ session, isPending });
   const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
@@ -63,7 +64,7 @@ export default function Navbar() {
           {/* Acción (desktop) */}
           {session && !isPending && (
             <Link
-              href="/auth/profile"
+              href="/profile"
               className="btn-primary hidden md:flex items-center gap-3"
             >
               <User className="w-5 h-5" />
@@ -79,7 +80,7 @@ export default function Navbar() {
               Login
             </Link>
           )}
-          
+
 
           {/* Toggle mobile */}
           <div className="md:hidden">
@@ -113,7 +114,7 @@ export default function Navbar() {
                   {session && (
                     <Link
                       onClick={() => setOpen(false)}
-                      href="/auth/profile"
+                      href="/profile"
                       className="btn-primary  md:hidden flex items-center gap-1 w-[8em]"
                     >
                       <User className="w-5 h-5" />
@@ -146,7 +147,15 @@ export default function Navbar() {
                       {l.label}
                     </Link>
                   ))}
-
+                  {session?.user  && (
+                    <Link
+                      href="/admin"
+                      onClick={() => setOpen(false)}
+                      className="block rounded-lg px-3 py-2 text-base font-medium"
+                    >
+                      Admin Panel
+                    </Link>
+                  )}
 
                 </div>
               </div>

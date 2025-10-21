@@ -1,5 +1,5 @@
 import { ProductGridItem } from "@/lib/types/product.types.js";
-import { ProductGrid } from "@/web/components/products/product-grid/ProductGrid";
+import { ProductGrid } from "@/components/products/product-grid/ProductGrid";
 
 
 

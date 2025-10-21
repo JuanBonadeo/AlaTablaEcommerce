@@ -7,7 +7,7 @@ import { Product } from "@/lib/types/product.types.js";
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${slug}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${slug}`, {
       // 👇 revalidación ISR (ya pusiste 7 días en la página)
       next: { revalidate: 604800 },
     });

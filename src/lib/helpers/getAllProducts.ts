@@ -2,7 +2,7 @@ import { Product } from "@/lib/types/product.types";
 
 export async function getAllProducts(): Promise<Product[] | null> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
       // 👇 mismo criterio de revalidación ISR (7 días)
       next: { revalidate: 604800 },
     });

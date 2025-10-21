@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { LoginForm } from "@/web/components/auth/LoginForm";
-import { loginUserAction } from "@/web/actions/auth.actions";
+import { LoginForm } from "@/components/auth/LoginForm";
+import { loginUserAction } from "@/lib/actions/auth.actions";
 
 interface LoginFormData {
   email: string;

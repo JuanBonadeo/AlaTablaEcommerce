@@ -7,7 +7,7 @@ import clsx from 'clsx';
 
 import { logout } from '@/actions/auth/logout';
 import { useSession } from 'next-auth/react';
-import { useUIStore } from '@/web/store/ui-store';
+import { useUIStore } from '@/lib/store/ui-store';
 
 
 

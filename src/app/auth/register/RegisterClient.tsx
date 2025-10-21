@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { registerUserDTO } from "@/lib/types/user.types";
-import { RegisterForm } from "@/web/components/auth/RegisterForm";
+import { RegisterForm } from "@/components/auth/RegisterForm";
 import { authClient } from "@/lib/auth/auth-client";
 
 export function RegisterClient() {

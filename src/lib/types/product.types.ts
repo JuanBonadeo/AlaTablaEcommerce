@@ -1,4 +1,3 @@
-
 import { z } from "zod";
 
 export interface ProductGridItem {
@@ -8,6 +7,7 @@ export interface ProductGridItem {
     price: number;
     stock: number;
     images: { id: string; url: string; productId: string }[];
+    category?: { id: string; name: string }; // Agregado
 }
 
 export interface Product {
@@ -19,15 +19,32 @@ export interface Product {
   stock: number;
   categoryId: string;
   category?: { id: string; name: string; slug: string } | null;
-  images: { id: string; url: string; productId: string }[];
-};
+  images?: { id: string; url: string; productId: string }[];
+  variants?: Array<{
+    id: string;
+    slug: string;
+    name: string;
+    price?: number;
+    stock?: number;
+    productId: string;
+  }>;
+}
+export interface ProductVariant {
+  id?: string;
+  slug?: string;
+  name?: string;
+  price?: number;
+  stock?: number;
+  productId?: string;
+}
+
 export const CreateProductSchema = z.object({
   name: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
   description: z.string().optional(),
   price: z.number().min(0, "El precio debe ser mayor o igual a 0"),
   stock: z.number().int().min(0, "El stock no puede ser negativo"),
   categoryId: z.string().min(1, "Debe seleccionar una categoría"),
-  images: z.array(z.string().min(1, "Debe incluir al menos una imagen")),
+  images: z.array(z.string().url("Debe ser una URL válida")).min(1, "Debe incluir al menos una imagen"),
   variants: z
     .array(
       z.object({
@@ -43,6 +60,7 @@ export const CreateProductSchema = z.object({
 const createdproduct = CreateProductSchema.extend({
   slug: z.string().min(3, "El slug debe tener al menos 3 caracteres"),
 })
+
 export const UpdateProductSchema = CreateProductSchema.partial()
 
 export type ProductWithoutSlug = z.infer<typeof CreateProductSchema>;
