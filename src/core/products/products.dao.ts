@@ -5,7 +5,7 @@ import { CreateProductInput, ProductList } from "@/lib/types/product.types";
 
 
 export const ProductDAO = {
-  getAll: async (): Promise<Product[]> => {
+  getAll: async () => {
     return prisma.product.findMany({
       where: { deletedAt: null },
       include: { category: true, images: true, variants: true },

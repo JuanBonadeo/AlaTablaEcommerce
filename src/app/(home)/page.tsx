@@ -1,8 +1,7 @@
 
-import { ProductGrid } from "@/components/products/product-grid/ProductGrid";
 import Banner from "@/components/ui/Banner";
 import CategoriesSection from "@/components/ui/Categories";
-import { products } from "./productos/page";
+import { ProductsServer } from "./productos/ProductsServer";
 
 
 export default function Home() {
@@ -11,7 +10,7 @@ export default function Home() {
       
       <Banner />
       <CategoriesSection />
-      <ProductGrid products={ products } />
+      <ProductsServer />
     </div>
   );
 }
