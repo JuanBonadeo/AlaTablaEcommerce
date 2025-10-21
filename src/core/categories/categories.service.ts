@@ -17,7 +17,6 @@ export const CategoryService = {
 
     getById: async (id: string) => {
         try {
-            cuidIdSchema.parse(id);
             const category = await CategoriesDAO.getById(id);
             if (!category) {
                 throw new NotFoundError();
