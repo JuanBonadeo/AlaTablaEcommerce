@@ -19,7 +19,7 @@ export interface Product {
   stock: number;
   categoryId: string;
   category?: { id: string; name: string; slug: string } | null;
-  images?: { id: string; url: string; productId: string }[];
+  images?: { id: string; url: string; productId: string }[] | string[];
   variants?: Array<{
     id: string;
     slug: string;
@@ -44,16 +44,18 @@ export const CreateProductSchema = z.object({
   price: z.number().min(0, "El precio debe ser mayor o igual a 0"),
   stock: z.number().int().min(0, "El stock no puede ser negativo"),
   categoryId: z.string().min(1, "Debe seleccionar una categoría"),
-  images: z.array(z.string().url("Debe ser una URL válida")).min(1, "Debe incluir al menos una imagen"),
+  // images can be either base64 strings (sent from the client) or URLs (after upload).
+  images: z.array(z.string()).describe("Imagenes del producto"),
   variants: z
     .array(
       z.object({
         name: z.string().min(1, "El nombre de la variante es requerido"),
-        slug: z.string().min(1, "El slug de la variante es requerido"),
+        // slug can be generated server-side if missing from the client
+        slug: z.string().min(1, "El slug de la variante es requerido").optional(),
         price: z.number().min(0, "El precio debe ser mayor o igual a 0").optional(),
         stock: z.number().int().min(0, "El stock no puede ser negativo").optional(),
       })
-    )
+    ).describe("Variantes del producto")
     .optional(),
 });
 

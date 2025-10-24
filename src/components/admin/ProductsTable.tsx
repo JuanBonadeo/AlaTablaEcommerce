@@ -1,6 +1,6 @@
 'use client';
 
-import { deleteProductAction } from '@/lib/actions/product.actions';
+import { deleteProductAction } from '@/lib/actions/product/product.actions';
 import { Product } from '@/lib/types/product.types.js';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

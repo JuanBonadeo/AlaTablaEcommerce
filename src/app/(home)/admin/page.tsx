@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { getAllProductsAction } from '@/lib/actions/product.actions';
-import { getAllCategoriesAction } from '@/lib/actions/category.actions';
+import { getAllProductsAction } from '@/lib/actions/product/product.actions';
+import { getAllCategoriesAction } from '@/lib/actions/category/category.actions';
 import { ClubIcon, GrabIcon, Home, PlusIcon, School2Icon, Square } from 'lucide-react';
 
 export default async function AdminDashboard() {

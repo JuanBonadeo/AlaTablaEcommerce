@@ -1,5 +1,5 @@
 import { ProductForm } from '@/components/admin/ProductForm';
-import { getAllCategoriesAction } from '@/lib/actions/product.actions';
+import { getAllCategoriesAction } from '@/lib/actions/product/product.actions';
 import Link from 'next/link';
 
 export default async function NewProductPage() {

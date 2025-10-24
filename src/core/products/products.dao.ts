@@ -12,16 +12,14 @@ export const ProductDAO = {
     });
   },
 
-  getBySlug: async (slug: string): Promise<Product | null> => {
-    return prisma.product.findUnique({
-      where: { slug: slug,
-        deletedAt: null
-       },
+  getBySlug: async (slug: string) => {
+    return prisma.product.findFirst({
+      where: { slug: slug, deletedAt: null },
       include: { category: true, images: true, variants: true },
     });
   },
-  getById: async (id: string): Promise<Product | null> => {
-    return prisma.product.findUnique({
+  getById: async (id: string)=> {
+    return prisma.product.findFirst({
       where: { id: id, deletedAt: null },
       include: { category: true, images: true, variants: true },
     });
@@ -39,17 +37,17 @@ export const ProductDAO = {
         images: {
           create: data.images?.map((url) => ({ url })),
         },
-        variants: {
-          create: data.variants,
-        },
       },
       
     });
   },
 
   update: async (id: string, data: any): Promise<Product> => {
+    // Prisma 'update' requires a unique identifier in 'where'.
+    // Use the id only; if you need to guard against updating soft-deleted records,
+    // perform a prior check before calling this method.
     return prisma.product.update({
-      where: { id: id, deletedAt: null },
+      where: { id: id },
       data,
       include: { category: true, images: true, variants: true },
     });

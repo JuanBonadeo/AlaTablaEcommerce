@@ -1,4 +1,4 @@
-import { getAllProductsAction } from '@/lib/actions/product.actions';
+import { getAllProductsAction } from '@/lib/actions/product/product.actions';
 import { ProductsTable } from '@/components/admin/ProductsTable';
 import Link from 'next/link';
 import { Product } from '@/lib/types/product.types';

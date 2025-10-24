@@ -1,6 +1,6 @@
 'use client';
 
-import { deleteCategoryAction } from '@/lib/actions/category.actions';
+import { deleteCategoryAction } from '@/lib/actions/category/category.actions';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';

@@ -5,15 +5,26 @@ import { ProductService } from '@/core/products/products.service';
 import { revalidatePath } from 'next/cache';
 
 function mapFormDataToProduct(formData: FormData) {
-  const imagesStr = formData.get("images") as string;
-  const variantsStr = formData.get("variants") as string;
+  const imagesStr = formData.get("images") as string | null;
+  const variantsStr = formData.get("variants") as string | null;
+
+  // images are sent as a JSON stringified array from the client (base64 strings)
+  let images: string[] = [];
+  if (imagesStr) {
+    try {
+      images = JSON.parse(imagesStr);
+    } catch (err) {
+      // fallback: if it's not valid JSON, try splitting (legacy)
+      images = imagesStr.split(',').map(url => url.trim()).filter(Boolean);
+    }
+  }
 
   return {
     name: String(formData.get("name")),
     price: Number(formData.get("price")),
     stock: Number(formData.get("stock")),
     categoryId: String(formData.get("categoryId")),
-    images: imagesStr ? imagesStr.split(',').map(url => url.trim()).filter(Boolean) : [],
+    images,
     description: formData.get("description") ? String(formData.get("description")) : undefined,
     variants: variantsStr ? JSON.parse(variantsStr) : undefined,
   };

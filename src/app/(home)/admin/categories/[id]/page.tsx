@@ -1,5 +1,5 @@
 import { CategoryForm } from '@/components/admin/CategoryForm';
-import { getCategoryByIdAction } from '@/lib/actions/category.actions';
+import { getCategoryByIdAction } from '@/lib/actions/category/category.actions';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 

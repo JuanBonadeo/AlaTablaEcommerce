@@ -1,4 +1,4 @@
-import { getAllCategoriesAction } from '@/lib/actions/category.actions';
+import { getAllCategoriesAction } from '@/lib/actions/category/category.actions';
 import { CategoriesTable } from '@/components/admin/CategoriesTable';
 import Link from 'next/link';
 

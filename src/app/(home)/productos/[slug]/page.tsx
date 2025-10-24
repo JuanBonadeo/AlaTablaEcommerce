@@ -3,31 +3,8 @@ import { notFound } from 'next/navigation';
 import { AddToCart } from '@/components/product/addToCart/AddToCart';
 import { ProductMobileSlideshow } from '@/components/product/slideshow/ProductMobileSlideshow';
 import { ProductSlideshow } from '@/components/product/slideshow/ProductSlideshow';
-import { Product as ProductInterface } from '@/lib/types/product.types.js';
-import { getProductBySlug } from '@/lib/helpers/getProductBySlug';
+import { getProductBySlugAction } from '@/lib/actions/product/product.actions';
 
-
-const product: ProductInterface = {
-  id: "1",
-  name: "Product 1",
-  slug: "product-1",
-  description: "Description for Product 1",
-  price: 29.99,
-  stock: 100,
-  categoryId: "1",
-  images: [
-    {
-      id: "1",
-      url: "image.png",
-      productId: "1",
-    },
-    {
-      id: "2",
-      url: "image.png",
-      productId: "1",
-    },
-  ],
-}
 
 type PageProps = {
   params: Promise<{
@@ -39,7 +16,7 @@ type PageProps = {
 export default async function Product({ params }: PageProps) {
 
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const product = await getProductBySlugAction(slug);
   
   if (!product) {
     notFound();
@@ -55,14 +32,14 @@ export default async function Product({ params }: PageProps) {
         {/* Mobile Slideshow */}
         <ProductMobileSlideshow
           title={product.name}
-          images={product.images.map(img => img.url)}
+          images={product.images?.map((img: { url: string }) => img.url) ?? []}
           className="block lg:hidden"
         />
 
         {/* Desktop Slideshow */}
         <ProductSlideshow
           title={product.name}
-          images={product.images.map(img => img.url)}
+          images={product.images?.map((img: { url: string }) => img.url) ?? []}
           className="hidden lg:block "
         />
 

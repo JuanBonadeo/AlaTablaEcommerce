@@ -4,6 +4,7 @@ import { getSlug } from "../shared/getSlug";
 import { ErrorHandler, NotFoundError } from "../shared/errorHandler";
 import { ResponseHandler } from "../shared/responseHandler";
 import { cuidIdSchema } from "@/lib/types/shared.types";
+import { uploadImages } from "@/lib/actions/images/uploadImagesToCloudinary";
 
 
 
@@ -39,7 +40,25 @@ export const ProductService = {
   create: async (data: ProductWithoutSlug) => {
     try {
       const product = CreateProductSchema.parse(data);
-
+      
+      if (product.images && product.images.length > 0) {
+        // Upload only base64 images and preserve existing URLs
+        const isUrl = (s: string) => /^https?:\/\//i.test(s);
+        const toUpload = product.images.filter((img) => !isUrl(img));
+        if (toUpload.length > 0) {
+          const uploaded = await uploadImages(toUpload);
+          if (!uploaded) throw new Error('Error uploading images');
+          let idx = 0;
+          product.images = product.images.map((img) => (isUrl(img) ? img : (uploaded[idx++] as string)));
+        }
+      }
+      // Ensure variants have slugs (generate from name if missing)
+      if (product.variants && product.variants.length > 0) {
+        product.variants = product.variants.map((v) => ({
+          ...v,
+          slug: (v as any).slug || getSlug(String(v.name)),
+        }));
+      }
       const slug = getSlug(product.name);
       const productWithSlug = { ...product, slug };
 
@@ -52,10 +71,43 @@ export const ProductService = {
 
   update: async (id: string, data: UpdateProductInput) => {
     try {
-      cuidIdSchema.parse(id);
       const product = UpdateProductSchema.parse(data);
 
-      const updatedProduct = await ProductDAO.update(id, product);
+      // Prepare nested writes for relations (images, variants) because Prisma expects objects
+      const updateData: any = { ...product };
+
+      if (product.images) {
+        const isUrl = (s: string) => /^https?:\/\//i.test(s);
+        const toUpload = product.images.filter((img) => !isUrl(img));
+        if (toUpload.length > 0) {
+          const uploaded = await uploadImages(toUpload);
+          if (!uploaded) throw new Error('Error uploading images');
+          let idx = 0;
+          product.images = product.images.map((img) => (isUrl(img) ? img : (uploaded[idx++] as string)));
+        }
+
+        // Replace existing images with provided ones (create new rows)
+        updateData.images = {
+          deleteMany: {},
+          create: product.images.map((url) => ({ url })),
+        };
+      }
+
+      // Only update variants when the client explicitly provides at least one variant.
+      // This avoids accidentally deleting all existing variants when the client sends an empty array.
+      if (product.variants && product.variants.length > 0) {
+        updateData.variants = {
+          deleteMany: {},
+          create: product.variants.map((v) => ({
+            name: v.name as string,
+            price: v.price as any,
+            stock: v.stock as any,
+            slug: (v as any).slug || getSlug(String(v.name)),
+          })),
+        };
+      }
+
+      const updatedProduct = await ProductDAO.update(id, updateData);
       return ResponseHandler.updated(updatedProduct);
     } catch (error) {
       return ErrorHandler.format(error);

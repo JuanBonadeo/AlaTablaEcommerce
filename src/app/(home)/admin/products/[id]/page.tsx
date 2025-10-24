@@ -1,5 +1,5 @@
 import { ProductForm } from '@/components/admin/ProductForm';
-import { getProductByIdAction, getAllCategoriesAction, getProductBySlugAction } from '@/lib/actions/product.actions';
+import { getProductByIdAction, getAllCategoriesAction, getProductBySlugAction } from '@/lib/actions/product/product.actions';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 

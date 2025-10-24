@@ -1,11 +1,14 @@
 'use client';
 
-import { createProductAction, updateProductAction } from '@/lib/actions/product.actions';
+import { createProductAction, updateProductAction } from '@/lib/actions/product/product.actions';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { Product, ProductVariant } from '@/lib/types/product.types';
 import { Category } from '@/lib/types/categories.types';
+import { ProductImage } from '../product/prduct-image/ProductImage';
+import { deleteProductImage } from '@/lib/actions/images/delete-product-image';
+
 interface ProductFormProps {
   product?: Product;
   categories: Category[];
@@ -15,10 +18,11 @@ export function ProductForm({ product, categories }: ProductFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // Estado para imágenes (URLs separadas por comas)
-  const [imagesInput, setImagesInput] = useState(
-    product?.images?.map((img) => img.url).join(', ') || ''
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  // existingImages holds images that are already saved in DB for this product
+  const [existingImages, setExistingImages] = useState(
+    (product?.images || [])
+      .filter((i): i is { id: string; url: string; productId: string } => typeof i !== 'string')
   );
 
   // Estado para variantes
@@ -26,17 +30,35 @@ export function ProductForm({ product, categories }: ProductFormProps) {
     product?.variants || []
   );
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setSelectedImages(Array.from(e.target.files));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
 
     const formData = new FormData(e.currentTarget);
-    
-    // Agregar imágenes y variantes al FormData
-    formData.set('images', imagesInput);
-    formData.set('variants', JSON.stringify(variants));
 
+    // Convertir imágenes a base64
+    const base64Images: string[] = [];
+    for (const image of selectedImages) {
+      const buffer = await image.arrayBuffer();
+      const base64Image = Buffer.from(buffer).toString('base64');
+      base64Images.push(base64Image);
+    }
+
+  // Combine existing image URLs (that remain) with new base64 images
+  const existingUrls = existingImages.map((i) => i.url);
+  const imagesPayload = [...existingUrls, ...base64Images];
+  // Agregar imágenes base64 y variantes al FormData
+  formData.set('images', JSON.stringify(imagesPayload));
+    // if (variants && variants.length > 0) {
+    //   formData.set('variants', JSON.stringify(variants));
+    // }
     try {
       const result = product
         ? await updateProductAction(product.id, formData)
@@ -67,6 +89,22 @@ export function ProductForm({ product, categories }: ProductFormProps) {
     const newVariants = [...variants];
     newVariants[index] = { ...newVariants[index], [field]: value };
     setVariants(newVariants);
+  };
+  
+  const handleDeleteImage = async (imageId: string, imageUrl: string, slug?: string) => {
+    const confirmed = confirm('¿Estás seguro de que deseas eliminar esta imagen?');
+    if (!confirmed) return;
+    try {
+      const result = await deleteProductImage(imageId, imageUrl, slug ?? product?.slug ?? '');
+      if (result?.ok) {
+        // Remove from local state so UI updates immediately
+        setExistingImages((prev) => prev.filter((img) => img.id !== imageId));
+      } else {
+        setError(result?.message || 'No se pudo eliminar la imagen');
+      }
+    } catch (err) {
+      setError('Error al eliminar la imagen');
+    }
   };
 
   return (
@@ -101,7 +139,6 @@ export function ProductForm({ product, categories }: ProductFormProps) {
           id="description"
           name="description"
           defaultValue={product?.description ?? ''}
-          
           rows={4}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
@@ -162,21 +199,42 @@ export function ProductForm({ product, categories }: ProductFormProps) {
       </div>
 
       {/* Imágenes */}
-      <div>
-        <label htmlFor="images" className="block text-sm font-medium  mb-1">
-          URLs de imágenes (separadas por comas)
-        </label>
-        <textarea
-          id="images"
-          value={imagesInput}
-          onChange={(e) => setImagesInput(e.target.value)}
-          placeholder="https://ejemplo.com/imagen1.jpg, https://ejemplo.com/imagen2.jpg"
-          rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      <div className="flex flex-col mb-2 w-md text-bl">
+        <label className="block text-sm font-medium mb-1">Fotos</label>
+        <input
+          type="file"
+          multiple
+          onChange={handleImageChange}
+          className="btn-secondary"
+          accept="image/png, image/jpeg, image/avif"
         />
-        <p className="text-xs text-gray-500 mt-1">
-          Por ahora ingresa URLs directas. Cloudinary se integrará próximamente.
-        </p>
+        {selectedImages.length > 0 && (
+          <p className="text-sm text-gray-600 mt-2">
+            {selectedImages.length} imagen(es) seleccionada(s)
+          </p>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        {existingImages.map((image) => (
+          <div key={image.id}>
+            <ProductImage
+              alt={product?.name ?? ""}
+              src={image.url}
+              width={300}
+              height={300}
+              className="rounded-t shadow-md"
+            />
+
+            <button
+              type="button"
+              onClick={() => handleDeleteImage(image.id, image.url, product?.slug)}
+              className="btn-primary w-full rounded-b-xl"
+            >
+              Eliminar
+            </button>
+          </div>
+        ))}
       </div>
 
       {/* Variantes */}

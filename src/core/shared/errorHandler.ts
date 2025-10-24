@@ -76,29 +76,32 @@ export class ErrorHandler {
     // Zod
     if (error instanceof ZodError) {
       const issues = error.issues.map((i) => ({
-      field: i.path.join(".") || "root",
-      message: i.message,
-      code: i.code,
+        field: i.path.length ? i.path.join(".") : "root",
+        message: i.message,
+        code: i.code,
       }));
 
       const summaryList = issues
-      .slice(0, 3)
-      .map((i) => `${i.field}: ${i.message}`);
+        .slice(0, 3)
+        .map((i) => `${i.field}: ${i.message}`)
+        .join("; ");
+
       const extra = issues.length > 3 ? ` y ${issues.length - 3} más` : "";
 
       const message =
-      issues.length === 1
-        ? `Validación fallida en "${issues[0].field}": ${issues[0].message}`
-        : `Errores de validación (${issues.length}): ${summaryList.join("; ")}${extra}`;
+        issues.length === 1
+          ? `Validación fallida en "${issues[0].field}": ${issues[0].message}`
+          : `Errores de validación (${issues.length}): ${summaryList}${extra}`;
 
       return {
-      status: 400,
-      success: false,
-      message,
-      code: "ZOD_VALIDATION_ERROR",
-      details: issues,
+        status: 400,
+        success: false,
+        message,
+        code: "ZOD_VALIDATION_ERROR",
+        details: issues,
       };
     }
+
 
     // Custom Errors
     if (error instanceof NotFoundError) return { status: 404, success: false, message: error.message, code: "NOT_FOUND" };

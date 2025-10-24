@@ -1,14 +1,25 @@
 import { ProductService } from "@/core/products/products.service";
 import { NextResponse } from "next/server";
 
-
 export async function GET() {
   try {
-    const products = await ProductService.getAll();
+    const result = await ProductService.getAll();
 
-    return NextResponse.json(products, { status: 200 });
+    if (!result.success) {
+      return NextResponse.json(
+        { success: false, message: result.message },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json(result, { 
+      status: 200,
+    });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: "Error fetching products" }, { status: 500 });
+    console.error('Error in GET /api/products:', error);
+    return NextResponse.json(
+      { success: false, message: "Error fetching products" },
+      { status: 500 }
+    );
   }
 }
