@@ -1,9 +1,8 @@
 'use client'
 
-import { QuantitySelector } from "@/components"
+import { QuantitySelector } from "@/components/product/quantity-selector/QuantitySelector"
 import { ProductImage } from "@/components/product/prduct-image/ProductImage"
-import { useCartStore } from "@/store/cart/cart-stores"
-import Image from "next/image"
+import { useCartStore } from "@/lib/store/cart-stores"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
@@ -26,7 +25,7 @@ export const ProductsIncart = () => {
             {
                 productsInCart.map(product => (
 
-                    <div key={`${product.slug}-${product.size}`} className="flex mb-5 fade-in">
+                    <div key={`${product.slug}-${product.variantId ?? 'novar'}`} className="flex mb-5 fade-in">
                         <ProductImage
                             src={ product.image }
                             width={100}
@@ -35,13 +34,13 @@ export const ProductsIncart = () => {
                                 width: '100px',
                                 height: '100px'
                             }}
-                            alt={product.title}
+                            alt={product.name}
                             className="mr-5 rounded"
                         />
 
                         <div>
-                            <Link href={`product/${product.slug}`} className="hover:underline cursor-pointer">
-                                <p>{product.size} - {product.title}</p>
+                            <Link href={`productos/${product.slug}`} className="hover:underline cursor-pointer">
+                                <p>{product.variantName ?? ''} - {product.name}</p>
                             </Link>
 
                             <p>${product.price}</p>

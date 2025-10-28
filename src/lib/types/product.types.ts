@@ -18,7 +18,8 @@ export interface Product {
   price: number;
   stock: number;
   categoryId: string;
-  category?: { id: string; name: string; slug: string } | null;
+  // category.slug puede no estar presente en algunas consultas, lo marcamos opcional
+  category?: { id: string; name: string; slug?: string } | null;
   images?: { id: string; url: string; productId: string }[] | string[];
   variants?: Array<{
     id: string;

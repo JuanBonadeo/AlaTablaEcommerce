@@ -81,16 +81,21 @@ model Verification {
 // DIRECCIONES
 // =========================
 model Address {
-    id        String  @id @default(cuid())
-    user      User    @relation(fields: [userId], references: [id])
-    userId    String
-    street    String
-    city      String
-    state     String
-    zip       String
-    
-    isDefault Boolean @default(false)
-    Order     Order[]
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+
+  firstName String
+  lastName  String
+  street    String
+  city      String
+  state     String
+  zip       String
+  phone     String
+
+  isDefault Boolean  @default(false)
+
+  Order     Order[]
 }
 
 // =========================

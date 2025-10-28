@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 
-import {  Title } from '@/components';
+import {  Title } from '@/components/ui/Title';
 import { ProductsIncart } from './ui/ProductsIncart';
 import { OrderSummary } from './ui/OrderSummary';
 
@@ -16,7 +16,7 @@ export default function Cart() {
 
       <div className="flex flex-col w-[1000px]">
 
-        <Title title='Carrito' />
+        <Title title='Carrito' size='4xl'/>
 
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
@@ -34,7 +34,7 @@ export default function Cart() {
            </div>
 
           {/* Checkout - Resumen de orden */ }
-          <div className="bg-white rounded-xl shadow-xl p-7 h-fit">
+          <div className="bg rounded-xl shadow-xl p-7 h-fit">
             <h2 className="text-2xl mb-2">Resumen de orden</h2>
 
             <OrderSummary/>

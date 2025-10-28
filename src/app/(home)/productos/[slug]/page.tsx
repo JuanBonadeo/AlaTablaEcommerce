@@ -40,7 +40,7 @@ export default async function Product({ params }: PageProps) {
         <ProductSlideshow
           title={product.name}
           images={product.images?.map((img: { url: string }) => img.url) ?? []}
-          className="hidden lg:block "
+          className="hidden lg:block max-w-3xl "
         />
 
 
@@ -51,16 +51,16 @@ export default async function Product({ params }: PageProps) {
 
         {/* <StockLabel slug={product.slug} /> */}
 
-        <h1 className={`  antialiased font-bold text-xl`}>
+        <h1 className={`  antialiased font-bold text-3xl`}>
           {product.name}
         </h1>
 
 
-        <p className="text-lg mb-5">${product.price}</p>
+        <p className="text-xl mb-5">${product.price}</p>
         <AddToCart product={product} />
 
         {/* Descripción */}
-        <h3 className="font-bold text-sm">Descripción</h3>
+        <h3 className="font-bold text-xl">Descripción</h3>
         <p className="font-light">
           {product.description}
         </p>

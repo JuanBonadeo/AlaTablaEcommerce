@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LogIn, Menu, User, X } from "lucide-react";
+import { LogIn, Menu, ShoppingCart, ShoppingCartIcon, User, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image.js";
 import { authClient } from "@/lib/auth/auth-client";
@@ -24,7 +24,6 @@ export default function Navbar() {
     error, //error object
     refetch //refetch the session
   } = authClient.useSession()
-  console.log({ session, isPending });
   const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
 
@@ -60,26 +59,36 @@ export default function Navbar() {
               </Link>
             ))}
           </div>
+          <div className="flex gap-5 items-center">
+            {/* cart Icon*/}
+            <Link
+              href="/cart"
+              className=""
+            >
+              <ShoppingCartIcon className="w-7 h-7 text-primary font-extrabold" />
+            </Link>
 
-          {/* Acción (desktop) */}
-          {session && !isPending && (
-            <Link
-              href="/profile"
-              className="btn-primary hidden md:flex items-center gap-3"
-            >
-              <User className="w-5 h-5" />
-              Mi perfil
-            </Link>
-          )}
-          {!session && !isPending && (
-            <Link
-              href="/auth/login"
-              className="btn-primary hidden md:flex items-center gap-3"
-            >
-              <LogIn className="w-5 h-5" />
-              Login
-            </Link>
-          )}
+            {/* Acción (desktop) */}
+            {session && !isPending ? (
+              <Link
+                href="/profile"
+                className="btn-primary hidden md:flex items-center gap-3"
+              >
+                <User className="w-5 h-5" />
+                Mi perfil
+              </Link>
+            ) : (
+              !isPending && (
+                <Link
+                  href="/auth/login"
+                  className="btn-primary hidden md:flex items-center gap-3"
+                >
+                  <LogIn className="w-5 h-5" />
+                  Login
+                </Link>
+              )
+            )}
+          </div>
 
 
           {/* Toggle mobile */}
@@ -147,7 +156,7 @@ export default function Navbar() {
                       {l.label}
                     </Link>
                   ))}
-                  {session?.user  && (
+                  {session?.user && (
                     <Link
                       href="/admin"
                       onClick={() => setOpen(false)}
