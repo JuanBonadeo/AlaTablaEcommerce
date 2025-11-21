@@ -24,9 +24,14 @@ export function LoginClient() {
 
       if (result.success) {
         router.push("/");
-        router.refresh(); // 👈 Importante para actualizar la sesión en el cliente
+        router.refresh();
       } else {
-        setError(result.error || "Error al iniciar sesión");
+        // Check if it's an email verification error
+        if (result.error?.includes("verify") || result.error?.includes("verificar")) {
+          setError("Por favor verifica tu email antes de iniciar sesión. Revisa tu bandeja de entrada.");
+        } else {
+          setError(result.error || "Error al iniciar sesión");
+        }
       }
     } catch (err: any) {
       setError(err.message || "Error al iniciar sesión");

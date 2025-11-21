@@ -31,9 +31,6 @@ export function RegisterClient() {
 
       if (data) {
         setSuccess(true);
-        setTimeout(() => {
-          router.push("/auth/login");
-        }, 2000);
       }
     } catch (err: any) {
       setError(err.message || "Error al registrar usuario");
@@ -48,7 +45,18 @@ export function RegisterClient() {
         <div className="max-w-md w-full text-center">
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
             <p className="font-semibold">¡Registro exitoso!</p>
-            <p className="text-sm mt-1">Redirigiendo a la página de login...</p>
+            <p className="text-sm mt-2">
+              Hemos enviado un email de verificación a tu correo.
+            </p>
+            <p className="text-sm mt-1">
+              Por favor, revisa tu bandeja de entrada y sigue el enlace para verificar tu cuenta.
+            </p>
+            <button
+              onClick={() => router.push("/auth/login")}
+              className="mt-4 text-sm text-green-800 hover:underline font-medium"
+            >
+              Ir al login
+            </button>
           </div>
         </div>
       </div>

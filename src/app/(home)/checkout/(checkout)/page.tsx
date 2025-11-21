@@ -1,13 +1,12 @@
 import Link from 'next/link';
-
 import { Title } from '@/components/ui/Title.jsx';
 import { ProductsIncart } from './ui/ProductsIncart';
 import { PlaceOrder } from './ui/PlaceOrder';
+import { requireAuth } from '@/lib/auth/require-auth';
 
+export default async function Checkout() {
+  await requireAuth();
 
-
-
-export default function Checkout() {
   return (
     <div className="flex justify-center items-center mb-72 px-10 lg:px-0">
 

@@ -1,17 +1,9 @@
-import { auth } from '@/lib/auth/auth';
-import { headers } from 'next/headers';
-import { redirect } from 'next/navigation';
 import { Title } from '@/components/ui/Title';
 import OrdersClient from './ui/OrdersClient';
+import { requireAuth } from '@/lib/auth/require-auth';
 
 export default async function OrdersPage() {
-  const session = await auth.api.getSession({
-    headers: await headers()
-  });
-
-  if (!session?.user) {
-    redirect('/auth/login');
-  }
+  const session = await requireAuth();
 
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
