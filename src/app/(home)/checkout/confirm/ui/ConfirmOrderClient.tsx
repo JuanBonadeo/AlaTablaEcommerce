@@ -6,18 +6,21 @@ import { ProductsIncart } from '../../(checkout)/ui/ProductsIncart';
 import { useCartStore } from '@/lib/store/cart-stores';
 import { useAddressStore } from '@/lib/store/address-store';
 import { getMyAddressesAction } from '@/lib/actions/address/address.actions';
+import { createOrderAction } from '@/lib/actions/order/order.actions';
 import { authClient } from '@/lib/auth/auth-client';
 import { currencyFormat } from '@/lib/helpers/currencyFormat';
 
 const ConfirmOrderClient = () => {
   const router = useRouter();
   const [loaded, setLoaded] = useState(false);
+  const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [address, setAddress] = useState<any | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<'transfer' | 'mercadopago'>('transfer');
 
   const addressId = useAddressStore(state => state.addressId);
   const { itemsIn, subTotal, total } = useCartStore(state => state.getSummaryInfo());
   const cart = useCartStore(state => state.cart);
+  const clearCart = useCartStore(state => state.clearCart);
 
   useEffect(() => {
     setLoaded(true);
@@ -43,16 +46,64 @@ const ConfirmOrderClient = () => {
     })();
   }, [addressId, session]);
 
-  const onConfirm = () => {
-    // persist payment method for next step
+  const onConfirm = async () => {
+    if (isCreatingOrder) return;
+    
+    setIsCreatingOrder(true);
+    
     try {
-      localStorage.setItem('checkoutPayment', JSON.stringify({ method: paymentMethod }));
-    } catch (e) {
-      console.warn('Could not save payment method', e);
-    }
+      const userId = session?.user?.id;
+      
+      if (!userId) {
+        alert('Debes iniciar sesión para crear una orden');
+        setIsCreatingOrder(false);
+        return;
+      }
 
-    // Redirect to payment page (payment page will decide how to continue)
-    router.push('/checkout/payment');
+      if (cart.length === 0) {
+        alert('El carrito está vacío');
+        setIsCreatingOrder(false);
+        return;
+      }
+
+      // Create order
+      const orderData = {
+        userId,
+        addressId: address?.id,
+        total,
+        items: cart.map(item => ({
+          productId: item.productId,
+          variantId: item.variantId,
+          quantity: item.quantity,
+          price: item.price,
+        })),
+      };
+
+      const result = await createOrderAction(orderData);
+
+      if (!result.success) {
+        alert(result.message || 'Error al crear la orden');
+        setIsCreatingOrder(false);
+        return;
+      }
+
+      // Persist payment method for next step
+      try {
+        localStorage.setItem('checkoutPayment', JSON.stringify({ method: paymentMethod }));
+      } catch (e) {
+        console.warn('Could not save payment method', e);
+      }
+
+      // Clear cart
+      clearCart();
+
+      // Redirect to payment page with order ID
+      router.push(`/order/${result.data.id}/payment`);
+    } catch (error) {
+      console.error('Error creating order:', error);
+      alert('Error al crear la orden');
+      setIsCreatingOrder(false);
+    }
   };
 
   if (!loaded) return <p>Cargando...</p>;
@@ -115,7 +166,13 @@ const ConfirmOrderClient = () => {
             </div>
 
             <div className="flex justify-end">
-              <button className="btn-primary" onClick={onConfirm}>Confirmar y pagar</button>
+              <button 
+                className="btn-primary" 
+                onClick={onConfirm}
+                disabled={isCreatingOrder || !address}
+              >
+                {isCreatingOrder ? 'Creando orden...' : 'Confirmar y pagar'}
+              </button>
             </div>
           </div>
         </div>

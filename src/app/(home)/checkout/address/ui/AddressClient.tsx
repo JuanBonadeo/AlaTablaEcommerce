@@ -53,7 +53,7 @@ export const AddressClient = () => {
       return;
     }
     setAddressId(selectedAddressId || null);
-    router.push('/checkout/payment');
+    router.push('/checkout/confirm');
   }
 
   return (

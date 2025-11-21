@@ -150,9 +150,7 @@ model Category {
 // =========================
 model Order {
     id        String      @id @default(cuid())
-    user      User        @relation(fields: [userId], references: [id])
     userId    String
-    address   Address?    @relation(fields: [addressId], references: [id])
     addressId String?
     status    OrderStatus @default(PENDING)
     total     Float
@@ -162,6 +160,9 @@ model Order {
     items    OrderItem[]
     payment  Payment?
     shipment Shipment?
+    
+    address   Address?    @relation(fields: [addressId], references: [id])
+    user      User        @relation(fields: [userId], references: [id])
 }
 
 model OrderItem {
@@ -231,6 +232,7 @@ enum PaymentProvider {
 
 enum PaymentStatus {
     PENDING
+    TRANSFERRED
     COMPLETED
     FAILED
     REFUNDED

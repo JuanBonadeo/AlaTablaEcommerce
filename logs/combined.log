@@ -25,3 +25,9 @@
 {"error":{"clientVersion":"6.16.2","name":"PrismaClientValidationError"},"level":"error","message":"Unhandled error","timestamp":"2025-10-28T01:10:53.461Z"}
 {"error":{"clientVersion":"6.16.2","name":"PrismaClientValidationError"},"level":"error","message":"Unhandled error","timestamp":"2025-10-28T01:10:59.567Z"}
 {"error":{"clientVersion":"6.16.2","name":"PrismaClientValidationError"},"level":"error","message":"Unhandled error","timestamp":"2025-10-28T01:10:59.774Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Unhandled error","timestamp":"2025-11-21T01:05:41.892Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Unhandled error","timestamp":"2025-11-21T01:05:42.041Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientValidationError"},"level":"error","message":"Unhandled error","timestamp":"2025-11-21T02:18:46.818Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientValidationError"},"level":"error","message":"Unhandled error","timestamp":"2025-11-21T02:19:23.516Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientUnknownRequestError"},"level":"error","message":"Unhandled error","timestamp":"2025-11-21T02:19:39.419Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientUnknownRequestError"},"level":"error","message":"Unhandled error","timestamp":"2025-11-21T02:20:58.226Z"}
