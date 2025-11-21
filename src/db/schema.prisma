@@ -20,6 +20,7 @@ model User {
   emailVerified Boolean   @default(false)
   image         String?
   phone         String?
+  role          Role      @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]

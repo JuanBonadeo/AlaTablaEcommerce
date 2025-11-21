@@ -2,8 +2,11 @@ import Link from 'next/link';
 import { getAllProductsAction } from '@/lib/actions/product/product.actions';
 import { getAllCategoriesAction } from '@/lib/actions/category/category.actions';
 import { ClubIcon, GrabIcon, Home, PlusIcon, School2Icon, Square } from 'lucide-react';
+import { requireAdmin } from '@/lib/auth/require-admin';
 
 export default async function AdminDashboard() {
+    await requireAdmin();
+
     const [products, categories] = await Promise.all([
         getAllProductsAction(),
         getAllCategoriesAction(),
@@ -72,11 +75,13 @@ export default async function AdminDashboard() {
             ),
         },
         {
-            title: 'Ver Productos',
-            description: 'Administrar productos existentes',
-            href: '/admin/products',
+            title: 'Ver Órdenes',
+            description: 'Administrar órdenes de clientes',
+            href: '/admin/orders',
             icon: (
-                <PlusIcon className="w-6 h-6" />
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
             ),
         },
     ];
@@ -155,7 +160,7 @@ export default async function AdminDashboard() {
                                 <Link
                                     key={product.id}
                                     href={`/admin/products/${product.id}`}
-                                    className="flex items-center p-4 hover:bg-gray-50 transition-colors"
+                                    className="flex items-center p-4 hover:bg-gray-800 transition-colors"
                                 >
 
                                     <div className="flex-1">

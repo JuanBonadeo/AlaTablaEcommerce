@@ -2,8 +2,10 @@ import { getAllProductsAction } from '@/lib/actions/product/product.actions';
 import { ProductsTable } from '@/components/admin/ProductsTable';
 import Link from 'next/link';
 import { Product } from '@/lib/types/product.types';
+import { requireAdmin } from '@/lib/auth/require-admin';
 
 export default async function AdminProductsPage() {
+  await requireAdmin();
   const products: Product[] = await getAllProductsAction();
 
   return (

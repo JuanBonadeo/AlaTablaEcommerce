@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { getOrdersByUserIdAction } from '@/lib/actions/order/order.actions';
+import { getOrdersByUserIdAction, cancelOrderAction } from '@/lib/actions/order/order.actions';
 import { Order } from '@/lib/types/order.types';
 import { currencyFormat } from '@/lib/helpers/currencyFormat';
 import Link from 'next/link';
@@ -15,31 +15,66 @@ const OrdersClient = ({ userId }: OrdersClientProps) => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [cancelingOrderId, setCancelingOrderId] = useState<string | null>(null);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [orderToCancel, setOrderToCancel] = useState<string | null>(null);
+
+  const loadOrders = async () => {
+    try {
+      setLoading(true);
+      const result = await getOrdersByUserIdAction(userId);
+      
+      if (!result.success) {
+        setError(result.message || 'Error al cargar las órdenes');
+        return;
+      }
+      
+      setOrders(result.data || []);
+    } catch (err) {
+      setError('Error al cargar las órdenes');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const loadOrders = async () => {
-      try {
-        setLoading(true);
-        const result = await getOrdersByUserIdAction(userId);
-        
-        if (!result.success) {
-          setError(result.message || 'Error al cargar las órdenes');
-          return;
-        }
-        
-        setOrders(result.data || []);
-      } catch (err) {
-        setError('Error al cargar las órdenes');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     if (userId) {
       loadOrders();
     }
   }, [userId]);
+
+  const handleCancelOrder = async (orderId: string) => {
+    setOrderToCancel(orderId);
+    setShowCancelModal(true);
+  };
+
+  const confirmCancelOrder = async () => {
+    if (!orderToCancel) return;
+
+    try {
+      setCancelingOrderId(orderToCancel);
+      setShowCancelModal(false);
+      const result = await cancelOrderAction(orderToCancel);
+
+      if (!result.success) {
+        return;
+      }
+
+      
+      await loadOrders();
+    } catch (err) {
+      console.error('Error canceling order:', err);
+    } finally {
+      setCancelingOrderId(null);
+      setOrderToCancel(null);
+    }
+  };
+
+  const closeCancelModal = () => {
+    setShowCancelModal(false);
+    setOrderToCancel(null);
+  };
 
   if (loading) {
     return (
@@ -126,6 +161,32 @@ const OrdersClient = ({ userId }: OrdersClientProps) => {
 
   return (
     <div className="space-y-6">
+      {/* Cancel Order Modal */}
+      {showCancelModal && (
+        <div className="fixed -inset-10  bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+          <div className="bg rounded-lg shadow-xl max-w-md w-full p-6">
+            <h3 className="text-xl font-semibold mb-4">Cancelar orden</h3>
+            <p className="text-gray-600 mb-6">
+              ¿Estás seguro de que deseas cancelar esta orden? Esta acción no se puede deshacer y el stock será restaurado.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={closeCancelModal}
+                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer"
+              >
+                No, volver
+              </button>
+              <button
+                onClick={confirmCancelOrder}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors cursor-pointer"
+              >
+                Sí, cancelar orden
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {orders.map((order) => {
         const itemsCount = order.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
         
@@ -227,6 +288,15 @@ const OrdersClient = ({ userId }: OrdersClientProps) => {
                   >
                     Completar pago
                   </Link>
+                )}
+                {(order.status === 'PENDING' || order.status === 'PAID') && (
+                  <button
+                    onClick={() => handleCancelOrder(order.id)}
+                    disabled={cancelingOrderId === order.id}
+                    className="flex-1 text-center bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {cancelingOrderId === order.id ? 'Cancelando...' : 'Cancelar orden'}
+                  </button>
                 )}
               </div>
             </div>

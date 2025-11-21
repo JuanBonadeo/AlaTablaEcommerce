@@ -1,8 +1,10 @@
 import { getAllCategoriesAction } from '@/lib/actions/category/category.actions';
 import { CategoriesTable } from '@/components/admin/CategoriesTable';
 import Link from 'next/link';
+import { requireAdmin } from '@/lib/auth/require-admin';
 
 export default async function AdminCategoriesPage() {
+  await requireAdmin();
   const categories = await getAllCategoriesAction();
 
   return (

@@ -35,6 +35,20 @@ export const AddToCart = ({ product }: Props) => {
     const addToCart = () => {
         setPosted(true)
 
+        // Check stock availability
+        const availableStock = selectedVariant?.stock ?? product.stock;
+        
+        if (availableStock < quantity) {
+            setQuantity(Math.min(quantity, availableStock));
+            setPosted(false);
+            return;
+        }
+
+        if (availableStock === 0) {
+            setPosted(false);
+            return;
+        }
+
         const cartProduct: CartItem = {
             productId: product.id,
             slug: product.slug,
@@ -74,11 +88,19 @@ export const AddToCart = ({ product }: Props) => {
                         onChange={e => setSelectedVariantId(e.target.value)}
                     >
                         {product.variants.map(v => (
-                            <option key={v.id} value={v.id}>{v.name} {v.price ? ` - $${v.price}` : ''}</option>
+                            <option key={v.id} value={v.id}>
+                                {v.name} {v.price ? ` - $${v.price}` : ''} 
+                                {(v.stock !== undefined && v.stock !== null) ? ` (Stock: ${v.stock})` : ''}
+                            </option>
                         ))}
                     </select>
                 </div>
             )}
+
+            {/* Stock info */}
+            <div className="mb-2 text-sm text-gray-600">
+                Stock disponible: {selectedVariant?.stock ?? product.stock} unidades
+            </div>
 
             <QuantitySelector
                 quantity={quantity}
@@ -87,8 +109,12 @@ export const AddToCart = ({ product }: Props) => {
 
 
             {/* Button */}
-            <button onClick={addToCart} className="btn-primary my-5" disabled={posted}>
-                {posted ? 'Agregando...' : 'Agregar al carrito'}
+            <button 
+                onClick={addToCart} 
+                className="btn-primary my-5" 
+                disabled={posted || (selectedVariant?.stock ?? product.stock) === 0}
+            >
+                {posted ? 'Agregando...' : (selectedVariant?.stock ?? product.stock) === 0 ? 'Sin stock' : 'Agregar al carrito'}
             </button>
 
             {/* simple inline notification */}

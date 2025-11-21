@@ -82,7 +82,19 @@ const ConfirmOrderClient = () => {
       const result = await createOrderAction(orderData);
 
       if (!result.success) {
-        alert(result.message || 'Error al crear la orden');
+        // Check if it's a stock error
+        const errorMessage = result.message || 'Error al crear la orden';
+        
+        if (errorMessage.toLowerCase().includes('stock insuficiente')) {
+          alert(`⚠️ ${errorMessage}\n\nPor favor, actualiza las cantidades en tu carrito.`);
+          router.push('/cart');
+        } else if (errorMessage.toLowerCase().includes('no encontrad')) {
+          alert(`⚠️ ${errorMessage}\n\nAlgún producto ya no está disponible. Revisa tu carrito.`);
+          router.push('/cart');
+        } else {
+          alert(errorMessage);
+        }
+        
         setIsCreatingOrder(false);
         return;
       }
@@ -101,7 +113,15 @@ const ConfirmOrderClient = () => {
       router.push(`/order/${result.data.id}/payment`);
     } catch (error) {
       console.error('Error creating order:', error);
-      alert('Error al crear la orden');
+      const errorMsg = error instanceof Error ? error.message : 'Error al crear la orden';
+      
+      if (errorMsg.toLowerCase().includes('stock')) {
+        alert(`⚠️ ${errorMsg}\n\nPor favor, verifica las cantidades en tu carrito.`);
+        router.push('/cart');
+      } else {
+        alert(errorMsg);
+      }
+      
       setIsCreatingOrder(false);
     }
   };

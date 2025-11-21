@@ -1,7 +1,7 @@
 "use server";
 
 import { OrderService } from "@/core/orders/order.service";
-import { CreateOrderInput } from "@/lib/types/order.types";
+import { CreateOrderInput, OrderStatus, OrderListParams } from "@/lib/types/order.types";
 
 export const createOrderAction = async (data: CreateOrderInput) => {
   return await OrderService.create(data);
@@ -15,6 +15,14 @@ export const getOrdersByUserIdAction = async (userId: string) => {
   return await OrderService.getByUserId(userId);
 };
 
+export const getAllOrdersAction = async (params?: OrderListParams) => {
+  return await OrderService.list(params || {});
+};
+
 export const updateOrderStatusAction = async (id: string, status: any) => {
   return await OrderService.updateStatus(id, status);
+};
+
+export const cancelOrderAction = async (id: string) => {
+  return await OrderService.updateStatus(id, OrderStatus.CANCELED);
 };
