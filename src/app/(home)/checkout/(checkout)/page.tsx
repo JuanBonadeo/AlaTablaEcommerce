@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Title } from '@/components/ui/Title.jsx';
+import { Title } from '@/components/ui/Title';
 import { ProductsIncart } from './ui/ProductsIncart';
 import { PlaceOrder } from './ui/PlaceOrder';
 import { requireAuth } from '@/lib/auth/require-auth';

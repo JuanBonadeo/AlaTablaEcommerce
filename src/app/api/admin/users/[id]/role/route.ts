@@ -4,9 +4,10 @@ import { Role } from "@prisma/client";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { role } = body;
 
@@ -14,7 +15,7 @@ export async function PATCH(
       return NextResponse.json({ error: "Invalid role" }, { status: 400 });
     }
 
-    const user = await userService.updateUserRole(params.id, role);
+    const user = await userService.updateUserRole(id, role);
     return NextResponse.json(user);
   } catch (error) {
     console.error("Error updating user role:", error);

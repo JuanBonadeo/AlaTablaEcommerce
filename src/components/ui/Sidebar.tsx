@@ -2,8 +2,7 @@
 
 import Link from 'next/link';
 import clsx from 'clsx';
-
-
+import { IoCloseOutline, IoPersonOutline, IoTicketOutline, IoLogOutOutline, IoShirtOutline, IoPeopleOutline } from 'react-icons/io5';
 
 import { logout } from '@/actions/auth/logout';
 import { useSession } from 'next-auth/react';

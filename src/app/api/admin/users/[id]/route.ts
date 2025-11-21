@@ -3,10 +3,11 @@ import { userService } from "@/core/services/user.service";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const user = await userService.getUserById(params.id);
+    const { id } = await params;
+    const user = await userService.getUserById(id);
     
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -24,10 +25,11 @@ export async function GET(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await userService.deleteUser(params.id);
+    const { id } = await params;
+    await userService.deleteUser(id);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error deleting user:", error);

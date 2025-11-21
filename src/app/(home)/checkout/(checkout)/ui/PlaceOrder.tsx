@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react"
-import { placeOrder } from "@/actions/order/place-order"
-import { useAddressStore } from "@/store/address/address-store"
-import { useCartStore } from "@/store/cart/cart-stores"
-import { currencyFormat } from "@/utils/currencyFormat"
+import { createOrderAction } from "@/lib/actions/order/order.actions"
+import { useAddressStore } from "@/lib/store/address-store"
+import { useCartStore } from "@/lib/store/cart-stores"
+import { currencyFormat } from "@/lib/helpers/currencyFormat"
 import clsx from "clsx"
 import { useRouter } from "next/navigation";
 
@@ -15,8 +15,8 @@ export const PlaceOrder = () => {
     const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   
 
-    const address = useAddressStore(state => state.address)
-    const { itemsIn, subTotal, tax, total } = useCartStore(state => state.getSummaryInfo())
+    const addressId = useAddressStore(state => state.addressId)
+    const { itemsIn, subTotal, total } = useCartStore(state => state.getSummaryInfo())
     const cart  = useCartStore( state => state.cart)
     const clearCart  = useCartStore( state => state.clearCart)
 
@@ -27,25 +27,37 @@ export const PlaceOrder = () => {
     const onPlaceOrder = async() => {
         setIsPlacingOrder(true);
         
+
+        if (!addressId) {
+          setErrorMessage('Por favor selecciona una dirección de entrega');
+          setIsPlacingOrder(false);
+          return;
+        }
     
         const productsToOrder = cart.map( product => ({
-          productId: product.id,
+          productId: product.productId,
           quantity: product.quantity,
-          size: product.size,
+          price: product.price,
+          variantId: product.variantId,
         }))
     
     
         //! Server Action
-        const resp = await placeOrder( productsToOrder, address);
-        if ( !resp.ok ) {
+        const resp = await createOrderAction({
+          items: productsToOrder,
+          addressId: addressId,
+          total: total,
+          userId: '', // This will be set by the server from session
+        });
+        if ( !resp.success ) {
           setIsPlacingOrder(false);
-          setErrorMessage(resp.message);
+          setErrorMessage(resp.message || 'Error al crear la orden');
           return;
         }
     
         //* Todo salio bien!
         clearCart();
-        router.replace('/orders/' + resp.order?.id );
+        router.replace('/orders/' + resp.data?.id );
     
     
       }
@@ -59,11 +71,11 @@ export const PlaceOrder = () => {
 
             <h2 className="text-2xl mb-2">Dirección de entrega</h2>
             <div className="mb-10">
-                <p className="text-xl">{address.firstName} {address.lastName}</p>
-                <p>{address.address}</p>
-                <p>CP {address.city}</p>
-                <p>CP {address.postalCode}</p>
-                <p>{address.phone}</p>
+                {addressId ? (
+                  <p className="text-sm text-gray-600">Dirección seleccionada: {addressId}</p>
+                ) : (
+                  <p className="text-sm text-red-600">No hay dirección seleccionada</p>
+                )}
             </div>
 
             {/* Divider */}
@@ -79,9 +91,6 @@ export const PlaceOrder = () => {
 
                 <span>Subtotal</span>
                 <span className="text-right">{currencyFormat(subTotal)}</span>
-
-                <span>Impuestos (15%)</span>
-                <span className="text-right">{currencyFormat(tax)}</span>
 
                 <span className="mt-5 text-2xl">Total:</span>
                 <span className="mt-5 text-2xl text-right">{currencyFormat(total)}</span>

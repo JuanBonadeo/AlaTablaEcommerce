@@ -1,10 +1,10 @@
-import { db } from "@/db/client";
+import { prisma } from "@/db/client";
 import { Role } from "@prisma/client";
 
 export const userService = {
   async getAllUsers() {
     try {
-      const users = await db.user.findMany({
+      const users = await prisma.user.findMany({
         select: {
           id: true,
           name: true,
@@ -33,7 +33,7 @@ export const userService = {
 
   async getUserById(id: string) {
     try {
-      const user = await db.user.findUnique({
+      const user = await prisma.user.findUnique({
         where: { id },
         include: {
           addresses: true,
@@ -54,7 +54,7 @@ export const userService = {
 
   async updateUserRole(id: string, role: Role) {
     try {
-      const user = await db.user.update({
+      const user = await prisma.user.update({
         where: { id },
         data: { role },
       });
@@ -68,7 +68,7 @@ export const userService = {
 
   async deleteUser(id: string) {
     try {
-      await db.user.delete({
+      await prisma.user.delete({
         where: { id },
       });
 

@@ -33,7 +33,9 @@ const PaymentClient = () => {
           return;
         }
         
-        setOrder(result.data);
+        if (result.data) {
+          setOrder(result.data);
+        }
       } catch (err) {
         setError('Error al cargar la orden');
         console.error(err);

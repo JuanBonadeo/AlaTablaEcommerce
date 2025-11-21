@@ -110,7 +110,11 @@ const ConfirmOrderClient = () => {
       clearCart();
 
       // Redirect to payment page with order ID
-      router.push(`/order/${result.data.id}/payment`);
+      if (result.data?.id) {
+        router.push(`/order/${result.data.id}/payment`);
+      } else {
+        router.push('/orders');
+      }
     } catch (error) {
       console.error('Error creating order:', error);
       const errorMsg = error instanceof Error ? error.message : 'Error al crear la orden';

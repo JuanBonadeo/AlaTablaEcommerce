@@ -25,8 +25,8 @@ export interface Product {
     id: string;
     slug: string;
     name: string;
-    price?: number;
-    stock?: number;
+    price?: number | null;
+    stock?: number | null;
     productId: string;
   }>;
 }

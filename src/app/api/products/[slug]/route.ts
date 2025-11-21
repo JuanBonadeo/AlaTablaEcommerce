@@ -4,10 +4,11 @@ import { NextResponse } from "next/server";
 
 
 interface Params {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function GET(_: Request, { params }: Params) {
-  const result = await ProductService.getBySlug(params.slug);
+  const { slug } = await params;
+  const result = await ProductService.getBySlug(slug);
   return NextResponse.json(result, { status: result.success ? 200 : 404 });
 }
