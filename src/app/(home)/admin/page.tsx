@@ -46,7 +46,7 @@ export default async function AdminDashboard() {
         },
         {
             name: 'Stock Total',
-            value: products.reduce((acc, p) => acc + p.stock, 0),
+            value: products.reduce((acc: number, p) => acc + p.stock, 0),
             href: '/admin/products',
             icon: (
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
