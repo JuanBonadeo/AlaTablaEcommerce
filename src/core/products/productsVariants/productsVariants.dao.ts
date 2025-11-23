@@ -1,6 +1,5 @@
-import { prisma } from "src/db/client.js";
-import { ProductVariant } from "src/shared/types/shared.types.js";
-import async from '../../../../.next/types/routes';
+import { prisma } from "@/db/client";
+import { ProductVariant } from "@/lib/types/product.types";
 
 export const ProductsVariantsDAO = {
     getByProductId: async (productId: string) => {
@@ -10,11 +9,16 @@ export const ProductsVariantsDAO = {
             }
         });
     },
+    getById: async (id: string) => {
+        return prisma.productVariant.findUnique({
+            where: {
+                id: id
+            }
+        });
+    },
     create: async (data: ProductVariant) => {
         return prisma.productVariant.create({
-            data: {
-                ...data,
-            }
+            data: data as any,
         });
     },
     update: async (id: string, data: Partial<ProductVariant>) => {
@@ -22,9 +26,7 @@ export const ProductsVariantsDAO = {
             where: {
                 id: id
             },
-            data: {
-                ...data,
-            }
+            data: data as any,
         });
     },
     delete: async (id: string) => {

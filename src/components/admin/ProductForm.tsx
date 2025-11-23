@@ -27,7 +27,11 @@ export function ProductForm({ product, categories }: ProductFormProps) {
 
   // Estado para variantes
   const [variants, setVariants] = useState<ProductVariant[]>(
-    product?.variants || []
+    (product?.variants || []).map(v => ({
+      ...v,
+      price: v.price ?? undefined,
+      stock: v.stock ?? undefined,
+    }))
   );
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -4,25 +4,30 @@ import Link from 'next/link';
 import clsx from 'clsx';
 import { IoCloseOutline, IoPersonOutline, IoTicketOutline, IoLogOutOutline, IoShirtOutline, IoPeopleOutline } from 'react-icons/io5';
 
-import { logout } from '@/actions/auth/logout';
-import { useSession } from 'next-auth/react';
+import { authClient } from '@/lib/auth/auth-client';
 import { useUIStore } from '@/lib/store/ui-store';
-
+import { useRouter } from 'next/navigation';
 
 
 export const Sidebar = () => {
 
   const isSideMenuOpen = useUIStore(state => state.isSideMenuOpen);
   const closeMenu = useUIStore(state => state.closeSideMenu);
+  const router = useRouter();
 
-  // para sacar la data en use client se usa el hook useSession
-
-  const { data: session } = useSession()
+  const { data: session } = authClient.useSession();
 
   const isAdmin = (session?.user.role === 'admin')
 
-  const onLogout = () => {
-    logout()
+  const onLogout = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          closeMenu();
+          router.push('/auth/login');
+        },
+      },
+    });
   }
 
   return (

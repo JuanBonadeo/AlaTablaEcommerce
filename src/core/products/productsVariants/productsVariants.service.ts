@@ -1,4 +1,4 @@
-import { ProductVariant } from "src/shared/types/shared.types.js";
+import { ProductVariant } from "@/lib/types/product.types";
 import { ProductsVariantsDAO } from "./productsVariants.dao";
 
 export const ProductsVariantsService = {

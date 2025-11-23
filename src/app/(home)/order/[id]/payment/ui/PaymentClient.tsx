@@ -76,7 +76,7 @@ const PaymentClient = () => {
       
       // Reload order to get updated payment status
       const orderResult = await getOrderByIdAction(orderId);
-      if (orderResult.success) {
+      if (orderResult.success && orderResult.data) {
         setOrder(orderResult.data);
       }
       

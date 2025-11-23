@@ -8,13 +8,13 @@ export const AuthService = {
     try {
       const validatedData = registerUserDTO.parse(data);
 
-      const result = await auth.api.signUpEmail({
+      const result = (await auth.api.signUpEmail({
         body: {
           email: validatedData.email,
           password: validatedData.password,
           name: `${validatedData.name} ${validatedData.surname}`,
-        },
-      });
+        } as any,
+      })) as any;
 
       if (!result) {
         throw new Error("Error al registrar usuario");

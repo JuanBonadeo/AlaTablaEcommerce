@@ -58,7 +58,7 @@ export function ProductsTable({ products }: ProductsTableProps) {
               <tr key={product.id} className="hover:bg-stone-900">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
-                    {product.images && product.images[0] ? (
+                    {product.images && product.images[0] && typeof product.images[0] !== 'string' ? (
                       <img
                         src={product.images[0].url}
                         alt={product.name}

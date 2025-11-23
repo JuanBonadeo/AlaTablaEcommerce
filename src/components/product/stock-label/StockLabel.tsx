@@ -1,6 +1,5 @@
 'use client'
-import { getStockBySlug } from '@/actions/products/getStockBySlug'
-import { titleFont } from '@/config/fonts'
+import { getProductBySlugAction } from '@/lib/actions/product/product.actions'
 import { useEffect, useState } from 'react'
 
 interface Props {
@@ -13,8 +12,10 @@ export const StockLabel = ({ slug }: Props) => {
     useEffect(() => {
         const getStock = async () => {
             setIsLoading(true)
-            const inStock = await getStockBySlug(slug)
-            setStock(inStock)
+            const result = await getProductBySlugAction(slug)
+            if (result) {
+                setStock(result.stock || 0)
+            }
             setIsLoading(false)
         }
         getStock()
@@ -27,11 +28,11 @@ export const StockLabel = ({ slug }: Props) => {
         <>
             {
                 isLoading ? (
-                    <h2 className={` ${titleFont.className} antialiased font-bold text-lg bg-gray-200 animate-pulse rounded-md`}>
+                    <h2 className="antialiased font-bold text-lg bg-gray-200 animate-pulse rounded-md">
                         &nbsp;
                     </h2>
                 ) : (
-                    <h2 className={` ${titleFont.className} antialiased font-bold text-lg`}>
+                    <h2 className="antialiased font-bold text-lg">
                         Stock: {stock}
                     </h2>
                 )

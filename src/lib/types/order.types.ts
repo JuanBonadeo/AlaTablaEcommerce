@@ -1,36 +1,8 @@
 import { z } from "zod";
+import { OrderStatus, PaymentProvider, PaymentStatus, ShipmentStatus } from "@prisma/client";
 
-// =========================
-// ENUMS
-// =========================
-export enum OrderStatus {
-  PENDING = "PENDING",
-  PAID = "PAID",
-  SHIPPED = "SHIPPED",
-  DELIVERED = "DELIVERED",
-  CANCELED = "CANCELED",
-}
-
-export enum PaymentProvider {
-  MERCADOPAGO = "MERCADOPAGO",
-  TRANSFERENCIA = "TRANSFERENCIA",
-  CASH = "CASH",
-}
-
-export enum PaymentStatus {
-  PENDING = "PENDING",
-  TRANSFERRED = "TRANSFERRED",
-  COMPLETED = "COMPLETED",
-  FAILED = "FAILED",
-  REFUNDED = "REFUNDED",
-}
-
-export enum ShipmentStatus {
-  PENDING = "PENDING",
-  SHIPPED = "SHIPPED",
-  DELIVERED = "DELIVERED",
-  RETURNED = "RETURNED",
-}
+// Re-export Prisma enums
+export { OrderStatus, PaymentProvider, PaymentStatus, ShipmentStatus };
 
 // =========================
 // INTERFACES

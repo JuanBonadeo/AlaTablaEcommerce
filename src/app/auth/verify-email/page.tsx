@@ -1,11 +1,10 @@
 "use client";
 
-import { authClient } from "@/lib/auth/auth-client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
@@ -22,18 +21,21 @@ export default function VerifyEmailPage() {
       }
 
       try {
-        await authClient.emailVerification.verify({
-          query: {
-            token,
-          },
+        const response = await fetch(`/api/auth/verify-email?token=${token}`, {
+          method: "GET",
         });
         
-        setStatus("success");
-        setMessage("¡Email verificado exitosamente!");
-        
-        setTimeout(() => {
-          router.push("/auth/login");
-        }, 2000);
+        if (response.ok) {
+          setStatus("success");
+          setMessage("¡Email verificado exitosamente!");
+          
+          setTimeout(() => {
+            router.push("/auth/login");
+          }, 2000);
+        } else {
+          setStatus("error");
+          setMessage("Error al verificar el email. El token puede haber expirado.");
+        }
       } catch (error) {
         setStatus("error");
         setMessage("Error al verificar el email. El token puede haber expirado.");
@@ -87,5 +89,17 @@ export default function VerifyEmailPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    }>
+      <VerifyEmailContent />
+    </Suspense>
   );
 }
