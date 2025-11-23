@@ -12,10 +12,10 @@ export async function registerUserAction(data: unknown) {
       success: true,
       data: user,
     };
-  } catch (error: any) {
+  } catch (error) {
     return {
       success: false,
-      error: error.message,
+      error: error instanceof Error ? error.message : 'Error desconocido',
     };
   }
 }
@@ -31,10 +31,10 @@ export async function loginUserAction(data: { email: string; password: string })
       success: true,
       data: user,
     };
-  } catch (error: any) {
+  } catch (error) {
     return {
       success: false,
-      error: error.message,
+      error: error instanceof Error ? error.message : 'Error desconocido',
     };
   }
 }

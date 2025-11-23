@@ -8,13 +8,13 @@ export const AuthService = {
     try {
       const validatedData = registerUserDTO.parse(data);
 
-      const result = (await auth.api.signUpEmail({
+      const result = await auth.api.signUpEmail({
         body: {
           email: validatedData.email,
           password: validatedData.password,
           name: `${validatedData.name} ${validatedData.surname}`,
-        } as any,
-      })) as any;
+        },
+      });
 
       if (!result) {
         throw new Error("Error al registrar usuario");
@@ -29,12 +29,14 @@ export const AuthService = {
       }
 
       return result.user;
-    } catch (error: any) {
-      if (error.name === "ZodError") {
-        throw new Error("Datos inválidos: " + error.errors[0].message);
+    } catch (error) {
+      if (error && typeof error === 'object' && 'name' in error && error.name === "ZodError" && 'errors' in error) {
+        const zodError = error as { errors: Array<{ message: string }> };
+        throw new Error("Datos inválidos: " + zodError.errors[0].message);
       }
 
-      if (error.message?.includes("already exists") || error.message?.includes("UNIQUE")) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      if (errorMessage.includes("already exists") || errorMessage.includes("UNIQUE")) {
         throw new Error("Este correo electrónico ya está registrado");
       }
 
@@ -61,12 +63,13 @@ export const AuthService = {
       }
 
       return result.user;
-    } catch (error: any) {
-      if (error.message?.includes("Invalid") || error.message?.includes("incorrect")) {
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      if (errorMessage.includes("Invalid") || errorMessage.includes("incorrect")) {
         throw new Error("Email o contraseña incorrectos");
       }
 
-      throw new Error(error.message || "Error al iniciar sesión");
+      throw new Error(errorMessage || "Error al iniciar sesión");
     }
   },
 

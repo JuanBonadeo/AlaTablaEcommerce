@@ -156,7 +156,7 @@ const AboutUsPage = () => {
                 con maderas nobles como algarrobo, quebracho y lapacho...
               </p>
               <p>
-                Hoy, "A la Tabla" es sinónimo de calidad artesanal, tradición
+                Hoy, &quot;A la Tabla&quot; es sinónimo de calidad artesanal, tradición
                 familiar y excelencia en cada producto.
               </p>
             </div>
@@ -178,7 +178,7 @@ const AboutUsPage = () => {
                   Reconocimiento Nacional
                 </h3>
                 <p className="text-white/70">
-                  Premio "Mejor Artesano 2023" otorgado por la Fundación
+                  Premio &quot;Mejor Artesano 2023&quot; otorgado por la Fundación
                   Pro-Artesanías Argentinas
                 </p>
               </div>

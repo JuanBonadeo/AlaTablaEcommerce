@@ -48,3 +48,10 @@ export const auth = betterAuth({
     nextCookies(), 
   ],
 });
+
+// Type declarations
+declare module "better-auth" {
+  interface User {
+    role?: string;
+  }
+}

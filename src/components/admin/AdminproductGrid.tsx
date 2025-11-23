@@ -28,7 +28,7 @@ export const AdminProductGrid = ({ products }: { products: Product[] }) => {
                 </tr>
             </thead>
             <tbody>
-                {products.map((p: any) => (
+                {products.map((p) => (
                     <tr
                         key={p.id}
                         className="border-t border-neutral-700 hover:bg-neutral-800/40"

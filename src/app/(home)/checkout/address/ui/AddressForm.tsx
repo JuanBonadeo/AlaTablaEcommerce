@@ -52,7 +52,7 @@ export const AddressForm = ({ userId, onSuccess, onCancel, }: Props) => {
     setErrorMsg(null);
     try {
       // createAddressAction returns { ok: boolean }
-      const res: any = await createAddressAction({ ...data, isDefault: !!data.isDefault, userId });
+      const res = await createAddressAction({ ...data, isDefault: !!data.isDefault, userId });
       if (!res || !res.ok) {
         const msg = res?.message || 'Error al crear la dirección';
         setErrorMsg(msg + (res?.details ? `: ${res.details}` : ''));
@@ -67,7 +67,7 @@ export const AddressForm = ({ userId, onSuccess, onCancel, }: Props) => {
       onSuccess(createdAddress);
     } catch (err) {
       console.error('Error creating address', err);
-      setErrorMsg((err as any)?.message || 'Error inesperado');
+      setErrorMsg(err instanceof Error ? err.message : 'Error inesperado');
     } finally {
       setSubmitting(false);
     }

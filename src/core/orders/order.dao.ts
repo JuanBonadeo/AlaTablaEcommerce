@@ -5,7 +5,7 @@ import {
   OrderListParams,
   OrderList
 } from '@/lib/types/order.types';
-import { Order } from '@prisma/client';
+import { Order, Prisma } from '@prisma/client';
 
 export const OrderDAO = {
   create: async (data: CreateOrderInput): Promise<Order> => {
@@ -58,7 +58,7 @@ export const OrderDAO = {
         },
       },
     });
-    return order as any;
+    return order;
   },
 
   getById: async (id: string) => {
@@ -173,7 +173,7 @@ export const OrderDAO = {
           },
         },
       },
-    }) as any;
+    });
   },
 
   list: async (params: OrderListParams): Promise<OrderList> => {
@@ -181,7 +181,7 @@ export const OrderDAO = {
     const skip = (page - 1) * limit;
     const take = limit;
 
-    const where: any = {};
+    const where: Prisma.OrderWhereInput = {};
     if (userId) where.userId = userId;
     if (status) where.status = status;
 
@@ -230,7 +230,7 @@ export const OrderDAO = {
     ]);
 
     return {
-      items: items as any,
+      items: items as Order[],
       pagination: {
         totalPages: Math.ceil(total / limit),
         currentPage: page,

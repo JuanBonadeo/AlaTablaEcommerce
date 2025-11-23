@@ -5,6 +5,7 @@ import { ErrorHandler, NotFoundError } from "../shared/errorHandler";
 import { ResponseHandler } from "../shared/responseHandler";
 import { cuidIdSchema } from "@/lib/types/shared.types";
 import { uploadImages } from "@/lib/actions/images/uploadImagesToCloudinary";
+import { Prisma } from "@prisma/client";
 
 
 
@@ -56,7 +57,7 @@ export const ProductService = {
       if (product.variants && product.variants.length > 0) {
         product.variants = product.variants.map((v) => ({
           ...v,
-          slug: (v as any).slug || getSlug(String(v.name)),
+          slug: v.slug || getSlug(String(v.name)),
         }));
       }
       const slug = getSlug(product.name);
@@ -74,7 +75,7 @@ export const ProductService = {
       const product = UpdateProductSchema.parse(data);
 
       // Prepare nested writes for relations (images, variants) because Prisma expects objects
-      const updateData: any = { ...product };
+      const updateData: Prisma.ProductUpdateInput = { ...product };
 
       if (product.images) {
         const isUrl = (s: string) => /^https?:\/\//i.test(s);
@@ -100,9 +101,9 @@ export const ProductService = {
           deleteMany: {},
           create: product.variants.map((v) => ({
             name: v.name as string,
-            price: v.price as any,
-            stock: v.stock as any,
-            slug: (v as any).slug || getSlug(String(v.name)),
+            price: v.price ?? null,
+            stock: v.stock ?? null,
+            slug: v.slug || getSlug(String(v.name)),
           })),
         };
       }

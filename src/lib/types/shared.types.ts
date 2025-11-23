@@ -23,13 +23,13 @@ export interface ApiError {
   success: false;
   message: string;
   code?: string;
-  details?: any;
+  details?: unknown;
   status?: number;
   body?: {
     success: false;
     message: string;
     code?: string;
-    details?: any;
+    details?: unknown;
   };
 }
 
@@ -37,7 +37,7 @@ export interface ApiError {
 export type ApiResult<T = void> = ApiResponse<T> | ApiError;
 
 // Type guard para verificar si es un error
-export function isApiError(result: ApiResult<any>): result is ApiError {
+export function isApiError<T>(result: ApiResult<T>): result is ApiError {
   return !result.success;
 }
 

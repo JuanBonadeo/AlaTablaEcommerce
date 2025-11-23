@@ -1,5 +1,4 @@
-import { use } from "react";
-import { int, z } from "zod";
+import { z } from "zod";
 
 export const CreateAddressSchema = z.object({
   firstName: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
@@ -17,6 +16,6 @@ export interface Address extends z.infer<typeof CreateAddressSchema> {
   id: string;
 }
 
-export interface CreateAddress extends z.infer<typeof CreateAddressSchema> {}
+export type CreateAddress = z.infer<typeof CreateAddressSchema>;
 
-export interface UpdateAddress extends Partial<CreateAddress> {}
+export type UpdateAddress = Partial<CreateAddress>;

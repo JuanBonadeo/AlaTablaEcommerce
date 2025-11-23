@@ -1,5 +1,6 @@
 import { prisma } from "@/db/client";
 import { ProductVariant } from "@/lib/types/product.types";
+import { Prisma } from "@prisma/client";
 
 export const ProductsVariantsDAO = {
     getByProductId: async (productId: string) => {
@@ -18,7 +19,7 @@ export const ProductsVariantsDAO = {
     },
     create: async (data: ProductVariant) => {
         return prisma.productVariant.create({
-            data: data as any,
+            data: data as Prisma.ProductVariantCreateInput,
         });
     },
     update: async (id: string, data: Partial<ProductVariant>) => {
@@ -26,7 +27,7 @@ export const ProductsVariantsDAO = {
             where: {
                 id: id
             },
-            data: data as any,
+            data: data as Prisma.ProductVariantUpdateInput,
         });
     },
     delete: async (id: string) => {

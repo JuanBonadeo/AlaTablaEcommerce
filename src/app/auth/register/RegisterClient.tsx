@@ -32,8 +32,8 @@ export function RegisterClient() {
       if (data) {
         setSuccess(true);
       }
-    } catch (err: any) {
-      setError(err.message || "Error al registrar usuario");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error al registrar usuario");
     } finally {
       setLoading(false);
     }

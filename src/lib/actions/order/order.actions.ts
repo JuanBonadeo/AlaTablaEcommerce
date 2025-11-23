@@ -19,7 +19,7 @@ export const getAllOrdersAction = async (params?: OrderListParams) => {
   return await OrderService.list(params || {});
 };
 
-export const updateOrderStatusAction = async (id: string, status: any) => {
+export const updateOrderStatusAction = async (id: string, status: OrderStatus) => {
   return await OrderService.updateStatus(id, status);
 };
 

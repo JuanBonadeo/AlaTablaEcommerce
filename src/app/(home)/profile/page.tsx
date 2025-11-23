@@ -5,7 +5,7 @@ import { requireAuth } from "@/lib/auth/require-auth";
 
 export default async function ProfilePage() {
     const session = await requireAuth();
-    const isAdmin = (session?.user as any)?.role === 'ADMIN';
+    const isAdmin = session?.user?.role === 'ADMIN';
     
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
@@ -17,7 +17,7 @@ export default async function ProfilePage() {
           <div className="space-y-2">
             <p className="text-gray-700"><span className="font-medium">Nombre:</span> {session?.user?.name}</p>
             <p className="text-gray-700"><span className="font-medium">Email:</span> {session?.user?.email}</p>
-            <p className="text-gray-700"><span className="font-medium">Rol:</span> {(session?.user as any)?.role || 'No definido'}</p>
+            <p className="text-gray-700"><span className="font-medium">Rol:</span> {session?.user?.role || 'No definido'}</p>
             {isAdmin && (
               <p className="text-gray-700"><span className="font-medium">Estado:</span> <span className="text-blue-600 font-semibold">Administrador</span></p>
             )}

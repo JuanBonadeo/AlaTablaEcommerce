@@ -38,7 +38,7 @@ interface LogInfo {
   context?: LogContext;
   pagination?: LogPagination;
   error?: LogError;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // Función para formatear el tamaño de datos de manera más legible
@@ -91,7 +91,7 @@ const formatExecutionTime = (time: string): string => {
 };
 
 // FORMATO PRINCIPAL - Este es el que arregla el problema
-const consoleFormat = winston.format.printf((info: any) => {
+const consoleFormat = winston.format.printf((info: LogEntry) => {
   const { timestamp, level, message, response, context, pagination, error, ...rest } = info;
   
   // Manejo de errores
@@ -174,7 +174,7 @@ const fileFormat = winston.format.combine(
 );
 
 // Formato para métricas específicas
-const metricsFormat = winston.format.printf((info: any) => {
+const metricsFormat = winston.format.printf((info: LogEntry) => {
   const { timestamp, response, context, pagination } = info;
   
   if (response && context) {
@@ -238,14 +238,14 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Función helper para logs de desarrollo
-export const devLog = (message: string, data?: any) => {
+export const devLog = (message: string, data?: unknown) => {
   if (process.env.NODE_ENV !== 'production') {
     console.log(chalk.cyan('🔧 DEV:'), message, data ? chalk.gray(JSON.stringify(data, null, 2)) : '');
   }
 };
 
 // Función helper para logs de debug
-export const debugLog = (message: string, data?: any) => {
+export const debugLog = (message: string, data?: unknown) => {
   if (process.env.NODE_ENV !== 'production' && process.env.DEBUG === 'true') {
     console.log(chalk.magenta('🐛 DEBUG:'), message, data ? chalk.gray(JSON.stringify(data, null, 2)) : '');
   }

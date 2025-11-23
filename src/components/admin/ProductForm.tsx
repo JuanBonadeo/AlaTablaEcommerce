@@ -89,7 +89,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
     setVariants(variants.filter((_, i) => i !== index));
   };
 
-  const updateVariant = (index: number, field: keyof ProductVariant, value: any) => {
+  const updateVariant = (index: number, field: keyof ProductVariant, value: string | number | undefined) => {
     const newVariants = [...variants];
     newVariants[index] = { ...newVariants[index], [field]: value };
     setVariants(newVariants);

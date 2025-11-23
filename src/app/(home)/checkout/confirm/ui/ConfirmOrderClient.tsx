@@ -14,7 +14,7 @@ const ConfirmOrderClient = () => {
   const router = useRouter();
   const [loaded, setLoaded] = useState(false);
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
-  const [address, setAddress] = useState<any | null>(null);
+  const [address, setAddress] = useState<Address | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<'transfer' | 'mercadopago'>('transfer');
 
   const addressId = useAddressStore(state => state.addressId);
@@ -34,13 +34,13 @@ const ConfirmOrderClient = () => {
         const userId = session?.user?.id || '';
         const list = await getMyAddressesAction(userId as string);
         if (addressId) {
-          const found = list.find((a: any) => a.id === addressId);
+          const found = list.find((a: Address) => a.id === addressId);
           setAddress(found || null);
         } else {
-          const def = list.find((a: any) => a.isDefault) || list[0] || null;
+          const def = list.find((a: Address) => a.isDefault) || list[0] || null;
           setAddress(def);
         }
-      } catch (e) {
+      } catch {
         setAddress(null);
       }
     })();

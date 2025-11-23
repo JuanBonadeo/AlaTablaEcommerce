@@ -4,6 +4,8 @@ import { CreateProductInput, ProductList } from "@/lib/types/product.types";
 
 
 
+import { Prisma } from '@prisma/client';
+
 export const ProductDAO = {
   getAll: async () => {
     return prisma.product.findMany({
@@ -42,7 +44,7 @@ export const ProductDAO = {
     });
   },
 
-  update: async (id: string, data: any): Promise<Product> => {
+  update: async (id: string, data: Prisma.ProductUpdateInput): Promise<Product> => {
     // Prisma 'update' requires a unique identifier in 'where'.
     // Use the id only; if you need to guard against updating soft-deleted records,
     // perform a prior check before calling this method.
