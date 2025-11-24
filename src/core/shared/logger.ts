@@ -3,43 +3,7 @@ import winston from 'winston';
 import chalk from 'chalk';
 
 // Interfaces para tipado
-interface LogContext {
-  method: string;
-  endpoint: string;
-  userId: string;
-  executionTime: string;
-  requestId?: string;
-}
 
-interface LogResponse {
-  status: number;
-  dataSize: number;
-  message?: string;
-}
-
-interface LogError {
-  name?: string;
-  message?: string;
-  stack?: string;
-}
-
-interface LogPagination {
-  page: number;
-  totalPages: number;
-  recordsCount: number;
-  total: number;
-}
-
-interface LogInfo {
-  timestamp: string;
-  level: string;
-  message: string;
-  response?: LogResponse;
-  context?: LogContext;
-  pagination?: LogPagination;
-  error?: LogError;
-  [key: string]: unknown;
-}
 
 // Función para formatear el tamaño de datos de manera más legible
 const formatDataSize = (size: number): string => {

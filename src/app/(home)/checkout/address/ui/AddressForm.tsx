@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { createAddressAction } from '@/lib/actions/address/address.actions';
 import { AnimatePresence, motion } from 'framer-motion';

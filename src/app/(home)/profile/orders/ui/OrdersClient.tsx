@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { getOrdersByUserIdAction, cancelOrderAction } from '@/lib/actions/order/order.actions';
 import { Order } from '@/lib/types/order.types';
 import { currencyFormat } from '@/lib/helpers/currencyFormat';
@@ -19,16 +19,16 @@ const OrdersClient = ({ userId }: OrdersClientProps) => {
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [orderToCancel, setOrderToCancel] = useState<string | null>(null);
 
-  const loadOrders = async () => {
+  const loadOrders = useCallback(async () => {
     try {
       setLoading(true);
       const result = await getOrdersByUserIdAction(userId);
-      
+
       if (!result.success) {
         setError(result.message || 'Error al cargar las órdenes');
         return;
       }
-      
+
       setOrders(result.data || []);
     } catch (err) {
       setError('Error al cargar las órdenes');
@@ -36,13 +36,13 @@ const OrdersClient = ({ userId }: OrdersClientProps) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
     if (userId) {
       loadOrders();
     }
-  }, [userId]);
+  }, [userId, loadOrders]);
 
   const handleCancelOrder = async (orderId: string) => {
     setOrderToCancel(orderId);
@@ -145,7 +145,7 @@ const OrdersClient = ({ userId }: OrdersClientProps) => {
       'COMPLETED': 'bg-green-50 text-green-700',
       'FAILED': 'bg-red-50 text-red-700',
     };
-    return colors[status] || 'bg text-gray-700';
+    return colors[status] || 'bg-gray-100 text-gray-700';
   };
 
   const getPaymentStatusText = (status?: string) => {

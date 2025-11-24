@@ -36,7 +36,7 @@ export function CategoryForm({ category }: CategoryFormProps) {
       } else {
         setError(result.message || 'Error al guardar la categoría');
       }
-    } catch (err) {
+    } catch {
       setError('Error inesperado al guardar la categoría');
     } finally {
       setIsSubmitting(false);

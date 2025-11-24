@@ -25,7 +25,7 @@ export const OrderService = {
             // Update variant stock
             const variant = await tx.productVariant.findUnique({
               where: { id: item.variantId },
-              select: { stock: true },
+              select: { stock: true, name: true },
             });
 
             if (!variant) {
@@ -33,7 +33,7 @@ export const OrderService = {
             }
 
             if ((variant.stock ?? 0) < item.quantity) {
-              throw new Error(`Stock insuficiente para la variante ${item.variantId}`);
+              throw new Error(`Stock insuficiente para la variante ${variant.name}`);
             }
 
             await tx.productVariant.update({
@@ -44,15 +44,15 @@ export const OrderService = {
             // Update product stock
             const product = await tx.product.findUnique({
               where: { id: item.productId },
-              select: { stock: true },
+              select: { stock: true, name: true },
             });
 
             if (!product) {
-              throw new Error(`Producto ${item.productId} no encontrado`);
+              throw new Error(`Producto no encontrado`);
             }
 
             if (product.stock < item.quantity) {
-              throw new Error(`Stock insuficiente para el producto ${item.productId}`);
+              throw new Error(`Stock insuficiente para el producto ${product.name}`);
             }
 
             await tx.product.update({

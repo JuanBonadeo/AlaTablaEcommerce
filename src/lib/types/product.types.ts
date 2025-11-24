@@ -8,6 +8,13 @@ export interface ProductGridItem {
     stock: number;
     images: { id: string; url: string; productId: string }[];
     category?: { id: string; name: string }; // Agregado
+    activeOffer?: { 
+      id: string; 
+      descuento: number; 
+      descripcion: string | null;
+      desde: Date;
+      hasta: Date;
+    } | null;
 }
 
 export interface Product {
@@ -29,6 +36,13 @@ export interface Product {
     stock?: number | null;
     productId: string;
   }>;
+  activeOffer?: { 
+    id: string; 
+    descuento: number; 
+    descripcion: string | null;
+    desde: Date;
+    hasta: Date;
+  } | null;
 }
 export interface ProductVariant {
   id?: string;

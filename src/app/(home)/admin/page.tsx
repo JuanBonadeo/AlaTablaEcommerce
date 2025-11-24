@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { getAllProductsAction } from '@/lib/actions/product/product.actions';
 import { getAllCategoriesAction } from '@/lib/actions/category/category.actions';
-import { ClubIcon, GrabIcon, Home, PlusIcon, School2Icon, Square } from 'lucide-react';
+import { PlusIcon, School2Icon } from 'lucide-react';
 import { requireAdmin } from '@/lib/auth/require-admin';
 
 export default async function AdminDashboard() {

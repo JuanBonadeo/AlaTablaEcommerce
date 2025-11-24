@@ -1,7 +1,6 @@
 "use client"
 import { Product } from '@/lib/types/product.types.js'
 import { deleteProductAction } from '@/lib/actions/product/product.actions'
-import { revalidatePath } from 'next/cache.js'
 import Link from 'next/link.js'
 import { useRouter } from 'next/navigation.js'
 

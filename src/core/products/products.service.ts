@@ -1,9 +1,8 @@
 import { ProductDAO } from "./products.dao";
-import { CreateProductInput, CreateProductSchema, ListSearchParams, ListSearchParamsSchema, ProductWithoutSlug, UpdateProductInput, UpdateProductSchema } from "../../lib/types/product.types";
+import {  CreateProductSchema, ListSearchParams, ListSearchParamsSchema, ProductWithoutSlug, UpdateProductInput, UpdateProductSchema } from "../../lib/types/product.types";
 import { getSlug } from "../shared/getSlug";
 import { ErrorHandler, NotFoundError } from "../shared/errorHandler";
 import { ResponseHandler } from "../shared/responseHandler";
-import { cuidIdSchema } from "@/lib/types/shared.types";
 import { uploadImages } from "@/lib/actions/images/uploadImagesToCloudinary";
 import { Prisma } from "@prisma/client";
 

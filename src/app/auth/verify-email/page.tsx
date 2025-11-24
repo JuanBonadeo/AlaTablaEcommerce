@@ -36,7 +36,7 @@ function VerifyEmailContent() {
           setStatus("error");
           setMessage("Error al verificar el email. El token puede haber expirado.");
         }
-      } catch (error) {
+      } catch {
         setStatus("error");
         setMessage("Error al verificar el email. El token puede haber expirado.");
       }

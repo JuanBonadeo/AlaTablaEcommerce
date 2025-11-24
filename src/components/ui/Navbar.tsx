@@ -9,12 +9,18 @@ import Image from "next/image.js";
 import { authClient } from "@/lib/auth/auth-client";
 
 
+const linksMobile = [
+  { label: "Inicio", href: "/" },
+  { label: "Mis Ordenes", href: "/profile/orders"},
+  { label: "Productos", href: "/productos" },
+  { label: "Nosotros", href: "/nosotros" },
+  { label: "Contacto", href: "/contacto" },
+];
 const links = [
   { label: "Inicio", href: "/" },
   { label: "Productos", href: "/productos" },
   { label: "Nosotros", href: "/nosotros" },
   { label: "Contacto", href: "/contacto" },
-
 ];
 
 export default function Navbar() {
@@ -59,20 +65,20 @@ export default function Navbar() {
               </Link>
             ))}
           </div>
-          <div className="flex gap-5 items-center">
-            {/* cart Icon*/}
-            <Link
-              href="/cart"
-              className=""
-            >
-              <ShoppingCartIcon className="w-7 h-7 text-primary font-extrabold" />
-            </Link>
+         
+           
 
+            
+
+
+
+          {/* Toggle mobile */}
+          <div className="flex items-center justify-center gap-4">
             {/* Acción (desktop) */}
             {session && !isPending ? (
               <Link
                 href="/profile"
-                className="btn-primary hidden md:flex items-center gap-3"
+                className="btn-primary hidden xl:flex items-center gap-3"
               >
                 <User className="w-5 h-5" />
                 Mi perfil
@@ -81,27 +87,29 @@ export default function Navbar() {
               !isPending && (
                 <Link
                   href="/auth/login"
-                  className="btn-primary hidden md:flex items-center gap-3"
+                  className="btn-primary hidden xl:flex items-center gap-3"
                 >
                   <LogIn className="w-5 h-5" />
                   Login
                 </Link>
               )
             )}
-          </div>
-
-
-          {/* Toggle mobile */}
-          <div className="md:hidden">
+             {/* cart Icon*/}
+            <Link
+              href="/cart"
+              className=""
+            >
+              <ShoppingCartIcon className="w-8 h-8 text-primary font-extrabold" />
+            </Link>
             <button
               type="button"
               aria-expanded={open}
               aria-controls="mobile-menu"
               onClick={() => setOpen((v) => !v)}
-              className="inline-flex items-center justify-center rounded-xl p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+              className="md:hidden inline-flex items-center justify-center rounded-xl p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
             >
               <span className="sr-only">Abrir menú</span>
-              {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {open ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
             </button>
           </div>
         </div>
@@ -120,11 +128,13 @@ export default function Navbar() {
             >
               <div className="py-3 border-t border-white/10">
                 <div className="flex flex-col gap-1">
+                  <div className="border-b border-white/10 py-1"></div>
+
                   {session && (
                     <Link
                       onClick={() => setOpen(false)}
                       href="/profile"
-                      className="btn-primary  md:hidden flex items-center gap-1 w-[8em]"
+                      className="btn-primary  xl:hidden flex items-center gap-1 w-[8em]"
                     >
                       <User className="w-5 h-5" />
                       Mi perfil
@@ -134,16 +144,14 @@ export default function Navbar() {
                     <Link
                       onClick={() => setOpen(false)}
                       href="/auth/login"
-                      className="btn-primary  md:hidden flex items-center gap-1 w-[8em]"
+                      className="btn-primary  xl:hidden flex items-center gap-1 w-[8em]"
                     >
                       <LogIn className="w-5 h-5" />
                       Login
                     </Link>
                   )}
-                  <div className="border-b border-white/10 py-1"></div>
 
-
-                  {links.map((l) => (
+                  {linksMobile.map((l) => (
                     <Link
                       key={l.href}
                       href={l.href}

@@ -9,6 +9,7 @@ import { getMyAddressesAction } from '@/lib/actions/address/address.actions';
 import { createOrderAction } from '@/lib/actions/order/order.actions';
 import { authClient } from '@/lib/auth/auth-client';
 import { currencyFormat } from '@/lib/helpers/currencyFormat';
+import { Address } from '@/lib/types/address.types';
 
 const ConfirmOrderClient = () => {
   const router = useRouter();
@@ -16,11 +17,14 @@ const ConfirmOrderClient = () => {
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [address, setAddress] = useState<Address | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<'transfer' | 'mercadopago'>('transfer');
+  const [notification, setNotification] = useState<{ type: 'error' | 'success' | 'info'; message: string } | null>(null);
 
   const addressId = useAddressStore(state => state.addressId);
-  const { itemsIn, subTotal, total } = useCartStore(state => state.getSummaryInfo());
+  const { itemsIn, subTotal, total, envio } = useCartStore(state => state.getSummaryInfo());
   const cart = useCartStore(state => state.cart);
   const clearCart = useCartStore(state => state.clearCart);
+  const setShipping = useCartStore(state => state.setShipping);
+  const validateForCheckout = useCartStore(state => state.validateForCheckout);
 
   useEffect(() => {
     setLoaded(true);
@@ -36,9 +40,11 @@ const ConfirmOrderClient = () => {
         if (addressId) {
           const found = list.find((a: Address) => a.id === addressId);
           setAddress(found || null);
+          setShipping(found ? 7500 : 0);
         } else {
           const def = list.find((a: Address) => a.isDefault) || list[0] || null;
           setAddress(def);
+          setShipping(def ? 7500 : 0);
         }
       } catch {
         setAddress(null);
@@ -55,13 +61,16 @@ const ConfirmOrderClient = () => {
       const userId = session?.user?.id;
       
       if (!userId) {
-        alert('Debes iniciar sesión para crear una orden');
+        setNotification({ type: 'error', message: 'Debes iniciar sesión para crear una orden' });
         setIsCreatingOrder(false);
         return;
       }
 
-      if (cart.length === 0) {
-        alert('El carrito está vacío');
+      // validate cart and address via cart store helper
+      const validation = validateForCheckout(!!address);
+      if (!validation.ok) {
+        // Show inline notification only; do not redirect from Confirm page
+        setNotification({ type: 'error', message: validation.message || 'Error en el carrito' });
         setIsCreatingOrder(false);
         return;
       }
@@ -84,17 +93,15 @@ const ConfirmOrderClient = () => {
       if (!result.success) {
         // Check if it's a stock error
         const errorMessage = result.message || 'Error al crear la orden';
-        
+
         if (errorMessage.toLowerCase().includes('stock insuficiente')) {
-          alert(`⚠️ ${errorMessage}\n\nPor favor, actualiza las cantidades en tu carrito.`);
-          router.push('/cart');
+          setNotification({ type: 'error', message: `${errorMessage}. Por favor, actualiza las cantidades en tu carrito.` });
         } else if (errorMessage.toLowerCase().includes('no encontrad')) {
-          alert(`⚠️ ${errorMessage}\n\nAlgún producto ya no está disponible. Revisa tu carrito.`);
-          router.push('/cart');
+          setNotification({ type: 'error', message: `${errorMessage}. Algún producto ya no está disponible. Revisa tu carrito.` });
         } else {
-          alert(errorMessage);
+          setNotification({ type: 'error', message: errorMessage });
         }
-        
+
         setIsCreatingOrder(false);
         return;
       }
@@ -120,12 +127,11 @@ const ConfirmOrderClient = () => {
       const errorMsg = error instanceof Error ? error.message : 'Error al crear la orden';
       
       if (errorMsg.toLowerCase().includes('stock')) {
-        alert(`⚠️ ${errorMsg}\n\nPor favor, verifica las cantidades en tu carrito.`);
-        router.push('/cart');
+        setNotification({ type: 'error', message: `⚠️ ${errorMsg}. Por favor, verifica las cantidades en tu carrito.` });
       } else {
-        alert(errorMsg);
+        setNotification({ type: 'error', message: errorMsg });
       }
-      
+
       setIsCreatingOrder(false);
     }
   };
@@ -161,6 +167,16 @@ const ConfirmOrderClient = () => {
             <div className="w-full h-0.5 rounded bg-gray-200 mb-4" />
 
             <h2 className="text-2xl mb-3">Resumen de orden</h2>
+            {/* Notification banner */}
+            {notification && (
+              <div className={`mb-4 p-3 rounded-lg border ${notification.type === 'error' ? 'bg border-red text-red-800' : notification.type === 'success' ? 'bg-green-50 border-green-200 text-green-800' : 'bg-blue-50 border-blue-200 text-blue-800'}`}>
+                <div className="flex justify-between items-start gap-4">
+                  <div className="text-sm font-bold">{notification.message}</div>
+                  <button onClick={() => setNotification(null)} className="text-sm opacity-70 hover:opacity-100">Cerrar</button>
+                </div>
+              </div>
+            )}
+
             <div className="grid grid-cols-2 mb-4">
               <span>Nro. Productos</span>
               <span className="text-right">{itemsIn === 1 ? '1 artículo' : `${itemsIn} artículos`}</span>
@@ -168,7 +184,7 @@ const ConfirmOrderClient = () => {
               <span className="text-right">{currencyFormat(subTotal)}</span>
               <span>Envio</span>
 
-              {address ? <span className="text-right">{currencyFormat(7500)}</span> : <span className="text-right">-</span>}
+              {address ? <span className="text-right">{currencyFormat(envio)}</span> : <span className="text-right">-</span>}
               
               <span className="mt-5 text-2xl">Total:</span>
               <span className="mt-5 text-2xl text-right">{currencyFormat(total)}</span>

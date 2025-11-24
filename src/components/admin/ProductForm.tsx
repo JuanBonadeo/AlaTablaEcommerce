@@ -75,7 +75,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
         setError(result.message || 'Error al guardar el producto');
       }
     } catch (err) {
-      setError('Error inesperado al guardar el producto');
+      setError('Error inesperado al guardar el producto ' + (err instanceof Error ? err.message : ''));
     } finally {
       setIsSubmitting(false);
     }
@@ -104,10 +104,10 @@ export function ProductForm({ product, categories }: ProductFormProps) {
         // Remove from local state so UI updates immediately
         setExistingImages((prev) => prev.filter((img) => img.id !== imageId));
       } else {
-        setError(result?.message || 'No se pudo eliminar la imagen');
+        setError(result?.message || 'No se pudo elimina r la imagen');
       }
     } catch (err) {
-      setError('Error al eliminar la imagen');
+      setError('Error al eliminar la imagen' + (err instanceof Error ? err.message : ''));
     }
   };
 

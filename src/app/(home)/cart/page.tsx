@@ -10,7 +10,6 @@ import { OrderSummary } from './ui/OrderSummary';
 
 
 export default function Cart() {
-
   return (
     <div className="flex justify-center items-center mb-72 px-10 ">
 
@@ -38,14 +37,6 @@ export default function Cart() {
             <h2 className="text-2xl mb-2">Resumen de orden</h2>
 
             <OrderSummary/>
-
-            <div className="mt-5 mb-2 w-full">
-              <Link 
-                className="flex btn-primary justify-center"
-                href="/checkout/address">
-                Checkout
-              </Link>
-            </div>
 
           </div>
 
