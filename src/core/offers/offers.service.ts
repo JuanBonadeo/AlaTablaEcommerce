@@ -1,124 +1,80 @@
-import { CreateOfferInput, UpdateOfferInput } from "@/lib/types/offer.types";
+import { CreateOfferInput, CreateOfferSchema, UpdateOfferInput, UpdateOfferSchema } from "@/lib/types/offer.types";
 import { OfferDAO } from "./offers.dao";
+import { ErrorHandler, NotFoundError } from "../shared/errorHandler";
+import { ResponseHandler } from "../shared/responseHandler";
 
-export class OfferService {
-  static async create(data: CreateOfferInput) {
+export const OfferService = {
+  create: async (data: CreateOfferInput) => {
     try {
-      const offer = await OfferDAO.create(data);
-      return {
-        success: true,
-        data: offer,
-        message: "Oferta creada exitosamente",
-      };
+      const validatedData = CreateOfferSchema.parse(data);
+      const offer = await OfferDAO.create(validatedData);
+      return ResponseHandler.created(offer);
     } catch (error) {
-      console.error("Error creating offer:", error);
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : "Error al crear la oferta",
-      };
+      return ErrorHandler.format(error);
     }
-  }
+  },
 
-  static async getById(id: string) {
+  getById: async (id: string) => {
     try {
       const offer = await OfferDAO.getById(id);
-      if (!offer) {
-        return {
-          success: false,
-          message: "Oferta no encontrada",
-        };
-      }
-      return {
-        success: true,
-        data: offer,
-      };
+      if (!offer) throw new NotFoundError("Oferta no encontrada");
+      return ResponseHandler.success(offer);
     } catch (error) {
-      console.error("Error getting offer:", error);
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : "Error al obtener la oferta",
-      };
+      return ErrorHandler.format(error);
     }
-  }
+  },
 
-  static async getAll() {
+  getAll: async () => {
     try {
       const offers = await OfferDAO.getAll();
-      return {
-        success: true,
-        data: offers,
-      };
+      return ResponseHandler.success(offers);
     } catch (error) {
-      console.error("Error getting offers:", error);
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : "Error al obtener las ofertas",
-      };
+      return ErrorHandler.format(error);
     }
-  }
+  },
 
-  static async getByProductId(productId: string) {
+  getByProductId: async (productId: string) => {
     try {
       const offer = await OfferDAO.getByProductId(productId);
-      return {
-        success: true,
-        data: offer,
-      };
+      return ResponseHandler.success(offer);
     } catch (error) {
-      console.error("Error getting offer by product:", error);
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : "Error al obtener la oferta del producto",
-      };
+      return ErrorHandler.format(error);
     }
-  }
+  },
 
-  static async getActiveOffers() {
+  getActiveOffers: async () => {
     try {
       const offers = await OfferDAO.getActiveOffers();
-      return {
-        success: true,
-        data: offers,
-      };
+      return ResponseHandler.success(offers);
     } catch (error) {
-      console.error("Error getting active offers:", error);
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : "Error al obtener las ofertas activas",
-      };
+      return ErrorHandler.format(error);
     }
-  }
+  },
 
-  static async update(id: string, data: UpdateOfferInput) {
+  update: async (id: string, data: UpdateOfferInput) => {
     try {
-      const offer = await OfferDAO.update(id, data);
-      return {
-        success: true,
-        data: offer,
-        message: "Oferta actualizada exitosamente",
-      };
+      const validatedData = UpdateOfferSchema.parse(data);
+      
+      const existing = await OfferDAO.getById(id);
+      if (!existing) throw new NotFoundError("Oferta no encontrada");
+
+      const offer = await OfferDAO.update(id, validatedData);
+      return ResponseHandler.updated(offer);
     } catch (error) {
-      console.error("Error updating offer:", error);
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : "Error al actualizar la oferta",
-      };
+      return ErrorHandler.format(error);
     }
-  }
+  },
 
-  static async delete(id: string) {
+  delete: async (id: string) => {
     try {
+      const existing = await OfferDAO.getById(id);
+      if (!existing) throw new NotFoundError("Oferta no encontrada");
+
       await OfferDAO.delete(id);
-      return {
-        success: true,
-        message: "Oferta eliminada exitosamente",
-      };
+      return ResponseHandler.deleted();
     } catch (error) {
-      console.error("Error deleting offer:", error);
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : "Error al eliminar la oferta",
-      };
+      return ErrorHandler.format(error);
     }
-  }
-}
+  },
+};
+

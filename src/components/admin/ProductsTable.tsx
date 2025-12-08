@@ -85,7 +85,14 @@ export function ProductsTable({ products }: ProductsTableProps) {
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm ">
-                  ${product.price.toFixed(2)}
+                  <div className="flex flex-col">
+                    ${product.price.toFixed(2)}
+                    {product.offers && product.offers.length > 0 && product.offers[0] && (
+                      <span className="text-xs text-orange-500 font-semibold">
+                        -{product.offers[0].descuento}% OFF
+                      </span>
+                    )}
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span

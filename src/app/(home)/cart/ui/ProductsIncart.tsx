@@ -5,6 +5,7 @@ import { ProductImage } from "@/components/product/prduct-image/ProductImage"
 import { useCartStore } from "@/lib/store/cart-stores"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { calculatePrice, formatPrice } from "@/lib/utils/pricing"
 
 export const ProductsIncart = () => {
     const [loaded, setLoaded] = useState(false)
@@ -23,8 +24,10 @@ export const ProductsIncart = () => {
     return (
         <>
             {
-                productsInCart.map(product => (
-
+                productsInCart.map(product => {
+                    const priceInfo = calculatePrice(product.price, product.offer)
+                    
+                    return (
                     <div key={`${product.slug}-${product.variantId ?? 'novar'}`} className="flex mb-5 fade-in">
                         <ProductImage
                             src={ product.image }
@@ -43,7 +46,36 @@ export const ProductsIncart = () => {
                                 <p>{product.variantName ?? ''} - {product.name}</p>
                             </Link>
 
-                            <p>${product.price}</p>
+                            {priceInfo.hasOffer ? (
+                                <div className="mt-1">
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className="text-xs font-semibold bg-red-500 text-white px-2 py-0.5 rounded">
+                                            OFERTA
+                                        </span>
+                                        <span className="text-xs bg-orange-500 text-white px-2 py-0.5 rounded">
+                                            -{priceInfo.discount}% OFF
+                                        </span>
+                                    </div>
+                                    {product.offer?.descripcion && (
+                                        <p className="text-xs text-gray-600 mb-1 italic">
+                                            {product.offer.descripcion}
+                                        </p>
+                                    )}
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-gray-500 line-through text-sm">
+                                            ${formatPrice(priceInfo.originalPrice)}
+                                        </span>
+                                        <span className="font-bold text-orange-600 text-lg">
+                                            ${formatPrice(priceInfo.finalPrice)}
+                                        </span>
+                                    </div>
+                                    <p className="text-xs text-green-600 font-medium">
+                                        Ahorrás ${formatPrice(priceInfo.savings || 0)}
+                                    </p>
+                                </div>
+                            ) : (
+                                <p className="font-bold mt-1">${formatPrice(product.price)}</p>
+                            )}
 
                             <QuantitySelector
                                 quantity={product.quantity}
@@ -60,9 +92,8 @@ export const ProductsIncart = () => {
                         </div>
 
                     </div>
-
-
-                ))
+                    )
+                })
             }
 
 

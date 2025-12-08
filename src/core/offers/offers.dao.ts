@@ -1,9 +1,9 @@
-import prisma from "@/db/client";
+import { prisma } from "@/db/client";
 import { CreateOfferInput, UpdateOfferInput } from "@/lib/types/offer.types";
 
-export class OfferDAO {
-  static async create(data: CreateOfferInput) {
-    return await prisma.offer.create({
+export const OfferDAO = {
+  create: async (data: CreateOfferInput) => {
+    return prisma.offer.create({
       data: {
         productId: data.productId,
         descuento: data.descuento,
@@ -17,14 +17,15 @@ export class OfferDAO {
             id: true,
             name: true,
             slug: true,
+            price: true,
           },
         },
       },
     });
-  }
+  },
 
-  static async getById(id: string) {
-    return await prisma.offer.findUnique({
+  getById: async (id: string) => {
+    return prisma.offer.findUnique({
       where: { id, deletedAt: null },
       include: {
         product: {
@@ -32,14 +33,15 @@ export class OfferDAO {
             id: true,
             name: true,
             slug: true,
+            price: true,
           },
         },
       },
     });
-  }
+  },
 
-  static async getAll() {
-    return await prisma.offer.findMany({
+  getAll: async () => {
+    return prisma.offer.findMany({
       where: { deletedAt: null },
       include: {
         product: {
@@ -47,29 +49,30 @@ export class OfferDAO {
             id: true,
             name: true,
             slug: true,
+            price: true,
           },
         },
       },
       orderBy: { createdAt: "desc" },
     });
-  }
+  },
 
-  static async getByProductId(productId: string) {
+  getByProductId: async (productId: string) => {
     const now = new Date();
-    return await prisma.offer.findFirst({
+    return prisma.offer.findFirst({
       where: {
         productId,
         deletedAt: null,
         desde: { lte: now },
         hasta: { gte: now },
       },
-      orderBy: { descuento: "desc" }, // Retorna el descuento más alto si hay múltiples
+      orderBy: { descuento: "desc" },
     });
-  }
+  },
 
-  static async getActiveOffers() {
+  getActiveOffers: async () => {
     const now = new Date();
-    return await prisma.offer.findMany({
+    return prisma.offer.findMany({
       where: {
         deletedAt: null,
         desde: { lte: now },
@@ -81,14 +84,16 @@ export class OfferDAO {
             id: true,
             name: true,
             slug: true,
+            price: true,
           },
         },
       },
+      orderBy: { createdAt: "desc" },
     });
-  }
+  },
 
-  static async update(id: string, data: UpdateOfferInput) {
-    return await prisma.offer.update({
+  update: async (id: string, data: UpdateOfferInput) => {
+    return prisma.offer.update({
       where: { id },
       data: {
         ...(data.productId && { productId: data.productId }),
@@ -103,23 +108,24 @@ export class OfferDAO {
             id: true,
             name: true,
             slug: true,
+            price: true,
           },
         },
       },
     });
-  }
+  },
 
-  static async delete(id: string) {
-    // Soft delete
-    return await prisma.offer.update({
+  delete: async (id: string) => {
+    return prisma.offer.update({
       where: { id },
       data: { deletedAt: new Date() },
     });
-  }
+  },
 
-  static async hardDelete(id: string) {
-    return await prisma.offer.delete({
+  hardDelete: async (id: string) => {
+    return prisma.offer.delete({
       where: { id },
     });
-  }
-}
+  },
+};
+

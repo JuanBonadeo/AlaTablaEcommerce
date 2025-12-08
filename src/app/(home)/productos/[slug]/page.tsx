@@ -4,6 +4,7 @@ import { AddToCart } from '@/components/product/addToCart/AddToCart';
 import { ProductMobileSlideshow } from '@/components/product/slideshow/ProductMobileSlideshow';
 import { ProductSlideshow } from '@/components/product/slideshow/ProductSlideshow';
 import { getProductBySlugAction } from '@/lib/actions/product/product.actions';
+import { calculatePrice, formatPrice } from '@/lib/utils/pricing';
 
 
 type PageProps = {
@@ -21,6 +22,10 @@ export default async function Product({ params }: PageProps) {
   if (!product) {
     notFound();
   }
+
+  // Calcular precio con oferta
+  const activeOffer = product.offers?.[0] || null;
+  const priceInfo = calculatePrice(product.price, activeOffer);
 
 
   return (
@@ -55,12 +60,43 @@ export default async function Product({ params }: PageProps) {
           {product.name}
         </h1>
 
+        {/* Precio con oferta */}
+        {priceInfo.hasOffer ? (
+          <div className="my-5">
+            {/* Badge de oferta */}
+            <div className="inline-flex items-center gap-2 bg-orange-500 text-white px-4 py-2 rounded-full mb-3">
+              <span className="font-bold text-lg">-{priceInfo.discount}% OFF</span>
+            </div>
+            
+            {activeOffer?.descripcion && (
+              <p className="text-sm text-gray-600 mb-2 italic">{activeOffer.descripcion}</p>
+            )}
+            
+            <div className="flex items-baseline gap-3">
+              <span className="text-gray-500 line-through text-lg">
+                ${formatPrice(priceInfo.originalPrice)}
+              </span>
+              <span className="text-3xl font-bold text-orange-500">
+                ${formatPrice(priceInfo.finalPrice)}
+              </span>
+            </div>
+            
+            <p className="text-sm text-green-600 mt-1">
+              Ahorrás ${formatPrice(priceInfo.savings || 0)}
+            </p>
+            
+            <p className="text-xs text-gray-500 mt-2">
+              Oferta válida hasta {new Date(activeOffer?.hasta || '').toLocaleDateString('es-ES')}
+            </p>
+          </div>
+        ) : (
+          <p className="text-xl mb-5">${product.price}</p>
+        )}
 
-        <p className="text-xl mb-5">${product.price}</p>
         <AddToCart product={product} />
 
         {/* Descripción */}
-        <h3 className="font-bold text-xl">Descripción</h3>
+        <h3 className="font-bold text-xl mt-8">Descripción</h3>
         <p className="font-light">
           {product.description}
         </p>

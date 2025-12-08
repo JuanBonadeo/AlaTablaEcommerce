@@ -33,7 +33,16 @@ export const AdminProductGrid = ({ products }: { products: Product[] }) => {
                         className="border-t border-neutral-700 hover:bg-neutral-800/40"
                     >
                         <td className="px-4 py-2 text-white">{p.name}</td>
-                        <td className="px-4 py-2 text-white">${p.price}</td>
+                        <td className="px-4 py-2 text-white">
+                            <div className="flex flex-col">
+                                ${p.price}
+                                {p.offers && p.offers.length > 0 && p.offers[0] && (
+                                    <span className="text-xs text-orange-500 font-semibold">
+                                        -{p.offers[0].descuento}% OFF
+                                    </span>
+                                )}
+                            </div>
+                        </td>
                         <td className="px-4 py-2 text-white">{p.stock}</td>
                         <td className="px-4 py-2 text-white">
                             {p.category?.name ?? "-"}

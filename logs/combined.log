@@ -39,3 +39,4 @@
 {"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-11-24T03:01:08.669Z"}
 {"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-11-24T03:04:07.519Z"}
 {"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-11-24T03:06:22.412Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientValidationError"},"level":"error","message":"Unhandled error","timestamp":"2025-12-08T15:59:00.485Z"}

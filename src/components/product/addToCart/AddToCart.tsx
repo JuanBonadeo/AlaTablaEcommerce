@@ -58,6 +58,7 @@ export const AddToCart = ({ product }: Props) => {
             variantName: selectedVariant?.name,
             quantity,
             image: getImage(),
+            offer: product.offers?.[0] || null,
         }
 
         addProuctToCart(cartProduct)

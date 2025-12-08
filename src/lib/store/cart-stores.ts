@@ -2,10 +2,15 @@ import type { CartItem } from "@/lib/types/cart.types";
 import { add } from "winston";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { calculatePrice } from "@/lib/utils/pricing";
 
 
 const computeSummary = (cart: CartItem[], envio: number) => {
-    const subTotal = cart.reduce((subTotal, product) => (product.quantity * product.price) + subTotal, 0)
+    // Calcular subtotal considerando ofertas
+    const subTotal = cart.reduce((total, product) => {
+        const priceInfo = calculatePrice(product.price, product.offer)
+        return total + (priceInfo.finalPrice * product.quantity)
+    }, 0)
     const total = subTotal + envio
     const itemsIn = cart.reduce((total, item) => total + item.quantity, 0)
     return { subTotal, envio, total, itemsIn }

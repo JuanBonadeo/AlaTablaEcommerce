@@ -14,4 +14,12 @@ export interface CartItem {
     quantity: number;
     // Imagen principal para mostrar en el carrito
     image: string;
+    // Oferta activa del producto
+    offer?: {
+        id: string;
+        descuento: number;
+        descripcion: string | null;
+        desde: Date;
+        hasta: Date;
+    } | null;
 }

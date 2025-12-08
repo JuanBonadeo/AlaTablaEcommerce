@@ -4,6 +4,7 @@ import { useCartStore } from "@/lib/store/cart-stores"
 import { useEffect, useState } from "react"
 import { currencyFormat } from '@/lib/helpers/currencyFormat';
 import { ProductImage } from "@/components/product/prduct-image/ProductImage";
+import { calculatePrice } from "@/lib/utils/pricing";
 
 export const ProductsIncart = () => {
     const [loaded, setLoaded] = useState(false)
@@ -20,8 +21,11 @@ export const ProductsIncart = () => {
     return (
         <>
             {
-                productsInCart.map(product => (
-
+                productsInCart.map(product => {
+                    const priceInfo = calculatePrice(product.price, product.offer)
+                    const itemTotal = priceInfo.finalPrice * product.quantity
+                    
+                    return (
                     <div key={`${product.slug}-${product.variantId}`} className="flex mb-5 fade-in">
                         <ProductImage
                             src={product.image}
@@ -40,14 +44,32 @@ export const ProductsIncart = () => {
                                 <p>{product.variantId} - {product.name} ({product.quantity})</p>
                             </span>
 
-                            <p className="font-bold">{currencyFormat(product.price * product.quantity)}</p>
+                            {priceInfo.hasOffer ? (
+                                <div className="mt-1">
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className="text-xs font-semibold bg-red-500 text-white px-2 py-0.5 rounded">
+                                            OFERTA
+                                        </span>
+                                        <span className="text-xs bg-orange-500 text-white px-2 py-0.5 rounded">
+                                            -{priceInfo.discount}% OFF
+                                        </span>
+                                    </div>
+                                    {product.offer?.descripcion && (
+                                        <p className="text-xs text-gray-600 mb-1 italic">
+                                            {product.offer.descripcion}
+                                        </p>
+                                    )}
+                                    <p className="font-bold text-orange-600">{currencyFormat(itemTotal)}</p>
+                                </div>
+                            ) : (
+                                <p className="font-bold">{currencyFormat(itemTotal)}</p>
+                            )}
 
                         </div>
 
                     </div>
-
-
-                ))
+                    )
+                })
             }
 
 
