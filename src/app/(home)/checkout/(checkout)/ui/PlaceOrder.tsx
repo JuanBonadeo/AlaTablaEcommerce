@@ -7,6 +7,7 @@ import { useCartStore } from "@/lib/store/cart-stores"
 import { currencyFormat } from "@/lib/helpers/currencyFormat"
 import clsx from "clsx"
 import { useRouter } from "next/navigation";
+import { PlaceOrderSkeleton } from "@/components/ui/skeletons/PlaceOrderSkeleton";
 
 export const PlaceOrder = () => {
     const router = useRouter();
@@ -63,7 +64,7 @@ export const PlaceOrder = () => {
       }
 
     if (!loaded) {
-        return <p>Cargando...</p>
+        return <PlaceOrderSkeleton />
     }
 
     return (

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { currencyFormat } from '@/lib/helpers/currencyFormat';
 import { ProductImage } from "@/components/product/prduct-image/ProductImage";
 import { calculatePrice } from "@/lib/utils/pricing";
+import { ProductsInCartSkeleton } from "@/components/ui/skeletons/ProductsInCartSkeleton";
 
 export const ProductsIncart = () => {
     const [loaded, setLoaded] = useState(false)
@@ -16,7 +17,7 @@ export const ProductsIncart = () => {
 
     const productsInCart = useCartStore(state => state.cart)
     if (!loaded) {
-        return <p>Cargando...</p>
+        return <ProductsInCartSkeleton />
     }
     return (
         <>

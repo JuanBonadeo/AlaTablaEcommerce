@@ -10,6 +10,7 @@ import { createOrderAction } from '@/lib/actions/order/order.actions';
 import { authClient } from '@/lib/auth/auth-client';
 import { currencyFormat } from '@/lib/helpers/currencyFormat';
 import { Address } from '@/lib/types/address.types';
+import { ConfirmOrderSkeleton } from '@/components/ui/skeletons/ConfirmOrderSkeleton';
 
 const ConfirmOrderClient = () => {
   const router = useRouter();
@@ -136,7 +137,7 @@ const ConfirmOrderClient = () => {
     }
   };
 
-  if (!loaded) return <p>Cargando...</p>;
+  if (!loaded) return <ConfirmOrderSkeleton />;
 
   return (
     <div className="flex justify-center items-center mb-20 px-2 lg:px-0">

@@ -4,11 +4,12 @@ import { useCartStore } from "@/lib/store/cart-stores"
 import { useEffect, useState } from "react"
 import { currencyFormat } from "@/lib/helpers/currencyFormat"
 import { useRouter } from 'next/navigation'
+import { OrderSummarySkeleton } from "@/components/ui/skeletons/OrderSummarySkeleton"
 
 export const OrderSummary = () => {
     const router = useRouter()
     const [notification, setNotification] = useState<string | null>(null)
-    const [, setLoaded] = useState(false)
+    const [loaded, setLoaded] = useState(false)
 
     useEffect(() => {
         setLoaded(true)
@@ -31,6 +32,10 @@ export const OrderSummary = () => {
         }
 
         setNotification(validation.message || 'Error en el carrito')
+    }
+
+    if (!loaded) {
+        return <OrderSummarySkeleton />
     }
 
     return (

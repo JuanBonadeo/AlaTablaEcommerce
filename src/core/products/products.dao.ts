@@ -82,9 +82,6 @@ export const ProductDAO = {
   },
 
   update: async (id: string, data: Prisma.ProductUpdateInput): Promise<Product> => {
-    // Prisma 'update' requires a unique identifier in 'where'.
-    // Use the id only; if you need to guard against updating soft-deleted records,
-    // perform a prior check before calling this method.
     return prisma.product.update({
       where: { id: id },
       data,

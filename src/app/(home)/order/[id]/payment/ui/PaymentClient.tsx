@@ -7,6 +7,7 @@ import { markPaymentAsTransferredAction } from '@/lib/actions/payment/payment.ac
 import { currencyFormat } from '@/lib/helpers/currencyFormat';
 import { Order } from '@/lib/types/order.types';
 import Image from 'next/image';
+import { PaymentClientSkeleton } from '@/components/ui/skeletons/PaymentClientSkeleton';
 
 const BANK_ALIAS = 'ALAT.ECOMMERCE.ALIAS';
 const BANK_ACCOUNT = 'CBU: 0000000000000000000000';
@@ -28,14 +29,12 @@ const PaymentClient = () => {
         setLoading(true);
         const result = await getOrderByIdAction(orderId);
         
-        if (!result.success) {
-          setError(result.message || 'Error al cargar la orden');
+        if (!result) {
+          setError('Error al cargar la orden');
           return;
         }
         
-        if (result.data) {
-          setOrder(result.data);
-        }
+        setOrder(result);
       } catch (err) {
         setError('Error al cargar la orden');
         console.error(err);
@@ -76,8 +75,8 @@ const PaymentClient = () => {
       
       // Reload order to get updated payment status
       const orderResult = await getOrderByIdAction(orderId);
-      if (orderResult.success && orderResult.data) {
-        setOrder(orderResult.data);
+      if (orderResult) {
+        setOrder(orderResult);
       }
       
     } catch (err) {
@@ -88,14 +87,7 @@ const PaymentClient = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center py-20">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-600">Cargando orden...</p>
-        </div>
-      </div>
-    );
+    return <PaymentClientSkeleton />;
   }
 
   if (error || !order) {

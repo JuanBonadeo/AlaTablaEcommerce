@@ -7,6 +7,7 @@ import { Address } from '@/lib/types/address.types';
 import { authClient } from '@/lib/auth/auth-client';
 import { useRouter } from 'next/navigation';
 import { useAddressStore } from '@/lib/store/address-store';
+import { AddressClientSkeleton } from '@/components/ui/skeletons/AddressClientSkeleton';
 
 
 
@@ -19,6 +20,7 @@ export const AddressClient = () => {
   const userId = session?.user?.id || '';
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(selectedAddress?.id || null);
   const [selectedOption, setSelectedOption] = useState<'delivery' | 'pickup'>('delivery');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -34,6 +36,8 @@ export const AddressClient = () => {
         console.error('Error fetching addresses:', err);
         setAddresses([]);
         setSelectedAddress(null);
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, [userId]);
@@ -54,6 +58,10 @@ export const AddressClient = () => {
     }
     setAddressId(selectedAddressId || null);
     router.push('/checkout/confirm');
+  }
+
+  if (isLoading) {
+    return <AddressClientSkeleton />;
   }
 
   return (

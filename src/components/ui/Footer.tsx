@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Facebook, Instagram, Twitter, Mail } from "lucide-react";
+import Image from "next/image.js";
 
 export default function Footer() {
   return (
@@ -11,12 +12,16 @@ export default function Footer() {
           {/* Logo / Marca */}
           <div>
             <Link href="/" className="flex items-center gap-2">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white text-black font-bold">
-                A
-              </span>
               <span className="font-semibold tracking-wide text-lg">
                 A la Tabla
               </span>
+              <Image
+                src="/logo.png"
+                alt="A la Tabla Logo"
+                width={300}
+                height={300}
+                className="h-20 w-20 rounded-full object-cover"
+              />
             </Link>
             <p className="mt-4 text-sm text-white/70 max-w-xs">
               Tablas y cuchillos parrilleros artesanales. Calidad hecha a mano
@@ -98,7 +103,7 @@ export default function Footer() {
         {/* Divider */}
         <div className="mt-12 border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/60">
           <p>© {new Date().getFullYear()} A la Tabla. Todos los derechos reservados.</p>
-          <p>Hecho con ❤️ en Argentina</p>
+          <p>Hecho por JuanBonadeo</p>
         </div>
       </div>
     </footer>

@@ -16,6 +16,11 @@ type Product = {
     name: string;
   };
   images?: Array<{ url: string }>;
+  offer?: {
+    id: string;
+    descuento: number;
+    descripcion: string | null;
+  } | null;
 };
 
 type Category = {
@@ -178,7 +183,17 @@ export default function ProductsList({ initialProducts, categories }: ProductsLi
                     <span className="text-gray-300">{product.category?.name || '-'}</span>
                   </td>
                   <td className="py-4 px-6">
-                    <span className="font-medium text-white">${product.price.toLocaleString()}</span>
+                    {product.offer ? (
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium text-orange-500">${(product.price * (1 - product.offer.descuento / 100)).toFixed(2)}</span>
+                          <span className="text-xs bg-orange-500 text-white px-1.5 py-0.5 rounded">-{product.offer.descuento}%</span>
+                        </div>
+                        <span className="text-xs text-gray-500 line-through">${product.price.toLocaleString()}</span>
+                      </div>
+                    ) : (
+                      <span className="font-medium text-white">${product.price.toLocaleString()}</span>
+                    )}
                   </td>
                   <td className="py-4 px-6">
                     <span className={`font-medium ${product.stock === 0 ? 'text-red-400' : product.stock < 10 ? 'text-yellow-400' : 'text-gray-300'}`}>
