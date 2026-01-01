@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Plus, Edit, Trash2, Tag, X, Save } from 'lucide-react';
 import { createCategoryAction, updateCategoryAction, deleteCategoryAction } from '@/lib/actions/category/category.actions';
 import type { Category } from '@/lib/types/categories.types';
+import { ConfirmModal } from '@/components/ui/ConfirmModal';
 
 interface CategoriesClientProps {
   categories: Category[];
@@ -17,6 +18,9 @@ export default function CategoriesClient({ categories }: CategoriesClientProps) 
   const [formData, setFormData] = useState({ name: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState('');
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,21 +57,9 @@ export default function CategoriesClient({ categories }: CategoriesClientProps) 
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('¿Estás seguro de eliminar esta categoría?')) return;
-
-    setIsSubmitting(true);
-    try {
-      const result = await deleteCategoryAction(id);
-      if (result.ok) {
-        router.refresh();
-      } else {
-        alert(result.message);
-      }
-    } catch (error) {
-      alert('Error al eliminar la categoría');
-    } finally {
-      setIsSubmitting(false);
-    }
+    setConfirmMessage('¿Estás seguro de eliminar esta categoría?');
+    setPendingDeleteId(id);
+    setConfirmOpen(true);
   };
 
   const handleNew = () => {
@@ -207,6 +199,33 @@ export default function CategoriesClient({ categories }: CategoriesClientProps) 
           </div>
         </div>
       )}
+      <ConfirmModal
+        open={confirmOpen}
+        title="Eliminar categoría"
+        message={confirmMessage}
+        confirmLabel="Eliminar"
+        cancelLabel="Cancelar"
+        loading={isSubmitting}
+        onConfirm={async () => {
+          if (!pendingDeleteId) return;
+          setIsSubmitting(true);
+          try {
+            const result = await deleteCategoryAction(pendingDeleteId);
+            if (result.ok) {
+              router.refresh();
+            } else {
+              alert(result.message);
+            }
+          } catch (error) {
+            alert('Error al eliminar la categoría');
+          } finally {
+            setIsSubmitting(false);
+            setConfirmOpen(false);
+            setPendingDeleteId(null);
+          }
+        }}
+        onCancel={() => { setConfirmOpen(false); setPendingDeleteId(null); }}
+      />
     </div>
   );
 }

@@ -71,3 +71,15 @@ export const updateAddressAction = async (id: string, data: Partial<CreateAddres
   }
 };
 
+export const getAddressByIdAction = async (id: string): Promise<Address | null> => {
+  try {
+    const result = await AddressService.getAddressById(id);
+    if (!result.success || !result.data) {
+      return null;
+    }
+    return result.data;
+  } catch (error) {
+    console.error("Error en getAddressByIdAction:", error);
+    return null;
+  }
+};

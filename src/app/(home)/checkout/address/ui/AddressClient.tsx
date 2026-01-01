@@ -52,12 +52,17 @@ export const AddressClient = () => {
   const router = useRouter();
 
   const handleContinue = () => {
-    if (selectedOption === 'delivery' && !selectedAddressId) {
-      alert('Seleccioná una dirección de envío.');
-      return;
+    // Permitir continuar sin dirección: si es retiro, forzar null; si es envío sin dirección, continuar igualmente
+    const nextAddressId = selectedOption === 'pickup' ? null : (selectedAddressId || null);
+    setAddressId(nextAddressId);
+    
+    // Si seleccionó envío a domicilio, ir a la página de shipping
+    if (selectedOption === 'delivery' && nextAddressId) {
+      router.push('/checkout/shipping');
+    } else {
+      // Si es retiro, ir directo a confirm
+      router.push('/checkout/confirm');
     }
-    setAddressId(selectedAddressId || null);
-    router.push('/checkout/confirm');
   }
 
   if (isLoading) {
@@ -152,9 +157,7 @@ export const AddressClient = () => {
               <p className="text-sm text-gray-500">
                 Lu a Vi: 9 a 18 hs. Sá: 10 a 14 hs.
               </p>
-              <button className="text-primary text-sm mt-3 hover:underline">
-                Ver punto en el mapa
-              </button>
+              {/* Mantener la UI minimalista: remover acciones no esenciales */}
             </div>
             <p className="font-semibold text-gray-500">$0</p>
             <input

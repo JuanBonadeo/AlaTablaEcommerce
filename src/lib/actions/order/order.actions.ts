@@ -49,8 +49,9 @@ export async function getOrderStatsAction() {
       return {
         total: 0,
         pending: 0,
-        processing: 0,
-        completed: 0,
+        paid: 0,
+        shipped: 0,
+        delivered: 0,
         canceled: 0,
         revenue: 0,
       };
@@ -61,11 +62,12 @@ export async function getOrderStatsAction() {
     return {
       total: orders.length,
       pending: orders.filter(o => o.status === 'PENDING').length,
-      processing: orders.filter(o => o.status === 'PROCESSING').length,
-      completed: orders.filter(o => o.status === 'COMPLETED').length,
+      paid: orders.filter(o => o.status === 'PAID').length,
+      shipped: orders.filter(o => o.status === 'SHIPPED').length,
+      delivered: orders.filter(o => o.status === 'DELIVERED').length,
       canceled: orders.filter(o => o.status === 'CANCELED').length,
       revenue: orders
-        .filter(o => o.status === 'COMPLETED')
+        .filter(o => o.status === 'DELIVERED')
         .reduce((sum, o) => sum + o.total, 0),
     };
   } catch (error) {
@@ -73,8 +75,9 @@ export async function getOrderStatsAction() {
     return {
       total: 0,
       pending: 0,
-      processing: 0,
-      completed: 0,
+      paid: 0,
+      shipped: 0,
+      delivered: 0,
       canceled: 0,
       revenue: 0,
     };

@@ -14,6 +14,15 @@ export const AddressService = {
     }
   },
 
+  getAddressById: async (id: string) => {
+    try {
+      const address = await AddressDAO.getById(id);
+      return ResponseHandler.success(address);
+    } catch (error) {
+      return ErrorHandler.format(error);
+    }
+  },
+
   createAddress: async (data: CreateAddress) => {
     try {
       const parsed = CreateAddressSchema.parse(data);

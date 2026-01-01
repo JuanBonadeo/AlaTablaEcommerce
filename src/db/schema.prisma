@@ -6,7 +6,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // =========================
@@ -219,14 +218,20 @@ model Payment {
 // ENVÍOS
 // =========================
 model Shipment {
-  id          String         @id @default(cuid())
-  order       Order          @relation(fields: [orderId], references: [id])
-  orderId     String         @unique
-  carrier     String?
-  tracking    String?
-  status      ShipmentStatus @default(PENDING)
-  shippedAt   DateTime?
-  deliveredAt DateTime?
+  id            String         @id @default(cuid())
+  order         Order          @relation(fields: [orderId], references: [id])
+  orderId       String         @unique
+  carrier       String?        // Ej: "CORREO_ARGENTINO", "ANDREANI", "OCA"
+  service       String?        // Ej: "CLASICO", "EXPRESO", "PRIORITARIO"
+  serviceName   String?        // Ej: "Correo Argentino Expreso"
+  cost          Float?         // Costo del envío
+  estimatedDays Int?           // Días estimados de entrega
+  tracking      String?        // Número de seguimiento
+  status        ShipmentStatus @default(PENDING)
+  shippedAt     DateTime?
+  deliveredAt   DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 }
 
 // =========================

@@ -141,6 +141,7 @@ const OrdersClient = ({ userId }: OrdersClientProps) => {
     if (!status) return 'bg-gray-100 text-gray-700';
     const colors: Record<string, string> = {
       'PENDING': 'bg-yellow-50 text-yellow-700',
+      'PAID': 'bg-green-50 text-green-700',
       'TRANSFERRED': 'bg-blue-50 text-blue-700',
       'COMPLETED': 'bg-green-50 text-green-700',
       'FAILED': 'bg-red-50 text-red-700',
@@ -152,6 +153,7 @@ const OrdersClient = ({ userId }: OrdersClientProps) => {
     if (!status) return 'Sin pago';
     const texts: Record<string, string> = {
       'PENDING': 'Pago pendiente',
+      'PAID': 'Pago recibido',
       'TRANSFERRED': 'Transferido - En verificación',
       'COMPLETED': 'Pago confirmado',
       'FAILED': 'Pago fallido',
@@ -267,6 +269,37 @@ const OrdersClient = ({ userId }: OrdersClientProps) => {
                   <div className="text-sm text-gray-600 bg p-3 rounded-lg">
                     <p className="font-medium text-gray-700 mb-1">Envío a:</p>
                     <p>{order.address.street}, {order.address.city}, {order.address.state}</p>
+                  </div>
+                )}
+
+                {/* Shipping Information */}
+                {order.shipment && (
+                  <div className="text-sm bg-blue-50 p-3 rounded-lg border border-blue-200">
+                    <p className="font-medium text-blue-900 mb-2">📦 Envío</p>
+                    <div className="space-y-1 text-blue-800">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Servicio:</span>
+                        <span className="font-medium">{order.shipment.serviceName || order.shipment.service}</span>
+                      </div>
+                      {order.shipment.cost && (
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Costo:</span>
+                          <span className="font-medium text-blue-600">{currencyFormat(order.shipment.cost)}</span>
+                        </div>
+                      )}
+                      {order.shipment.estimatedDays && (
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Estimado:</span>
+                          <span className="font-medium">{order.shipment.estimatedDays} {order.shipment.estimatedDays === 1 ? 'día' : 'días'}</span>
+                        </div>
+                      )}
+                      {order.shipment.tracking && (
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Seguimiento:</span>
+                          <span className="font-mono text-xs">{order.shipment.tracking}</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>

@@ -136,9 +136,13 @@ export const OrderDAO = {
   },
 
   update: async (id: string, data: UpdateOrderInput): Promise<Order> => {
+    const updateData: Prisma.OrderUpdateInput = {};
+    if (data.status !== undefined) updateData.status = data.status;
+    if (data.addressId !== undefined) updateData.addressId = data.addressId;
+
     return prisma.order.update({
       where: { id },
-      data,
+      data: updateData,
       include: {
         items: {
           include: {

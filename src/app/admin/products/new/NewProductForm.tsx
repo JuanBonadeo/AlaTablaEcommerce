@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useTransition } from 'react';
+import { useEffect, useMemo, useState, useTransition } from "react";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Save, X, Upload, Plus, Trash2 } from 'lucide-react';
-import { createProductAction, getAllCategoriesAction } from '@/lib/actions/product/product.actions';
+import { createProductAction } from '@/lib/actions/product/product.actions';
+import { getSlug } from '@/core/shared/getSlug';
 
 interface Category {
   id: string;
@@ -16,7 +17,6 @@ export default function NewProductForm({ categories }: { categories: Category[] 
   const [isPending, startTransition] = useTransition();
   const [formData, setFormData] = useState({
     name: '',
-    slug: '',
     description: '',
     price: '',
     stock: '',
@@ -25,13 +25,35 @@ export default function NewProductForm({ categories }: { categories: Category[] 
 
   const [images, setImages] = useState<string[]>([]);
   const [variants, setVariants] = useState<Array<{ name: string; price: string; stock: string }>>([]);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
+  // auto-computed slug from product name
+  const computedSlug = useMemo(() => getSlug(formData.name || ''), [formData.name]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage('');
+
+    // basic client-side validations
+    if (!formData.name.trim()) {
+      setErrorMessage('El nombre del producto es obligatorio.');
+      return;
+    }
+    if (!formData.price) {
+      setErrorMessage('El precio es obligatorio.');
+      return;
+    }
+    if (!formData.stock) {
+      setErrorMessage('El stock es obligatorio.');
+      return;
+    }
+    if (!formData.categoryId) {
+      setErrorMessage('La categoría es obligatoria.');
+      return;
+    }
     
     const formDataToSend = new FormData();
     formDataToSend.append('name', formData.name);
-    formDataToSend.append('slug', formData.slug);
     formDataToSend.append('description', formData.description);
     formDataToSend.append('price', formData.price);
     formDataToSend.append('stock', formData.stock);
@@ -41,12 +63,11 @@ export default function NewProductForm({ categories }: { categories: Category[] 
 
     startTransition(async () => {
       const result = await createProductAction(formDataToSend);
-      
+
       if (result.ok) {
-        alert('Producto creado exitosamente');
         router.push('/admin/products');
       } else {
-        alert(result.message || 'Error al crear el producto');
+        setErrorMessage(result.message || 'Error al crear el producto');
       }
     });
   };
@@ -59,17 +80,69 @@ export default function NewProductForm({ categories }: { categories: Category[] 
     setVariants(variants.filter((_, i) => i !== index));
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const compressImage = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            reject(new Error('Could not get canvas context'));
+            return;
+          }
+
+          // Max dimensions
+          const MAX_WIDTH = 1200;
+          const MAX_HEIGHT = 1200;
+          let width = img.width;
+          let height = img.height;
+
+          // Calculate new dimensions
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height = (height * MAX_WIDTH) / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width = (width * MAX_HEIGHT) / height;
+              height = MAX_HEIGHT;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Compress to JPEG with 0.8 quality
+          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+          resolve(compressedBase64);
+        };
+        img.onerror = () => reject(new Error('Failed to load image'));
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = () => reject(new Error('Failed to read file'));
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
-    Array.from(files).forEach(file => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImages(prev => [...prev, reader.result as string]);
-      };
-      reader.readAsDataURL(file);
-    });
+    setErrorMessage('');
+
+    try {
+      const compressedImages = await Promise.all(
+        Array.from(files).map(file => compressImage(file))
+      );
+      setImages(prev => [...prev, ...compressedImages]);
+    } catch (error) {
+      setErrorMessage('Error al procesar las imágenes. Intenta con imágenes más pequeñas.');
+      console.error('Image compression error:', error);
+    }
   };
 
   return (
@@ -108,6 +181,12 @@ export default function NewProductForm({ categories }: { categories: Category[] 
       </div>
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Error banner */}
+        {errorMessage && (
+          <div className="lg:col-span-3 bg-red-500/10 border border-red-500 text-red-300 rounded-xl px-4 py-3">
+            {errorMessage}
+          </div>
+        )}
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Basic Information */}
@@ -127,21 +206,19 @@ export default function NewProductForm({ categories }: { categories: Category[] 
                   required
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Slug (URL) <span className="text-red-500">*</span>
+                  Slug (URL)
                 </label>
                 <input
                   type="text"
-                  value={formData.slug}
-                  onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                  className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
-                  placeholder="cuchillo-chef-profesional-8"
-                  required
+                  value={computedSlug}
+                  readOnly
+                  className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg px-4 py-2 text-gray-400 placeholder-gray-500 focus:outline-none transition-colors"
+                  placeholder="Se generará automáticamente"
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  URL amigable para el producto. Usa solo letras minúsculas, números y guiones.
+                  Se genera automáticamente desde el nombre y se valida en el servidor.
                 </p>
               </div>
 

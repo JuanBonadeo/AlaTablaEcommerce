@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Plus, Search, Filter, Edit, Trash2, Eye, Package, AlertCircle } from 'lucide-react';
 import Image from 'next/image';
+import { deleteProductAction } from '@/lib/actions/product/product.actions';
+import { ConfirmModal } from '@/components/ui/ConfirmModal';
 
 type Product = {
   id: string;
@@ -36,8 +38,13 @@ interface ProductsListProps {
 export default function ProductsList({ initialProducts, categories }: ProductsListProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deletingName, setDeletingName] = useState<string>('');
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const filteredProducts = initialProducts.filter(product => {
+  const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || product.category?.id === selectedCategory;
     return matchesSearch && matchesCategory;
@@ -53,11 +60,26 @@ export default function ProductsList({ initialProducts, categories }: ProductsLi
     return <span className="px-2 py-1 text-xs font-medium bg-green-500/20 text-green-400 rounded-full">Disponible</span>;
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('¿Estás seguro de eliminar este producto?')) return;
-    
-    // TODO: Implement delete with server action
-    console.log('Delete product:', id);
+  const openDeleteModal = (id: string, name: string) => {
+    setDeletingId(id);
+    setDeletingName(name);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!deletingId) return;
+    setIsDeleting(true);
+    const result = await deleteProductAction(deletingId);
+    setIsDeleting(false);
+    setDeleteModalOpen(false);
+    if (result.ok) {
+      setProducts(prev => prev.filter(p => p.id !== deletingId));
+      setDeletingId(null);
+      setDeletingName('');
+    } else {
+      // Optional: surface error UI
+      console.error(result.message || 'Error al eliminar el producto');
+    }
   };
 
   return (
@@ -221,7 +243,7 @@ export default function ProductsList({ initialProducts, categories }: ProductsLi
                         <Edit size={18} />
                       </Link>
                       <button
-                        onClick={() => handleDelete(product.id)}
+                        onClick={() => openDeleteModal(product.id, product.name)}
                         className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
                         title="Eliminar"
                       >
@@ -262,6 +284,16 @@ export default function ProductsList({ initialProducts, categories }: ProductsLi
           </div>
         )}
       </div>
+      <ConfirmModal
+        open={deleteModalOpen}
+        title="Eliminar producto"
+        message={`¿Estás seguro de eliminar "${deletingName}"? Esta acción no se puede deshacer.`}
+        confirmLabel="Eliminar"
+        cancelLabel="Cancelar"
+        loading={isDeleting}
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteModalOpen(false)}
+      />
     </div>
   );
 }

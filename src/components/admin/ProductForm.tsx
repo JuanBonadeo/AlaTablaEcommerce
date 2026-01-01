@@ -8,6 +8,7 @@ import { Product, ProductVariant } from '@/lib/types/product.types';
 import { Category } from '@/lib/types/categories.types';
 import { ProductImage } from '../product/prduct-image/ProductImage';
 import { deleteProductImage } from '@/lib/actions/images/delete-product-image';
+import { ConfirmModal } from '@/components/ui/ConfirmModal';
 
 interface ProductFormProps {
   product?: Product;
@@ -47,12 +48,16 @@ export function ProductForm({ product, categories }: ProductFormProps) {
 
     const formData = new FormData(e.currentTarget);
 
-    // Convertir imágenes a base64
+    // Convertir imágenes a base64 Data URL para conservar el MIME
     const base64Images: string[] = [];
     for (const image of selectedImages) {
-      const buffer = await image.arrayBuffer();
-      const base64Image = Buffer.from(buffer).toString('base64');
-      base64Images.push(base64Image);
+      const reader = new FileReader();
+      const dataUrl: string = await new Promise((resolve, reject) => {
+        reader.onload = () => resolve(String(reader.result));
+        reader.onerror = () => reject(new Error('Error leyendo la imagen'));
+        reader.readAsDataURL(image);
+      });
+      base64Images.push(dataUrl);
     }
 
   // Combine existing image URLs (that remain) with new base64 images
@@ -95,19 +100,31 @@ export function ProductForm({ product, categories }: ProductFormProps) {
     setVariants(newVariants);
   };
   
-  const handleDeleteImage = async (imageId: string, imageUrl: string, slug?: string) => {
-    const confirmed = confirm('¿Estás seguro de que deseas eliminar esta imagen?');
-    if (!confirmed) return;
+  const [deleteImageModalOpen, setDeleteImageModalOpen] = useState(false);
+  const [imagePendingDelete, setImagePendingDelete] = useState<{ id: string; url: string } | null>(null);
+  const [deletingImage, setDeletingImage] = useState(false);
+
+  const openDeleteImageModal = (imageId: string, imageUrl: string) => {
+    setImagePendingDelete({ id: imageId, url: imageUrl });
+    setDeleteImageModalOpen(true);
+  };
+
+  const confirmDeleteImage = async () => {
+    if (!imagePendingDelete) return;
+    setDeletingImage(true);
     try {
-      const result = await deleteProductImage(imageId, imageUrl, slug ?? product?.slug ?? '');
+      const result = await deleteProductImage(imagePendingDelete.id, imagePendingDelete.url, product?.slug ?? '');
       if (result?.ok) {
-        // Remove from local state so UI updates immediately
-        setExistingImages((prev) => prev.filter((img) => img.id !== imageId));
+        setExistingImages((prev) => prev.filter((img) => img.id !== imagePendingDelete.id));
       } else {
-        setError(result?.message || 'No se pudo elimina r la imagen');
+        setError(result?.message || 'No se pudo eliminar la imagen');
       }
     } catch (err) {
       setError('Error al eliminar la imagen' + (err instanceof Error ? err.message : ''));
+    } finally {
+      setDeletingImage(false);
+      setDeleteImageModalOpen(false);
+      setImagePendingDelete(null);
     }
   };
 
@@ -232,7 +249,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
 
             <button
               type="button"
-              onClick={() => handleDeleteImage(image.id, image.url, product?.slug)}
+              onClick={() => openDeleteImageModal(image.id, image.url)}
               className="btn-primary w-full rounded-b-xl"
             >
               Eliminar
@@ -323,6 +340,16 @@ export function ProductForm({ product, categories }: ProductFormProps) {
           Cancelar
         </button>
       </div>
+      <ConfirmModal
+        open={deleteImageModalOpen}
+        title="Eliminar imagen"
+        message={"¿Estás seguro de eliminar esta imagen?"}
+        confirmLabel="Eliminar"
+        cancelLabel="Cancelar"
+        loading={deletingImage}
+        onConfirm={confirmDeleteImage}
+        onCancel={() => setDeleteImageModalOpen(false)}
+      />
     </form>
   );
 }

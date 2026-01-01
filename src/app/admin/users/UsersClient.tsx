@@ -6,6 +6,7 @@ import { Mail, Search, Shield, ShieldCheck, User as UserIcon, Trash2, Calendar, 
 import { updateUserRoleAction, deleteUserAction } from '@/lib/actions/user/user.actions';
 import { Role } from '@prisma/client';
 import EmailMarketingModal from './EmailMarketingModal';
+import { ConfirmModal } from '@/components/ui/ConfirmModal';
 
 type UserData = {
   id: string;
@@ -30,6 +31,9 @@ export default function UsersClient({ users }: UsersClientProps) {
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState('');
+  const [onConfirmAction, setOnConfirmAction] = useState<(() => Promise<void>) | null>(null);
 
   const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -37,39 +41,47 @@ export default function UsersClient({ users }: UsersClientProps) {
   );
 
   const handleRoleChange = async (userId: string, newRole: Role) => {
-    if (!confirm('¿Estás seguro de cambiar el rol de este usuario?')) return;
-
-    setIsUpdating(true);
-    try {
-      const result = await updateUserRoleAction(userId, newRole);
-      if (result.ok) {
-        router.refresh();
-      } else {
-        alert(result.message);
+    setConfirmMessage('¿Estás seguro de cambiar el rol de este usuario?');
+    setOnConfirmAction(() => async () => {
+      setIsUpdating(true);
+      try {
+        const result = await updateUserRoleAction(userId, newRole);
+        if (result.ok) {
+          router.refresh();
+        } else {
+          alert(result.message);
+        }
+      } catch (error) {
+        alert('Error al actualizar el rol');
+      } finally {
+        setIsUpdating(false);
+        setConfirmOpen(false);
+        setOnConfirmAction(null);
       }
-    } catch (error) {
-      alert('Error al actualizar el rol');
-    } finally {
-      setIsUpdating(false);
-    }
+    });
+    setConfirmOpen(true);
   };
 
   const handleDelete = async (userId: string) => {
-    if (!confirm('¿Estás seguro de eliminar este usuario? Esta acción no se puede deshacer.')) return;
-
-    setIsUpdating(true);
-    try {
-      const result = await deleteUserAction(userId);
-      if (result.ok) {
-        router.refresh();
-      } else {
-        alert(result.message);
+    setConfirmMessage('¿Estás seguro de eliminar este usuario? Esta acción no se puede deshacer.');
+    setOnConfirmAction(() => async () => {
+      setIsUpdating(true);
+      try {
+        const result = await deleteUserAction(userId);
+        if (result.ok) {
+          router.refresh();
+        } else {
+          alert(result.message);
+        }
+      } catch (error) {
+        alert('Error al eliminar el usuario');
+      } finally {
+        setIsUpdating(false);
+        setConfirmOpen(false);
+        setOnConfirmAction(null);
       }
-    } catch (error) {
-      alert('Error al eliminar el usuario');
-    } finally {
-      setIsUpdating(false);
-    }
+    });
+    setConfirmOpen(true);
   };
 
   const toggleUserSelection = (userId: string) => {
@@ -248,6 +260,16 @@ export default function UsersClient({ users }: UsersClientProps) {
           onClose={() => setShowEmailModal(false)}
         />
       )}
+      <ConfirmModal
+        open={confirmOpen}
+        title="Confirmar"
+        message={confirmMessage}
+        confirmLabel="Confirmar"
+        cancelLabel="Cancelar"
+        loading={isUpdating}
+        onConfirm={() => { onConfirmAction && onConfirmAction(); }}
+        onCancel={() => { setConfirmOpen(false); setOnConfirmAction(null); }}
+      />
     </div>
   );
 }

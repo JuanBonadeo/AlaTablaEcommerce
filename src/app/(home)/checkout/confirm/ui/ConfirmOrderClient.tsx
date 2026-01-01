@@ -24,8 +24,8 @@ const ConfirmOrderClient = () => {
   const { itemsIn, subTotal, total, envio } = useCartStore(state => state.getSummaryInfo());
   const cart = useCartStore(state => state.cart);
   const clearCart = useCartStore(state => state.clearCart);
-  const setShipping = useCartStore(state => state.setShipping);
   const validateForCheckout = useCartStore(state => state.validateForCheckout);
+  const shippingQuote = useCartStore(state => state.getShippingQuote());
 
   useEffect(() => {
     setLoaded(true);
@@ -41,11 +41,9 @@ const ConfirmOrderClient = () => {
         if (addressId) {
           const found = list.find((a: Address) => a.id === addressId);
           setAddress(found || null);
-          setShipping(found ? 7500 : 0);
         } else {
           const def = list.find((a: Address) => a.isDefault) || list[0] || null;
           setAddress(def);
-          setShipping(def ? 7500 : 0);
         }
       } catch {
         setAddress(null);
@@ -87,6 +85,15 @@ const ConfirmOrderClient = () => {
           quantity: item.quantity,
           price: item.price,
         })),
+        shipping: shippingQuote
+          ? {
+              carrier: shippingQuote.carrier,
+              service: shippingQuote.service,
+              serviceName: shippingQuote.serviceName,
+              cost: shippingQuote.cost,
+              estimatedDays: shippingQuote.estimatedDays,
+            }
+          : undefined,
       };
 
       const result = await createOrderAction(orderData);
@@ -183,9 +190,21 @@ const ConfirmOrderClient = () => {
               <span className="text-right">{itemsIn === 1 ? '1 artículo' : `${itemsIn} artículos`}</span>
               <span>Subtotal</span>
               <span className="text-right">{currencyFormat(subTotal)}</span>
-              <span>Envio</span>
+              <span>Envío</span>
 
-              {address ? <span className="text-right">{currencyFormat(envio)}</span> : <span className="text-right">-</span>}
+              {address ? (
+                <span className="text-right">
+                  {shippingQuote ? currencyFormat(shippingQuote.cost) : currencyFormat(envio)}
+                </span>
+              ) : (
+                <span className="text-right">-</span>
+              )}
+
+              {shippingQuote && (
+                <span className="text-xs text-gray-500 col-span-2">
+                  {shippingQuote.serviceName} • Llega en {shippingQuote.estimatedDays} {shippingQuote.estimatedDays === 1 ? 'día' : 'días'}
+                </span>
+              )}
               
               <span className="mt-5 text-2xl">Total:</span>
               <span className="mt-5 text-2xl text-right">{currencyFormat(total)}</span>
@@ -210,7 +229,7 @@ const ConfirmOrderClient = () => {
               <button 
                 className="btn-primary" 
                 onClick={onConfirm}
-                disabled={isCreatingOrder || !address}
+                disabled={isCreatingOrder}
               >
                 {isCreatingOrder ? 'Creando orden...' : 'Confirmar y pagar'}
               </button>

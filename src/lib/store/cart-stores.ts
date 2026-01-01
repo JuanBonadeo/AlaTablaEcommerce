@@ -1,4 +1,5 @@
 import type { CartItem } from "@/lib/types/cart.types";
+import { ShippingQuoteResponse } from "@/lib/types/shipping.types";
 import { add } from "winston";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -28,6 +29,9 @@ interface State {
 
     // current shipping value (separate field so it can be set independently)
     shipping: number
+    
+    // información completa del envío seleccionado
+    shippingQuote: ShippingQuoteResponse | null
 
     getTotalItems: () => number
     getSummaryInfo: () => {
@@ -38,6 +42,9 @@ interface State {
     }
     addProductToCart: (product: CartItem) => void
     setShipping: (amount: number) => void
+    setShippingQuote: (quote: ShippingQuoteResponse) => void
+    clearShippingQuote: () => void
+    getShippingQuote: () => ShippingQuoteResponse | null
     validateForCheckout: (addressSelected?: boolean) => { ok: boolean; message?: string }
     updateProductQuantity: (product: CartItem, quantity: number) => void
     removeProduct: (product: CartItem) => void
@@ -60,6 +67,8 @@ export const useCartStore = create<State>()(
             },
             // current shipping value (can be updated from checkout/address components)
             shipping: 0,
+            // información completa del envío seleccionado
+            shippingQuote: null,
 
 
             // methods
@@ -71,9 +80,7 @@ export const useCartStore = create<State>()(
 
 
             getSummaryInfo: () => {
-                // return cached summary object (stable reference) to avoid
-                // creation of a new object on every call which can cause
-                // hydration/infinite loop issues with useSyncExternalStore
+                // Return cached summary to keep selector snapshot stable
                 return get().summary
             },
 
@@ -82,10 +89,32 @@ export const useCartStore = create<State>()(
                 set({ shipping: amount, summary: computeSummary(cart, amount) })
             },
 
-            validateForCheckout: (addressSelected: boolean = false) => {
+            setShippingQuote: (quote: ShippingQuoteResponse) => {
+                const { cart } = get()
+                set({ 
+                    shippingQuote: quote, 
+                    shipping: quote.cost, 
+                    summary: computeSummary(cart, quote.cost) 
+                })
+            },
+
+            clearShippingQuote: () => {
+                const { cart } = get()
+                set({ 
+                    shippingQuote: null, 
+                    shipping: 0, 
+                    summary: computeSummary(cart, 0) 
+                })
+            },
+
+            getShippingQuote: () => {
+                return get().shippingQuote
+            },
+
+            validateForCheckout: (_addressSelected: boolean = false) => {
                 const { cart } = get();
                 if (!cart || cart.length === 0) return { ok: false, message: 'El carrito está vacío' };
-                if (!addressSelected) return { ok: false, message: 'Seleccioná una dirección de envío.' };
+                // No validar dirección seleccionada: se permite continuar sin dirección
                 return { ok: true };
             },
 
@@ -115,8 +144,6 @@ export const useCartStore = create<State>()(
                 set({ cart: updatedCart, summary: computeSummary(updatedCart, get().shipping) })
             },
 
-
-
             updateProductQuantity: (product: CartItem, quantity: number) => {
                 const { cart } = get()
 
@@ -136,9 +163,15 @@ export const useCartStore = create<State>()(
                 const updatedCart = cart.filter(item => item.productId !== product.productId || item.variantId !== product.variantId)
                 set({ cart: updatedCart, summary: computeSummary(updatedCart, get().shipping) })
             },
+            
             clearCart: () => {
                 const updatedCart: CartItem[] = []
-                set({ cart: updatedCart, summary: computeSummary(updatedCart, get().shipping) });
+                set({ 
+                    cart: updatedCart, 
+                    summary: computeSummary(updatedCart, 0),
+                    shipping: 0,
+                    shippingQuote: null
+                });
             },
             
 

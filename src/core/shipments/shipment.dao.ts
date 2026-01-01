@@ -8,6 +8,10 @@ export const ShipmentDAO = {
       data: {
         orderId: data.orderId,
         carrier: data.carrier,
+        service: data.service,
+        serviceName: data.serviceName,
+        cost: data.cost,
+        estimatedDays: data.estimatedDays,
         tracking: data.tracking,
       },
     });

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { X, Package, MapPin, CreditCard, Truck, User, Calendar, DollarSign } from 'lucide-react';
 import { Order } from '@/lib/types/order.types';
 import { ProductImage } from '@/components/product/prduct-image/ProductImage';
@@ -10,11 +11,23 @@ interface OrderDetailModalProps {
 }
 
 export default function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
+  const [isDownloadingLabel, setIsDownloadingLabel] = useState(false);
+  const [labelError, setLabelError] = useState<string | null>(null);
+  const [isLoadingStatus, setIsLoadingStatus] = useState(false);
+  const [shipmentStatus, setShipmentStatus] = useState<{
+    status: string;
+    location?: string;
+    lastUpdate?: string;
+    estimatedDelivery?: string;
+  } | null>(null);
+  const [statusError, setStatusError] = useState<string | null>(null);
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'PENDING': return 'text-yellow-400';
-      case 'PROCESSING': return 'text-blue-400';
-      case 'COMPLETED': return 'text-green-400';
+      case 'PAID': return 'text-blue-400';
+      case 'SHIPPED': return 'text-purple-400';
+      case 'DELIVERED': return 'text-green-400';
       case 'CANCELED': return 'text-red-400';
       default: return 'text-gray-400';
     }
@@ -24,8 +37,70 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
     switch (status) {
       case 'COMPLETED': return 'text-green-400';
       case 'PENDING': return 'text-yellow-400';
+      case 'TRANSFERRED': return 'text-blue-400';
       case 'FAILED': return 'text-red-400';
+      case 'REFUNDED': return 'text-gray-400';
       default: return 'text-gray-400';
+    }
+  };
+
+  const handleDownloadLabel = async () => {
+    try {
+      setLabelError(null);
+      setIsDownloadingLabel(true);
+
+      const response = await fetch('/api/admin/shipping/label', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: order.id }),
+      });
+
+      const data = await response.json();
+      if (!response.ok || !data?.success || !data?.data?.pdfBase64) {
+        throw new Error(data?.message || 'No se pudo generar la etiqueta');
+      }
+
+      const pdfBase64 = data.data.pdfBase64 as string;
+      const binary = Uint8Array.from(atob(pdfBase64), (char) => char.charCodeAt(0));
+      const blob = new Blob([binary], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `etiqueta-${order.id}.pdf`;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      setLabelError(error instanceof Error ? error.message : 'Error inesperado');
+    } finally {
+      setIsDownloadingLabel(false);
+    }
+  };
+
+  const handleGetShipmentStatus = async () => {
+    try {
+      setStatusError(null);
+      setIsLoadingStatus(true);
+
+      if (!order.shipment?.tracking) {
+        throw new Error('No hay número de seguimiento para este envío');
+      }
+
+      const response = await fetch('/api/admin/shipping/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tracking: order.shipment.tracking }),
+      });
+
+      const data = await response.json();
+      if (!response.ok || !data?.success) {
+        throw new Error(data?.message || 'No se pudo obtener el estado del envío');
+      }
+
+      setShipmentStatus(data.data);
+    } catch (error) {
+      setStatusError(error instanceof Error ? error.message : 'Error inesperado');
+    } finally {
+      setIsLoadingStatus(false);
     }
   };
 
@@ -78,8 +153,9 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
               </div>
               <p className={`font-medium capitalize ${getStatusColor(order.status)}`}>
                 {order.status === 'PENDING' ? 'Pendiente' :
-                 order.status === 'PROCESSING' ? 'En Proceso' :
-                 order.status === 'COMPLETED' ? 'Completado' :
+                 order.status === 'PAID' ? 'Pagado' :
+                 order.status === 'SHIPPED' ? 'Enviado' :
+                 order.status === 'DELIVERED' ? 'Entregado' :
                  'Cancelado'}
               </p>
             </div>
@@ -146,8 +222,10 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
                 <div>
                   <p className="text-gray-400 text-sm mb-1">Estado</p>
                   <p className={`font-medium capitalize ${getPaymentStatusColor(order.payment.status)}`}>
-                    {order.payment.status === 'COMPLETED' ? 'Completado' :
+                    {order.payment.status === 'COMPLETED' ? 'Pagado (Confirmado)' :
                      order.payment.status === 'PENDING' ? 'Pendiente' :
+                     order.payment.status === 'TRANSFERRED' ? 'Transferido' :
+                     order.payment.status === 'REFUNDED' ? 'Reembolsado' :
                      'Fallido'}
                   </p>
                 </div>
@@ -179,16 +257,36 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
                   <p className="text-gray-400 text-sm mb-1">Estado</p>
                   <p className="text-white font-medium capitalize">{order.shipment.status.toLowerCase().replace('_', ' ')}</p>
                 </div>
+                {order.shipment.serviceName && (
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">Servicio</p>
+                    <p className="text-white font-medium">{order.shipment.serviceName}</p>
+                  </div>
+                )}
                 {order.shipment.carrier && (
                   <div>
                     <p className="text-gray-400 text-sm mb-1">Transportista</p>
                     <p className="text-white font-medium">{order.shipment.carrier}</p>
                   </div>
                 )}
+                {order.shipment.cost !== undefined && order.shipment.cost !== null && (
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">Costo de envío</p>
+                    <p className="text-green-400 font-semibold">${order.shipment.cost.toFixed(2)}</p>
+                  </div>
+                )}
+                {order.shipment.estimatedDays && (
+                  <div>
+                    <p className="text-gray-400 text-sm mb-1">Días estimados</p>
+                    <p className="text-white font-medium">{order.shipment.estimatedDays} {order.shipment.estimatedDays === 1 ? 'día' : 'días'}</p>
+                  </div>
+                )}
                 {order.shipment.tracking && (
                   <div className="md:col-span-2">
                     <p className="text-gray-400 text-sm mb-1">Código de Seguimiento</p>
-                    <p className="text-white font-mono">{order.shipment.tracking}</p>
+                    <p className="text-white font-mono bg-gray-900 px-3 py-2 rounded border border-gray-800">
+                      {order.shipment.tracking}
+                    </p>
                   </div>
                 )}
                 {order.shipment.shippedAt && (
@@ -201,6 +299,59 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
                   <div>
                     <p className="text-gray-400 text-sm mb-1">Entregado el</p>
                     <p className="text-white">{new Date(order.shipment.deliveredAt).toLocaleDateString('es-ES')}</p>
+                  </div>
+                )}
+              </div>
+              <div className="mt-4 space-y-4">
+                <div className="flex flex-wrap items-center gap-3">
+                  <button
+                    onClick={handleDownloadLabel}
+                    disabled={isDownloadingLabel}
+                    className="px-4 py-2 bg-orange-600 hover:bg-orange-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
+                  >
+                    {isDownloadingLabel ? 'Generando etiqueta...' : 'Descargar etiqueta PDF'}
+                  </button>
+                  {order.shipment?.tracking && (
+                    <button
+                      onClick={handleGetShipmentStatus}
+                      disabled={isLoadingStatus}
+                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
+                    >
+                      {isLoadingStatus ? 'Obteniendo estado...' : 'Obtener estado en vivo'}
+                    </button>
+                  )}
+                </div>
+                {labelError && <p className="text-sm text-red-400">{labelError}</p>}
+                {statusError && <p className="text-sm text-red-400">{statusError}</p>}
+
+                {/* Live Shipment Status */}
+                {shipmentStatus && (
+                  <div className="bg-[#171718] border border-blue-500/30 rounded-lg p-4">
+                    <h4 className="text-blue-400 font-semibold mb-3">Estado del Envío en Vivo</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div>
+                        <p className="text-gray-400 text-sm mb-1">Estado Actual</p>
+                        <p className="text-white font-medium capitalize">{shipmentStatus.status}</p>
+                      </div>
+                      {shipmentStatus.location && (
+                        <div>
+                          <p className="text-gray-400 text-sm mb-1">Ubicación</p>
+                          <p className="text-white font-medium">{shipmentStatus.location}</p>
+                        </div>
+                      )}
+                      {shipmentStatus.lastUpdate && (
+                        <div>
+                          <p className="text-gray-400 text-sm mb-1">Última Actualización</p>
+                          <p className="text-white text-sm">{new Date(shipmentStatus.lastUpdate).toLocaleString('es-ES')}</p>
+                        </div>
+                      )}
+                      {shipmentStatus.estimatedDelivery && (
+                        <div>
+                          <p className="text-gray-400 text-sm mb-1">Entrega Estimada</p>
+                          <p className="text-white text-sm">{new Date(shipmentStatus.estimatedDelivery).toLocaleDateString('es-ES')}</p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>

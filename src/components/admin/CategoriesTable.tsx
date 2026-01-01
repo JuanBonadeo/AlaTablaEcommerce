@@ -4,6 +4,7 @@ import { deleteCategoryAction } from '@/lib/actions/category/category.actions';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { ConfirmModal } from '@/components/ui/ConfirmModal';
 
 interface Category {
   id: string;
@@ -20,24 +21,18 @@ interface CategoriesTableProps {
 export function CategoriesTable({ categories }: CategoriesTableProps) {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState('');
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
 
   const handleDelete = async (id: string, name: string, productCount?: number) => {
     if (productCount && productCount > 0) {
       alert(`No se puede eliminar "${name}" porque tiene ${productCount} producto(s) asociado(s)`);
       return;
     }
-
-    if (!confirm(`¿Estás seguro de eliminar la categoría "${name}"?`)) return;
-
-    setDeletingId(id);
-    const result = await deleteCategoryAction(id);
-    
-    if (result.ok) {
-      router.refresh();
-    } else {
-      alert(result.message);
-    }
-    setDeletingId(null);
+    setConfirmMessage(`¿Estás seguro de eliminar la categoría "${name}"?`);
+    setPendingDeleteId(id);
+    setConfirmOpen(true);
   };
 
   return (
@@ -96,5 +91,27 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
         </table>
       </div>
     </div>
+    <ConfirmModal
+      open={confirmOpen}
+      title="Eliminar categoría"
+      message={confirmMessage}
+      confirmLabel="Eliminar"
+      cancelLabel="Cancelar"
+      loading={deletingId !== null}
+      onConfirm={async () => {
+        if (!pendingDeleteId) return;
+        setDeletingId(pendingDeleteId);
+        const result = await deleteCategoryAction(pendingDeleteId);
+        setDeletingId(null);
+        setConfirmOpen(false);
+        setPendingDeleteId(null);
+        if (result.ok) {
+          router.refresh();
+        } else {
+          alert(result.message);
+        }
+      }}
+      onCancel={() => { setConfirmOpen(false); setPendingDeleteId(null); }}
+    />
   );
 }

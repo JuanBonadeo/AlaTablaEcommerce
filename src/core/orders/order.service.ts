@@ -7,10 +7,13 @@ import {
   OrderListParams,
   OrderListParamsSchema,
   OrderStatus,
+  ShipmentStatus,
 } from "@/lib/types/order.types";
 import { ErrorHandler, NotFoundError } from "../shared/errorHandler";
 import { ResponseHandler } from "../shared/responseHandler";
 import { prisma } from "@/db/client";
+import { CorreoArgentinoService } from "../shipments/correo-argentino.service";
+import { ShippingService } from "@/lib/types/shipping.types";
 
 export const OrderService = {
   create: async (data: CreateOrderInput) => {
@@ -63,7 +66,7 @@ export const OrderService = {
         }
 
         // Create the order
-        return await tx.order.create({
+        const createdOrder = await tx.order.create({
           data: {
             userId: validatedData.userId,
             addressId: validatedData.addressId,
@@ -77,7 +80,7 @@ export const OrderService = {
               })),
             },
           },
-          include: { 
+          include: {
             items: {
               include: {
                 product: {
@@ -112,6 +115,92 @@ export const OrderService = {
             },
           },
         });
+
+        // Prepare shipment (only when shipping info provided)
+        const address = validatedData.addressId
+          ? await tx.address.findUnique({ where: { id: validatedData.addressId } })
+          : null;
+
+        if (validatedData.shipping && !address) {
+          throw new Error("La orden tiene envío pero no hay dirección asociada");
+        }
+
+        let trackingNumber: string | null = null;
+
+        if (validatedData.shipping && address) {
+          trackingNumber = await CorreoArgentinoService.createShipment({
+            orderId: createdOrder.id,
+            recipient: {
+              name: `${address.firstName} ${address.lastName}`.trim(),
+              address: address.street,
+              city: address.city,
+              state: address.state,
+              zip: address.zip,
+              phone: address.phone,
+            },
+            service: (validatedData.shipping.service as ShippingService | null) ?? ShippingService.CLASICO,
+            declaredValue: validatedData.total,
+            weightGrams: 1000,
+          });
+        } else if (validatedData.shipping) {
+          trackingNumber = CorreoArgentinoService.generateTrackingNumber();
+        }
+
+        if (validatedData.shipping) {
+          await tx.shipment.create({
+            data: {
+              orderId: createdOrder.id,
+              carrier: validatedData.shipping?.carrier || null,
+              service: validatedData.shipping?.service || null,
+              serviceName: validatedData.shipping?.serviceName || null,
+              cost: validatedData.shipping?.cost || null,
+              estimatedDays: validatedData.shipping?.estimatedDays || null,
+              tracking: trackingNumber,
+              status: ShipmentStatus.PENDING,
+            },
+          });
+        }
+
+        // Return order with fresh relations
+        const updatedOrder = await tx.order.findUnique({
+          where: { id: createdOrder.id },
+          include: {
+            items: {
+              include: {
+                product: {
+                  select: {
+                    id: true,
+                    name: true,
+                    slug: true,
+                    images: {
+                      select: { id: true, url: true },
+                      take: 1,
+                    },
+                  },
+                },
+                variant: {
+                  select: {
+                    id: true,
+                    name: true,
+                    slug: true,
+                  },
+                },
+              },
+            },
+            payment: true,
+            shipment: true,
+            address: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+              },
+            },
+          },
+        });
+
+        return updatedOrder;
       });
 
       return ResponseHandler.created(order);
@@ -161,7 +250,7 @@ export const OrderService = {
 
       const previousStatus = existing.status;
 
-      // Use transaction when canceling an order to restore stock
+      // Use transaction for complex updates (canceling or marking as paid)
       if (status === OrderStatus.CANCELED && previousStatus !== OrderStatus.CANCELED) {
         const order = await prisma.$transaction(async (tx) => {
           // Restore stock for each item
@@ -220,6 +309,63 @@ export const OrderService = {
               },
             },
           });
+        });
+
+        return ResponseHandler.updated(order);
+      }
+
+      // Use transaction when marking order as PAID to update payment status
+      if (status === OrderStatus.PAID && previousStatus !== OrderStatus.PAID) {
+        const order = await prisma.$transaction(async (tx) => {
+          // Update order status
+          const updatedOrder = await tx.order.update({
+            where: { id },
+            data: { status },
+            include: {
+              items: {
+                include: {
+                  product: {
+                    select: {
+                      id: true,
+                      name: true,
+                      slug: true,
+                      images: {
+                        select: { id: true, url: true },
+                        take: 1,
+                      },
+                    },
+                  },
+                  variant: {
+                    select: {
+                      id: true,
+                      name: true,
+                      slug: true,
+                    },
+                  },
+                },
+              },
+              payment: true,
+              shipment: true,
+              address: true,
+              user: {
+                select: {
+                  id: true,
+                  name: true,
+                  email: true,
+                },
+              },
+            },
+          });
+
+          // Update payment status to COMPLETED if payment exists
+          if (updatedOrder.payment) {
+            await tx.payment.update({
+              where: { orderId: id },
+              data: { status: 'COMPLETED' },
+            });
+          }
+
+          return updatedOrder;
         });
 
         return ResponseHandler.updated(order);

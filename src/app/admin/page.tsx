@@ -31,12 +31,12 @@ const topProducts = [
   { name: 'Tabla de Corte XL', sales: 65, revenue: 9750, trend: 15.3 },
 ];
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: Array<{ name: string; value: number }>; label?: string }) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-[#171718] border border-gray-700 rounded-lg p-3 shadow-lg">
         <p className="text-gray-400 text-sm mb-2">{label}</p>
-        {payload.map((entry: any, index: number) => (
+        {payload.map((entry, index: number) => (
           <p key={index} className="text-white font-medium">
             {entry.name}: ${entry.value.toLocaleString()}
           </p>

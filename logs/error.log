@@ -40,3 +40,74 @@
 {"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-11-24T03:04:07.519Z"}
 {"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-11-24T03:06:22.412Z"}
 {"error":{"clientVersion":"6.16.2","name":"PrismaClientValidationError"},"level":"error","message":"Unhandled error","timestamp":"2025-12-08T15:59:00.485Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T19:58:01.516Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:02:50.366Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:06:35.764Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:07:06.405Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:09:43.958Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:13:26.349Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:13:28.622Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:22:16.517Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:22:20.864Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:26:37.642Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:31:12.426Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:53:13.198Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:53:23.277Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:55:41.606Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:56:18.498Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:57:46.277Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:57:59.472Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:58:00.628Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T20:58:46.033Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T21:01:16.347Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T21:01:31.050Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T21:01:32.717Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2025-12-29T21:02:58.896Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:22:41.429Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:26:21.612Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:34:40.815Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:34:41.763Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:35:42.364Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:35:43.372Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:41:34.696Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:41:35.635Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:45:20.618Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:45:21.626Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:45:29.619Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:45:30.713Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:45:50.837Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:45:51.719Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:48:07.140Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:48:08.932Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:53:16.314Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:53:17.437Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:57:34.550Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:57:35.633Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:57:40.982Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:57:42.046Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:59:08.440Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T21:59:09.431Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientValidationError"},"level":"error","message":"Unhandled error","timestamp":"2026-01-01T22:06:35.974Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientValidationError"},"level":"error","message":"Unhandled error","timestamp":"2026-01-01T22:09:33.594Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientValidationError"},"level":"error","message":"Unhandled error","timestamp":"2026-01-01T22:18:39.360Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientValidationError"},"level":"error","message":"Unhandled error","timestamp":"2026-01-01T22:20:12.155Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientValidationError"},"level":"error","message":"Unhandled error","timestamp":"2026-01-01T22:22:21.979Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T22:38:38.233Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T22:38:39.361Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T22:46:24.201Z"}
+{"error":{},"level":"error","message":"Error al obtener cotización de Correo Argentino","timestamp":"2026-01-01T22:46:25.372Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2026-01-01T22:46:33.733Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2026-01-01T22:47:19.804Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2026-01-01T22:51:41.742Z"}
+{"error":{},"level":"error","message":"Correo Argentino: error solicitando token","timestamp":"2026-01-01T23:13:55.240Z"}
+{"error":{},"level":"error","message":"Correo Argentino: error solicitando token","timestamp":"2026-01-01T23:13:56.046Z"}
+{"error":{},"level":"error","message":"Correo Argentino: error solicitando token","timestamp":"2026-01-01T23:17:16.457Z"}
+{"error":{},"level":"error","message":"Correo Argentino: error solicitando token","timestamp":"2026-01-01T23:17:17.139Z"}
+{"error":{},"level":"error","message":"Correo Argentino: error solicitando token","timestamp":"2026-01-01T23:17:28.801Z"}
+{"error":{},"level":"error","message":"Correo Argentino: error solicitando token","timestamp":"2026-01-01T23:17:51.924Z"}
+{"error":{},"level":"error","message":"Error generando etiqueta","timestamp":"2026-01-01T23:17:51.927Z"}
+{"error":{},"level":"error","message":"Correo Argentino: error solicitando token","timestamp":"2026-01-01T23:19:31.669Z"}
+{"error":{},"level":"error","message":"Correo Argentino: error solicitando token","timestamp":"2026-01-01T23:19:32.436Z"}
+{"error":{},"level":"error","message":"Correo Argentino: error solicitando token","timestamp":"2026-01-01T23:19:39.438Z"}
+{"error":{},"level":"error","message":"Correo Argentino: error solicitando token","timestamp":"2026-01-01T23:21:30.162Z"}
+{"error":{},"level":"error","message":"Correo Argentino: error solicitando token","timestamp":"2026-01-01T23:21:30.985Z"}

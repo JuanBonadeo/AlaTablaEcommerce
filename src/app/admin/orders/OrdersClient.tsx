@@ -9,14 +9,16 @@ import {
 import { Order, OrderList, OrderStatus } from '@/lib/types/order.types';
 import { updateOrderStatusAction } from '@/lib/actions/order/order.actions';
 import OrderDetailModal from './OrderDetailModal';
+import { ConfirmModal } from '@/components/ui/ConfirmModal';
 
 interface OrdersClientProps {
   initialOrders: OrderList;
   stats: {
     total: number;
     pending: number;
-    processing: number;
-    completed: number;
+    paid: number;
+    shipped: number;
+    delivered: number;
     canceled: number;
     revenue: number;
   };
@@ -28,6 +30,9 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
   const [statusFilter, setStatusFilter] = useState<OrderStatus | 'ALL'>('ALL');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState('');
+  const [pendingOrderChange, setPendingOrderChange] = useState<{ id: string; status: OrderStatus } | null>(null);
 
   const filteredOrders = initialOrders.items.filter(order => {
     const matchesSearch = 
@@ -41,11 +46,16 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
   });
 
   const handleStatusChange = async (orderId: string, newStatus: OrderStatus) => {
-    if (!confirm('¿Estás seguro de cambiar el estado de esta orden?')) return;
+    setConfirmMessage('¿Estás seguro de cambiar el estado de esta orden?');
+    setPendingOrderChange({ id: orderId, status: newStatus });
+    setConfirmOpen(true);
+  };
 
+  const confirmStatusChange = async () => {
+    if (!pendingOrderChange) return;
     setIsUpdating(true);
     try {
-      const result = await updateOrderStatusAction(orderId, newStatus);
+      const result = await updateOrderStatusAction(pendingOrderChange.id, pendingOrderChange.status);
       if (result.ok) {
         router.refresh();
       } else {
@@ -55,28 +65,33 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
       alert('Error al actualizar el estado');
     } finally {
       setIsUpdating(false);
+      setConfirmOpen(false);
+      setPendingOrderChange(null);
     }
   };
 
   const getStatusBadge = (status: OrderStatus) => {
     const styles = {
       PENDING: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50',
-      PROCESSING: 'bg-blue-500/20 text-blue-400 border-blue-500/50',
-      COMPLETED: 'bg-green-500/20 text-green-400 border-green-500/50',
+      PAID: 'bg-blue-500/20 text-blue-400 border-blue-500/50',
+      SHIPPED: 'bg-purple-500/20 text-purple-400 border-purple-500/50',
+      DELIVERED: 'bg-green-500/20 text-green-400 border-green-500/50',
       CANCELED: 'bg-red-500/20 text-red-400 border-red-500/50',
     };
 
     const icons = {
       PENDING: <Clock size={14} />,
-      PROCESSING: <Package size={14} />,
-      COMPLETED: <CheckCircle size={14} />,
+      PAID: <DollarSign size={14} />,
+      SHIPPED: <Package size={14} />,
+      DELIVERED: <CheckCircle size={14} />,
       CANCELED: <XCircle size={14} />,
     };
 
     const labels = {
       PENDING: 'Pendiente',
-      PROCESSING: 'En proceso',
-      COMPLETED: 'Completado',
+      PAID: 'Pagado',
+      SHIPPED: 'Enviado',
+      DELIVERED: 'Entregado',
       CANCELED: 'Cancelado',
     };
 
@@ -109,6 +124,7 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
   };
 
   return (
+    <>
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
@@ -126,7 +142,7 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
         <div className="bg-[#171718] border border-gray-800 rounded-xl p-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-400 text-sm">Total</span>
@@ -145,24 +161,32 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
 
         <div className="bg-[#171718] border border-blue-800/50 rounded-xl p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm">En Proceso</span>
-            <Package className="text-blue-500" size={20} />
+            <span className="text-gray-400 text-sm">Pagadas</span>
+            <DollarSign className="text-blue-500" size={20} />
           </div>
-          <p className="text-2xl font-bold text-blue-400">{stats.processing}</p>
+          <p className="text-2xl font-bold text-blue-400">{stats.paid}</p>
+        </div>
+
+        <div className="bg-[#171718] border border-purple-800/50 rounded-xl p-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-gray-400 text-sm">Enviadas</span>
+            <Package className="text-purple-500" size={20} />
+          </div>
+          <p className="text-2xl font-bold text-purple-400">{stats.shipped}</p>
         </div>
 
         <div className="bg-[#171718] border border-green-800/50 rounded-xl p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-400 text-sm">Completadas</span>
+            <span className="text-gray-400 text-sm">Entregadas</span>
             <CheckCircle className="text-green-500" size={20} />
           </div>
-          <p className="text-2xl font-bold text-green-400">{stats.completed}</p>
+          <p className="text-2xl font-bold text-green-400">{stats.delivered}</p>
         </div>
 
         <div className="bg-[#171718] border border-orange-800/50 rounded-xl p-4">
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-400 text-sm">Ingresos</span>
-            <DollarSign className="text-orange-500" size={20} />
+            <TrendingUp className="text-orange-500" size={20} />
           </div>
           <p className="text-2xl font-bold text-orange-400">${stats.revenue.toFixed(2)}</p>
         </div>
@@ -191,8 +215,9 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
             >
               <option value="ALL">Todos los estados</option>
               <option value="PENDING">Pendientes</option>
-              <option value="PROCESSING">En Proceso</option>
-              <option value="COMPLETED">Completadas</option>
+              <option value="PAID">Pagadas</option>
+              <option value="SHIPPED">Enviadas</option>
+              <option value="DELIVERED">Entregadas</option>
               <option value="CANCELED">Canceladas</option>
             </select>
           </div>
@@ -239,23 +264,41 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
                       value={order.status}
                       onChange={(e) => handleStatusChange(order.id, e.target.value as OrderStatus)}
                       disabled={isUpdating}
-                      className="bg-[#0a0a0a] border border-gray-800 rounded-lg px-3 py-1.5 text-white text-sm focus:outline-none focus:border-orange-500 disabled:opacity-50"
+                      className={`rounded-lg px-3 py-1.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-orange-500 disabled:opacity-50 cursor-pointer ${
+                        order.status === 'PENDING'
+                          ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/50'
+                          : order.status === 'PAID'
+                          ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50'
+                          : order.status === 'SHIPPED'
+                          ? 'bg-purple-500/20 text-purple-400 border border-purple-500/50'
+                          : order.status === 'DELIVERED'
+                          ? 'bg-green-500/20 text-green-400 border border-green-500/50'
+                          : 'bg-red-500/20 text-red-400 border border-red-500/50'
+                      }`}
                     >
                       <option value="PENDING">Pendiente</option>
-                      <option value="PROCESSING">En proceso</option>
-                      <option value="COMPLETED">Completado</option>
+                      <option value="PAID">Pagado</option>
+                      <option value="SHIPPED">Enviado</option>
+                      <option value="DELIVERED">Entregado</option>
                       <option value="CANCELED">Cancelado</option>
                     </select>
                   </td>
                   <td className="py-4 px-4">
                     {order.payment ? (
-                      <div className="flex items-center gap-1">
-                        <div className={`w-2 h-2 rounded-full ${
-                          order.payment.status === 'COMPLETED' ? 'bg-green-500' :
-                          order.payment.status === 'PENDING' ? 'bg-yellow-500' :
-                          'bg-red-500'
-                        }`} />
-                        <span className="text-gray-400 text-sm">{order.payment.provider}</span>
+                      <div className="flex flex-col gap-0.5">
+                        <div className="flex items-center gap-1">
+                          <div className={`w-2 h-2 rounded-full ${
+                            order.payment.status === 'COMPLETED' ? 'bg-green-500' :
+                            order.payment.status === 'PENDING' ? 'bg-yellow-500' :
+                            'bg-red-500'
+                          }`} />
+                          <span className="text-gray-400 text-sm capitalize">
+                            {order.payment.status === 'COMPLETED' ? 'Pagado' :
+                             order.payment.status === 'PENDING' ? 'Pendiente' :
+                             'Fallido'}
+                          </span>
+                        </div>
+                        <span className="text-gray-500 text-xs">{order.payment.provider}</span>
                       </div>
                     ) : (
                       <span className="text-gray-600 text-sm">Sin pago</span>
@@ -314,5 +357,16 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
         />
       )}
     </div>
+    <ConfirmModal
+      open={confirmOpen}
+      title="Cambiar estado"
+      message={confirmMessage}
+      confirmLabel="Confirmar"
+      cancelLabel="Cancelar"
+      loading={isUpdating}
+      onConfirm={confirmStatusChange}
+      onCancel={() => { setConfirmOpen(false); setPendingOrderChange(null); }}
+    />
+    </>
   );
 }

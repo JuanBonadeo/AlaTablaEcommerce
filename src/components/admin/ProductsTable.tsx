@@ -5,6 +5,7 @@ import { Product } from '@/lib/types/product.types.js';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { ConfirmModal } from '@/components/ui/ConfirmModal';
 
 
 
@@ -15,19 +16,26 @@ interface ProductsTableProps {
 export function ProductsTable({ products }: ProductsTableProps) {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deletingName, setDeletingName] = useState<string>('');
 
-  const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`¿Estás seguro de eliminar "${name}"?`)) return;
-
+  const openDeleteModal = (id: string, name: string) => {
     setDeletingId(id);
-    const result = await deleteProductAction(id);
-    
+    setDeletingName(name);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!deletingId) return;
+    const result = await deleteProductAction(deletingId);
+    setDeleteModalOpen(false);
+    setDeletingId(null);
+    setDeletingName('');
     if (result.ok) {
       router.refresh();
     } else {
       alert(result.message);
     }
-    setDeletingId(null);
   };
 
   return (
@@ -115,7 +123,7 @@ export function ProductsTable({ products }: ProductsTableProps) {
                     Editar
                   </Link>
                   <button
-                    onClick={() => handleDelete(product.id, product.name)}
+                    onClick={() => openDeleteModal(product.id, product.name)}
                     disabled={deletingId === product.id}
                     className="text-red-600 hover:text-red-900 disabled:opacity-50"
                   >
@@ -128,5 +136,14 @@ export function ProductsTable({ products }: ProductsTableProps) {
         </table>
       </div>
     </div>
+    <ConfirmModal
+      open={deleteModalOpen}
+      title="Eliminar producto"
+      message={`¿Estás seguro de eliminar "${deletingName}"? Esta acción no se puede deshacer.`}
+      confirmLabel="Eliminar"
+      cancelLabel="Cancelar"
+      onConfirm={confirmDelete}
+      onCancel={() => setDeleteModalOpen(false)}
+    />
   );
 }

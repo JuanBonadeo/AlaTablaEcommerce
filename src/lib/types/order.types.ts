@@ -44,10 +44,16 @@ export interface Shipment {
   id: string;
   orderId: string;
   carrier?: string | null;
+  service?: string | null;
+  serviceName?: string | null;
+  cost?: number | null;
+  estimatedDays?: number | null;
   tracking?: string | null;
   status: ShipmentStatus;
   shippedAt?: Date | null;
   deliveredAt?: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Order {
@@ -96,6 +102,13 @@ export const CreateOrderSchema = z.object({
     .array(CreateOrderItemSchema)
     .min(1, "Debe incluir al menos un producto"),
   total: z.number().min(0, "El total debe ser mayor o igual a 0"),
+  shipping: z.object({
+    carrier: z.string(),
+    service: z.string().optional(),
+    serviceName: z.string().optional(),
+    cost: z.number().min(0).optional(),
+    estimatedDays: z.number().int().min(0).optional(),
+  }).optional(),
 });
 
 export const UpdateOrderSchema = z.object({
@@ -120,12 +133,20 @@ export const UpdatePaymentSchema = z.object({
 export const CreateShipmentSchema = z.object({
   orderId: z.string().min(1, "El ID de la orden es requerido"),
   carrier: z.string().optional(),
+  service: z.string().optional(),
+  serviceName: z.string().optional(),
+  cost: z.number().min(0).optional(),
+  estimatedDays: z.number().int().min(0).optional(),
   tracking: z.string().optional(),
 });
 
 export const UpdateShipmentSchema = z.object({
   status: z.nativeEnum(ShipmentStatus).optional(),
   carrier: z.string().optional(),
+  service: z.string().optional(),
+  serviceName: z.string().optional(),
+  cost: z.number().min(0).optional(),
+  estimatedDays: z.number().int().min(0).optional(),
   tracking: z.string().optional(),
   shippedAt: z.date().optional(),
   deliveredAt: z.date().optional(),

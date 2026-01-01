@@ -8,6 +8,12 @@ export const AddressDAO = {
     return prisma.address.findMany();
   },
 
+  getById: async (id: string) => {
+    return prisma.address.findUnique({
+      where: { id },
+    });
+  },
+
   getByUserId: async (userId: string) => {
     return prisma.address.findMany({
       where: { userId },

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Plus, Edit, Trash2, Percent, Calendar, X, Save, Tag, Clock } from 'lucide-react';
 import { createOfferAction, updateOfferAction, deleteOfferAction } from '@/lib/actions/offer/offer.actions';
+import { ConfirmModal } from '@/components/ui/ConfirmModal';
 
 type Offer = {
   id: string;
@@ -45,6 +46,9 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState('');
+  const [pendingDeleteOfferId, setPendingDeleteOfferId] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,11 +101,16 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('¿Estás seguro de eliminar esta oferta?')) return;
+    setConfirmMessage('¿Estás seguro de eliminar esta oferta?');
+    setPendingDeleteOfferId(id);
+    setConfirmOpen(true);
+  };
 
+  const confirmDelete = async () => {
+    if (!pendingDeleteOfferId) return;
     setIsSubmitting(true);
     try {
-      const result = await deleteOfferAction(id);
+      const result = await deleteOfferAction(pendingDeleteOfferId);
       if (result.ok) {
         router.refresh();
       } else {
@@ -111,6 +120,8 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
       alert('Error al eliminar la oferta');
     } finally {
       setIsSubmitting(false);
+      setConfirmOpen(false);
+      setPendingDeleteOfferId(null);
     }
   };
 
@@ -155,6 +166,16 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
+        <ConfirmModal
+          open={confirmOpen}
+          title="Eliminar oferta"
+          message={confirmMessage}
+          confirmLabel="Eliminar"
+          cancelLabel="Cancelar"
+          loading={isSubmitting}
+          onConfirm={confirmDelete}
+          onCancel={() => { setConfirmOpen(false); setPendingDeleteOfferId(null); }}
+        />
           <h1 className="text-3xl font-bold text-white mb-1">Ofertas</h1>
           <p className="text-gray-400">
             {activeOffers.length} activas · {upcomingOffers.length} próximas · {expiredOffers.length} expiradas
