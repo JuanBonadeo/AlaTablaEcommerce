@@ -65,8 +65,8 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="mailto:hola@miemprendimiento.com" className="hover:text-white/90">
-                  hola@miemprendimiento.com
+                <a href="mailto:alatabla2026@gmail.com" className="hover:text-white/90">
+                    alatabla2026@gmail.com
                 </a>
               </li>
               <li>
@@ -84,7 +84,7 @@ export default function Footer() {
               Seguinos
             </h3>
             <div className="flex gap-4">
-              <a href="#" className="hover:text-white/90" aria-label="Instagram">
+              <a href="https://www.instagram.com/_alatabla_/" className="hover:text-white/90" aria-label="Instagram">
                 <Instagram className="h-5 w-5" />
               </a>
               <a href="#" className="hover:text-white/90" aria-label="Facebook">

@@ -9,7 +9,8 @@ import {
 import { logger } from "../shared/logger";
 
 // Configuración de MiCorreo (token con Basic Auth → Bearer)
-const CORREO_ARGENTINO_API_URL = process.env.CORREO_ARGENTINO_API_URL || "https://mico.correoargentino.com.ar";
+// Por defecto apunta al entorno test documentado
+const CORREO_ARGENTINO_API_URL = process.env.CORREO_ARGENTINO_API_URL || "https://apitest.correoargentino.com.ar/micorreo/v1";
 const CORREO_ARGENTINO_MICO_USER = process.env.CORREO_ARGENTINO_MICO_USER || process.env.CORREO_ARGENTINO_USERNAME || "";
 const CORREO_ARGENTINO_MICO_PASSWORD = process.env.CORREO_ARGENTINO_MICO_PASSWORD || process.env.CORREO_ARGENTINO_PASSWORD || "";
 
@@ -30,18 +31,33 @@ const getCachedToken = () => {
   return stillValid ? cachedToken : null;
 };
 
-const cacheToken = (token: string, expiresInSeconds?: number) => {
-  const ttlMs = expiresInSeconds && Number.isFinite(expiresInSeconds) && expiresInSeconds > 0
-    ? expiresInSeconds * 1000
-    : DEFAULT_TOKEN_TTL_MS;
+const parseExpiresToMs = (expires?: string | number | null) => {
+  if (typeof expires === "number" && Number.isFinite(expires) && expires > 0) {
+    return expires * 1000;
+  }
+  if (typeof expires === "string" && expires.trim().length > 0) {
+    const parsed = Date.parse(expires.replace(" ", "T") + "Z"); // formato "YYYY-MM-DD HH:mm:ss"
+    if (!Number.isNaN(parsed)) {
+      const delta = parsed - Date.now();
+      if (delta > 0) return delta;
+    }
+  }
+  return DEFAULT_TOKEN_TTL_MS;
+};
 
+const cacheToken = (token: string, expiresInSeconds?: number, expiresAtText?: string) => {
+  const ttlMs = parseExpiresToMs(expiresInSeconds ?? expiresAtText ?? null);
   cachedToken = token;
   tokenExpiresAt = Date.now() + ttlMs;
 };
 
 const fetchAuthToken = async (): Promise<string | null> => {
   if (!hasCredentials()) {
-    logger.warn("Correo Argentino: faltan credenciales MiCorreo (user/pass)");
+    logger.warn("Correo Argentino: faltan credenciales MiCorreo (user/pass)", {
+      hasUser: !!CORREO_ARGENTINO_MICO_USER,
+      hasPass: !!CORREO_ARGENTINO_MICO_PASSWORD,
+      baseUrl: CORREO_ARGENTINO_API_URL,
+    });
     return null;
   }
 
@@ -52,13 +68,16 @@ const fetchAuthToken = async (): Promise<string | null> => {
     const basic = Buffer.from(`${CORREO_ARGENTINO_MICO_USER}:${CORREO_ARGENTINO_MICO_PASSWORD}`).toString("base64");
 
     const tokenUrl = `${CORREO_ARGENTINO_API_URL}/token`;
+    logger.info("Correo Argentino: solicitando token", {
+      url: tokenUrl,
+      user: CORREO_ARGENTINO_MICO_USER?.substring(0, 3) + "***",
+    });
+
     const response = await fetch(tokenUrl, {
       method: "POST",
       headers: {
         Authorization: `Basic ${basic}`,
-        "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: "grant_type=client_credentials",
     });
 
     if (!response.ok) {
@@ -80,16 +99,22 @@ const fetchAuthToken = async (): Promise<string | null> => {
     const data = await response.json();
     const token = data?.token || data?.access_token || data?.accessToken;
     const expiresIn = Number(data?.expires_in ?? data?.expiresIn ?? data?.expiration ?? 0);
+    const expiresText = data?.expires ?? data?.expiry ?? null;
 
     if (!token) {
       logger.error("Correo Argentino: respuesta de token inválida", { data });
       return null;
     }
 
-    cacheToken(token, expiresIn);
+    cacheToken(token, expiresIn, expiresText);
+    logger.info("Correo Argentino: token obtenido exitosamente");
     return token;
   } catch (error) {
-    logger.error("Correo Argentino: error solicitando token", { error });
+    logger.error("Correo Argentino: excepción durante solicitud de token", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      url: `${CORREO_ARGENTINO_API_URL}/token`,
+    });
     return null;
   }
 };
@@ -165,7 +190,7 @@ export const CorreoArgentinoService = {
         return CorreoArgentinoService.generateTrackingNumber();
       }
 
-      const response = await fetch(`${CORREO_ARGENTINO_API_URL}/api/v1/envios`, {
+      const response = await fetch(`${CORREO_ARGENTINO_API_URL}/shipping`, {
         method: "POST",
         headers,
         body: JSON.stringify(body),
@@ -195,14 +220,14 @@ export const CorreoArgentinoService = {
   getQuote: async (request: ShippingQuoteRequest): Promise<ShippingQuoteResponse[]> => {
     try {
       // Transformar la solicitud al formato de Correo Argentino
-      const caRequest: CorreoArgentinoQuoteRequest = {
-        codigoPostalOrigen: request.originZipCode || ORIGIN_ZIP_CODE,
-        codigoPostalDestino: request.destinationZipCode,
-        peso: request.weight,
-        largo: request.length,
-        ancho: request.width,
-        alto: request.height,
-        valorDeclarado: request.declaredValue,
+      const caRequest = {
+        cpSender: request.originZipCode || ORIGIN_ZIP_CODE,
+        cpReceiver: request.destinationZipCode,
+        weight: request.weight,
+        length: request.length,
+        width: request.width,
+        height: request.height,
+        declaredValue: request.declaredValue,
       };
 
       logger.info("Solicitando cotización a Correo Argentino", { request: caRequest });
@@ -214,7 +239,7 @@ export const CorreoArgentinoService = {
         return CorreoArgentinoService.getEstimatedRates(request);
       }
 
-      const response = await fetch(`${CORREO_ARGENTINO_API_URL}/api/v1/cotizador`, {
+      const response = await fetch(`${CORREO_ARGENTINO_API_URL}/rates`, {
         method: "POST",
         headers,
         body: JSON.stringify(caRequest),
@@ -365,7 +390,7 @@ export const CorreoArgentinoService = {
         };
       }
 
-      const response = await fetch(`${CORREO_ARGENTINO_API_URL}/api/v1/tracking/${tracking}`, {
+      const response = await fetch(`${CORREO_ARGENTINO_API_URL}/shipping/tracking/${tracking}`, {
         method: "GET",
         headers,
       });
@@ -426,7 +451,7 @@ export const CorreoArgentinoService = {
         throw new Error("Token no disponible");
       }
 
-      const response = await fetch(`${CORREO_ARGENTINO_API_URL}/api/v1/labels`, {
+      const response = await fetch(`${CORREO_ARGENTINO_API_URL}/shipping/label`, {
         method: "POST",
         headers,
         body: JSON.stringify({

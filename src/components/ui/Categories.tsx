@@ -9,22 +9,22 @@ import { useEffect, useState } from "react";
 const categories = [
   {
     name: "Tablas",
-    href: "/categorias/tablas",
+    href: "productos/categoria/tablas",
     image: "/categorias/tablas.jpg",
   },
   {
     name: "Cuchillos",
-    href: "/categorias/cuchillos",
+    href: "productos/categoria/cuchillos",
     image: "/categorias/cuchillos.jpg",
   },
   {
     name: "Accesorios",
-    href: "/categorias/accesorios",
+    href: "productos/categorias/accesorios",
     image: "/categorias/accesorios.jpg",
   },
   {
     name: "Promos",
-    href: "/categorias/promos",
+    href: "productos/categoria/promos",
     image: "/categorias/promos.jpg",
   },
 ];

@@ -112,12 +112,32 @@ export const PlaceOrder = () => {
                 return;
             }
 
-            // ✅ Todo salió bien!
+            // Crear preferencia de pago en Mercado Pago
+            const preferenceResponse = await fetch('/api/mercadopago/create-preference', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ orderId: resp.data?.id }),
+            });
+
+            const preferenceData = await preferenceResponse.json();
+
+            if (!preferenceData.success) {
+                setErrorMessage(preferenceData.message || 'Error al crear preferencia de pago');
+                setIsPlacingOrder(false);
+                return;
+            }
+
+            // Limpiar carrito antes de redirigir
             clearCart();
-            router.replace('/orders/' + resp.data?.id);
+
+            // Redirigir a Mercado Pago para el pago
+            // En pruebas usa sandbox_init_point, en producción usa init_point
+            const paymentUrl = preferenceData.data.sandbox_init_point || preferenceData.data.init_point;
+            window.location.href = paymentUrl;
+
         } catch (error) {
             console.error('Error al crear la orden:', error);
-            setErrorMessage('Ocurrió un error al crear la orden. Por favor intenta de nuevo.');
+            setErrorMessage('Ocurrió un error al procesar tu pedido. Por favor intenta de nuevo.');
             setIsPlacingOrder(false);
         }
     }
@@ -266,8 +286,12 @@ export const PlaceOrder = () => {
                     }
                 )}
             >
-                {isPlacingOrder ? 'Procesando orden...' : 'Colocar orden'}
+                {isPlacingOrder ? 'Procesando...' : 'Pagar con Mercado Pago'}
             </button>
+
+            <p className="text-xs text-gray-500 text-center mt-3">
+                Serás redirigido a Mercado Pago para completar tu pago de forma segura
+            </p>
         </div>
     )
 }

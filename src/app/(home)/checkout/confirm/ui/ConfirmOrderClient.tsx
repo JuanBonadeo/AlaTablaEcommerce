@@ -74,7 +74,7 @@ const ConfirmOrderClient = () => {
         return;
       }
 
-      // Create order
+      // Crear la orden
       const orderData = {
         userId,
         addressId: address?.id,
@@ -99,7 +99,6 @@ const ConfirmOrderClient = () => {
       const result = await createOrderAction(orderData);
 
       if (!result.success) {
-        // Check if it's a stock error
         const errorMessage = result.message || 'Error al crear la orden';
 
         if (errorMessage.toLowerCase().includes('stock insuficiente')) {
@@ -114,17 +113,45 @@ const ConfirmOrderClient = () => {
         return;
       }
 
-      // Persist payment method for next step
+      // Guardar método de pago
       try {
-        localStorage.setItem('checkoutPayment', JSON.stringify({ method: paymentMethod }));
+        localStorage.setItem('checkoutPayment', JSON.stringify({ method: paymentMethod, orderId: result.data?.id }));
       } catch (e) {
         console.warn('Could not save payment method', e);
       }
 
-      // Clear cart
-      clearCart();
+      // SI es Mercado Pago, crear preferencia y redirigir
+      if (paymentMethod === 'mercadopago' && result.data?.id) {
+        try {
+          const preferenceResponse = await fetch('/api/mercadopago/create-preference', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderId: result.data.id }),
+          });
 
-      // Redirect to payment page with order ID
+          const preferenceData = await preferenceResponse.json();
+
+          if (preferenceData.success) {
+            // NO limpiar carrito aún - se limpiará SOLO si llega a success
+            // Redirigir a Mercado Pago
+            const paymentUrl = preferenceData.data.sandbox_init_point || preferenceData.data.init_point;
+            window.location.href = paymentUrl;
+            return;
+          } else {
+            setNotification({ type: 'error', message: 'Error al crear preferencia de pago. Por favor intenta de nuevo.' });
+            setIsCreatingOrder(false);
+            return;
+          }
+        } catch (error) {
+          console.error('Error creating Mercado Pago preference:', error);
+          setNotification({ type: 'error', message: 'Error al procesar el pago con Mercado Pago' });
+          setIsCreatingOrder(false);
+          return;
+        }
+      }
+
+      // Para transferencia bancaria, limpiar carrito y redirigir
+      clearCart();
       if (result.data?.id) {
         router.push(`/order/${result.data.id}/payment`);
       } else {
@@ -219,9 +246,9 @@ const ConfirmOrderClient = () => {
                 <span className="ml-2">Transferencia bancaria</span>
               </label>
 
-              <label className="flex items-center gap-3 cursor-not-allowed opacity-60">
-                <input type="radio" name="payment" disabled checked={paymentMethod === 'mercadopago'} onChange={() => setPaymentMethod('mercadopago')} />
-                <span className="ml-2">Mercado Pago <span className="text-xs text-gray-500">(Próximamente)</span></span>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input type="radio" name="payment" checked={paymentMethod === 'mercadopago'} onChange={() => setPaymentMethod('mercadopago')} />
+                <span className="ml-2">Mercado Pago</span>
               </label>
             </div>
 
@@ -231,7 +258,7 @@ const ConfirmOrderClient = () => {
                 onClick={onConfirm}
                 disabled={isCreatingOrder}
               >
-                {isCreatingOrder ? 'Creando orden...' : 'Confirmar y pagar'}
+                {isCreatingOrder ? 'Procesando...' : 'Confirmar y pagar'}
               </button>
             </div>
           </div>

@@ -22,6 +22,8 @@ const PaymentClient = () => {
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [marking, setMarking] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<'transfer' | 'mercadopago'>('transfer');
+  const [redirectingToMP, setRedirectingToMP] = useState(false);
 
   useEffect(() => {
     const loadOrder = async () => {
@@ -35,6 +37,17 @@ const PaymentClient = () => {
         }
         
         setOrder(result);
+
+        // Cargar método de pago desde localStorage
+        try {
+          const savedPayment = localStorage.getItem('checkoutPayment');
+          if (savedPayment) {
+            const { method } = JSON.parse(savedPayment);
+            setPaymentMethod(method || 'transfer');
+          }
+        } catch (e) {
+          console.warn('Could not load payment method', e);
+        }
       } catch (err) {
         setError('Error al cargar la orden');
         console.error(err);
@@ -83,6 +96,31 @@ const PaymentClient = () => {
       console.error(err);
     } finally {
       setMarking(false);
+    }
+  };
+
+  const handlePayWithMercadoPago = async () => {
+    try {
+      setRedirectingToMP(true);
+      const preferenceResponse = await fetch('/api/mercadopago/create-preference', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId }),
+      });
+
+      const preferenceData = await preferenceResponse.json();
+
+      if (preferenceData.success) {
+        const paymentUrl = preferenceData.data.sandbox_init_point || preferenceData.data.init_point;
+        window.location.href = paymentUrl;
+      } else {
+        alert('Error al crear preferencia de pago');
+        setRedirectingToMP(false);
+      }
+    } catch (error) {
+      console.error('Error creating Mercado Pago preference:', error);
+      alert('Error al procesar el pago con Mercado Pago');
+      setRedirectingToMP(false);
     }
   };
 
@@ -202,62 +240,105 @@ const PaymentClient = () => {
             {/* Payment Instructions */}
             <div className="bg  rounded-xl shadow-lg p-6 border border-gray-600">
               <h3 className="text-xl font-semibold mb-3">Instrucciones de pago</h3>
-              <div className="bg border  rounded-lg p-4 text-sm text-amber-600">
-                <p className="font-medium mb-1">⚠️ Importante</p>
-                <p>Una vez realizada la transferencia, tu orden será verificada en las próximas 24-48 horas.</p>
-              </div>
-              
-              <div className="bg rounded-lg p-4">
-                <p className="text-sm text-gray-600 mb-2">Método de pago</p>
-                <p className="font-semibold text-lg">Transferencia Bancaria</p>
-              </div>
 
-              <div className="bg rounded-lg p-4">
-                <p className="text-sm text-gray-600 mb-2">Monto a transferir</p>
-                <p className="font-bold text-2xl text-primary">{currencyFormat(order.total)}</p>
-              </div>
+              {/* Mercado Pago Payment */}
+              {paymentMethod === 'mercadopago' ? (
+                <>
+                  <div className="bg rounded-lg p-4">
+                    <p className="text-sm text-gray-600 mb-2">Método de pago</p>
+                    <p className="font-semibold text-lg">Mercado Pago</p>
+                  </div>
 
-              <div className="bg rounded-lg p-4 ">
-                <p className="text-sm text-gray-600">Alias bancario</p>
-                <div className="flex items-center gap-2">
-                  <code className="flex-1 font-mono font-semibold text-lg bg-gray-50 px-3 py-2 rounded border border-gray-200 text-black">
-                    {/* {BANK_ALIAS}juanbonadeo04 */}juanbonadeo04
-                  </code>
-                  <button 
-                    onClick={copyAlias} 
-                    className="btn-primary whitespace-nowrap"
-                  >
-                    {copied ? '✓ Copiado' : 'Copiar'}
-                  </button>
-                </div>
-                <p className="text-xs text-gray-500 mt-2">
-                  CBU: <code className="font-mono">{BANK_ACCOUNT}</code>
-                </p>
-              </div>
+                  <div className="bg rounded-lg p-4">
+                    <p className="text-sm text-gray-600 mb-2">Monto a pagar</p>
+                    <p className="font-bold text-2xl text-primary">{currencyFormat(order.total)}</p>
+                  </div>
 
-              {/* Payment Status & Mark as Transferred Button */}
-              {isTransferred && (
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-700">
-                  <p className="font-medium mb-1">✓ Pago marcado como transferido</p>
-                  <p>Tu pago está siendo verificado por el administrador. Recibirás una confirmación pronto.</p>
-                </div>
-              )}
+                  {!isCompleted && (
+                    <>
+                      <div className="bg border rounded-lg p-4 text-sm text-blue-600">
+                        <p className="font-medium mb-1">💳 Pago con Mercado Pago</p>
+                        <p>Haz clic en el botón para ser redirigido a Mercado Pago y completar tu pago de forma segura.</p>
+                      </div>
 
-              {isCompleted && (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-sm text-green-700">
-                  <p className="font-medium mb-1">✓ Pago confirmado</p>
-                  <p>Tu pago ha sido verificado y confirmado.</p>
-                </div>
-              )}
+                      <button 
+                        onClick={handlePayWithMercadoPago}
+                        disabled={redirectingToMP}
+                        className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed mb-2"
+                      >
+                        {redirectingToMP ? 'Redirigiendo...' : 'Pagar con Mercado Pago'}
+                      </button>
+                    </>
+                  )}
 
-              {!isTransferred && !isCompleted && (
-                <button 
-                  onClick={handleMarkAsTransferred}
-                  disabled={marking}
-                  className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed mb-2"
-                >
-                  {marking ? 'Confirmando...' : 'Marcar como transferido'}
-                </button>
+                  {isCompleted && (
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-sm text-green-700">
+                      <p className="font-medium mb-1">✓ Pago confirmado</p>
+                      <p>Tu pago ha sido verificado y confirmado.</p>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  {/* Transfer Payment */}
+                  <div className="bg border  rounded-lg p-4 text-sm text-amber-600">
+                    <p className="font-medium mb-1">⚠️ Importante</p>
+                    <p>Una vez realizada la transferencia, tu orden será verificada en las próximas 24-48 horas.</p>
+                  </div>
+                  
+                  <div className="bg rounded-lg p-4">
+                    <p className="text-sm text-gray-600 mb-2">Método de pago</p>
+                    <p className="font-semibold text-lg">Transferencia Bancaria</p>
+                  </div>
+
+                  <div className="bg rounded-lg p-4">
+                    <p className="text-sm text-gray-600 mb-2">Monto a transferir</p>
+                    <p className="font-bold text-2xl text-primary">{currencyFormat(order.total)}</p>
+                  </div>
+
+                  <div className="bg rounded-lg p-4 ">
+                    <p className="text-sm text-gray-600">Alias bancario</p>
+                    <div className="flex items-center gap-2">
+                      <code className="flex-1 font-mono font-semibold text-lg bg-gray-50 px-3 py-2 rounded border border-gray-200 text-black">
+                        juanbonadeo04
+                      </code>
+                      <button 
+                        onClick={copyAlias} 
+                        className="btn-primary whitespace-nowrap"
+                      >
+                        {copied ? '✓ Copiado' : 'Copiar'}
+                      </button>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-2">
+                      CBU: <code className="font-mono">{BANK_ACCOUNT}</code>
+                    </p>
+                  </div>
+
+                  {/* Payment Status & Mark as Transferred Button */}
+                  {isTransferred && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-700">
+                      <p className="font-medium mb-1">✓ Pago marcado como transferido</p>
+                      <p>Tu pago está siendo verificado por el administrador. Recibirás una confirmación pronto.</p>
+                    </div>
+                  )}
+
+                  {isCompleted && (
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-sm text-green-700">
+                      <p className="font-medium mb-1">✓ Pago confirmado</p>
+                      <p>Tu pago ha sido verificado y confirmado.</p>
+                    </div>
+                  )}
+
+                  {!isTransferred && !isCompleted && (
+                    <button 
+                      onClick={handleMarkAsTransferred}
+                      disabled={marking}
+                      className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed mb-2"
+                    >
+                      {marking ? 'Confirmando...' : 'Marcar como transferido'}
+                    </button>
+                  )}
+                </>
               )}
 
             </div>

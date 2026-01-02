@@ -157,3 +157,158 @@
 2026-01-01T23:21:30.981Z | INFO | Solicitando cotización a Correo Argentino
 2026-01-01T23:21:30.985Z | ERROR | Correo Argentino: error solicitando token
 2026-01-01T23:21:30.986Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-01T23:22:50.806Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-01T23:22:50.891Z | ERROR | Correo Argentino: error solicitando token
+2026-01-01T23:22:50.894Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-01T23:22:51.654Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-01T23:22:51.666Z | ERROR | Correo Argentino: error solicitando token
+2026-01-01T23:22:51.670Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-01T23:29:30.903Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-01T23:29:30.970Z | ERROR | Correo Argentino: error solicitando token
+2026-01-01T23:29:30.973Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-01T23:29:31.641Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-01T23:29:31.651Z | ERROR | Correo Argentino: error solicitando token
+2026-01-01T23:29:31.655Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-01T23:30:15.361Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-01T23:30:15.421Z | ERROR | Correo Argentino: error solicitando token
+2026-01-01T23:30:15.425Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-01T23:30:16.490Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-01T23:30:16.496Z | ERROR | Correo Argentino: error solicitando token
+2026-01-01T23:30:16.499Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-01T23:35:39.716Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-01T23:35:39.719Z | INFO | Correo Argentino: solicitando token
+2026-01-01T23:35:39.838Z | ERROR | Correo Argentino: excepción durante solicitud de token
+2026-01-01T23:35:39.841Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-01T23:35:40.547Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-01T23:35:40.549Z | INFO | Correo Argentino: solicitando token
+2026-01-01T23:35:40.558Z | ERROR | Correo Argentino: excepción durante solicitud de token
+2026-01-01T23:35:40.561Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-01T23:38:37.739Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-01T23:38:37.745Z | INFO | Correo Argentino: solicitando token
+2026-01-01T23:38:38.118Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-01T23:38:38.121Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-01T23:38:38.758Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-01T23:38:38.760Z | INFO | Correo Argentino: solicitando token
+2026-01-01T23:38:38.834Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-01T23:38:38.838Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-01T23:39:49.196Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-01T23:39:49.200Z | INFO | Correo Argentino: solicitando token
+2026-01-01T23:39:49.588Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-01T23:39:49.609Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-01T23:39:50.272Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-01T23:39:50.277Z | INFO | Correo Argentino: solicitando token
+2026-01-01T23:39:50.431Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-01T23:39:50.434Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:21:04.851Z | ERROR | Unhandled error
+2026-01-02T13:21:04.859Z | ERROR | Unhandled error
+2026-01-02T13:34:23.607Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:34:23.614Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:34:24.151Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:34:24.154Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:34:24.824Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:34:24.826Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:34:25.035Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:34:25.038Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:35:12.519Z | ERROR | Unhandled error
+2026-01-02T13:35:19.751Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:35:20.169Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:35:20.172Z | WARN | Correo Argentino: no hay token, usando tracking simulado
+2026-01-02T13:36:18.556Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:36:18.559Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:36:19.010Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:36:19.013Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:36:19.642Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:36:19.644Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:36:19.782Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:36:19.786Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:37:44.305Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:37:44.675Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:37:44.678Z | WARN | Correo Argentino: no hay token, usando tracking simulado
+2026-01-02T13:39:41.481Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:39:41.484Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:39:41.841Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:39:41.843Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:39:42.403Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:39:42.404Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:39:42.580Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:39:42.581Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:39:55.116Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:39:55.382Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:39:55.385Z | WARN | Correo Argentino: no hay token, usando tracking simulado
+2026-01-02T13:41:51.585Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:41:51.592Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:41:52.011Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:41:52.014Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:41:52.643Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:41:52.645Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:41:52.794Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:41:52.797Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:42:01.160Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:42:01.446Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:42:01.450Z | WARN | Correo Argentino: no hay token, usando tracking simulado
+2026-01-02T13:44:12.754Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:44:12.761Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:44:13.159Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:44:13.163Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:44:13.917Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:44:13.919Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:44:14.085Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:44:14.089Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:44:20.960Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:44:21.247Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:44:21.250Z | WARN | Correo Argentino: no hay token, usando tracking simulado
+2026-01-02T13:46:36.385Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:46:36.388Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:46:36.841Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:46:36.843Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:46:37.469Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:46:37.472Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:46:37.600Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:46:37.603Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:47:09.641Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:47:10.027Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:47:10.030Z | WARN | Correo Argentino: no hay token, usando tracking simulado
+2026-01-02T13:49:08.482Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:49:08.491Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:49:08.904Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:49:08.907Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:49:09.580Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:49:09.583Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:49:09.703Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:49:09.706Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:49:18.417Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:49:19.246Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:49:19.250Z | WARN | Correo Argentino: no hay token, usando tracking simulado
+2026-01-02T13:51:39.865Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:51:39.868Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:51:40.382Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:51:40.384Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:51:41.121Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:51:41.123Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:51:41.268Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:51:41.271Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:51:49.166Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:51:49.459Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:51:49.462Z | WARN | Correo Argentino: no hay token, usando tracking simulado
+2026-01-02T13:53:12.273Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:53:12.275Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:53:12.690Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:53:12.693Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:53:13.394Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:53:13.396Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:53:13.529Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:53:13.532Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:53:20.819Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:53:21.103Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:53:21.106Z | WARN | Correo Argentino: no hay token, usando tracking simulado
+2026-01-02T13:56:47.569Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:56:47.572Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:56:48.150Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:56:48.154Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:56:48.782Z | INFO | Solicitando cotización a Correo Argentino
+2026-01-02T13:56:48.785Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:56:48.912Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:56:48.914Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-01-02T13:56:59.338Z | INFO | Correo Argentino: solicitando token
+2026-01-02T13:56:59.664Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-01-02T13:56:59.667Z | WARN | Correo Argentino: no hay token, usando tracking simulado

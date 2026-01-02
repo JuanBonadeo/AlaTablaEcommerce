@@ -138,6 +138,23 @@ export const getAllProductsAction = async () => {
   }
 };
 
+export const getProductsByCategoryAction = async (categoryName: string) => {
+  try {
+    const result = await ProductService.getByCategory(categoryName);
+    
+    // Si es un error, retornar array vacío
+    if (!result.success) {
+      console.error('Error getting products by category:', result.message);
+      return [];
+    }
+    
+    return result.data || [];
+  } catch (error) {
+    console.error('Error en getProductsByCategoryAction:', error);
+    return [];
+  }
+};
+
 export const getProductBySlugAction = async (slug: string) => {
   try {
     const result = await ProductService.getBySlug(slug);

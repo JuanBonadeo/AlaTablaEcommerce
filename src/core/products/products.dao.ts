@@ -40,6 +40,26 @@ export const ProductDAO = {
     });
   },
 
+  getByCategory: async (categoryName: string) => {
+    return prisma.product.findMany({
+      where: { 
+        deletedAt: null,
+        category: {
+          name: {
+            equals: categoryName,
+            mode: 'insensitive',
+          }
+        }
+      },
+      include: { 
+        category: true, 
+        images: true, 
+        variants: true,
+        offers: getOfferInclude(),
+      },
+    });
+  },
+
   getBySlug: async (slug: string) => {
     return prisma.product.findFirst({
       where: { slug: slug, deletedAt: null },

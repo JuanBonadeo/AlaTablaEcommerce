@@ -18,6 +18,15 @@ export const ProductService = {
     }
   },
 
+  getByCategory: async (categoryName: string) => {
+    try {
+      const products = await ProductDAO.getByCategory(categoryName);
+      return ResponseHandler.success(products);
+    } catch (error) {
+      return ErrorHandler.format(error);
+    }
+  },
+
   getBySlug: async (slug: string) => {
     try {
       const product = await ProductDAO.getBySlug(slug);
