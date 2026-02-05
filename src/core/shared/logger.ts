@@ -190,10 +190,18 @@ const metricsFormat = winston.format.printf((info: winston.Logform.Transformable
   return `${timestamp} | ${info.level.toUpperCase()} | ${info.message}`;
 });
 
-export const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'info',
-  format: fileFormat,
-  transports: [
+const transports: winston.transport[] = [
+  new winston.transports.Console({
+    format: winston.format.combine(
+      winston.format.timestamp({ format: 'HH:mm:ss' }),
+      consoleFormat
+    ),
+  })
+];
+
+// Solo agregar archivos si NO estamos en producción
+if (process.env.NODE_ENV !== 'production') {
+  transports.push(
     // Archivo de errores
     new winston.transports.File({
       filename: 'logs/error.log',
@@ -216,18 +224,14 @@ export const logger = winston.createLogger({
         metricsFormat
       )
     })
-  ],
-});
-
-// Solo loguea en consola si no estás en producción
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.combine(
-      winston.format.timestamp({ format: 'HH:mm:ss' }),
-      consoleFormat
-    ),
-  }));
+  );
 }
+
+export const logger = winston.createLogger({
+  level: process.env.LOG_LEVEL || 'info',
+  format: fileFormat,
+  transports: transports,
+});
 
 // Función helper para logs de desarrollo
 export const devLog = (message: string, data?: unknown) => {
