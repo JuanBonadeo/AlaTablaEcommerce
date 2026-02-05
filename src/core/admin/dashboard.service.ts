@@ -1,5 +1,5 @@
 import { prisma } from "@/db/client";
-import { OrderStatus } from "@prisma/client";
+import { OrderStatus } from "@/lib/types/enums";
 
 export interface DashboardData {
     stats: {

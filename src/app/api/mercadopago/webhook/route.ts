@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PaymentDAO } from '@/core/payments/payment.dao';
 import { OrderDAO } from '@/core/orders/order.dao';
-import { OrderStatus, PaymentProvider, PaymentStatus } from '@prisma/client';
+import { OrderStatus, PaymentProvider, PaymentStatus } from '@/lib/types/enums';
 
 /**
  * Webhook de Mercado Pago para recibir notificaciones de pagos
@@ -10,7 +10,7 @@ import { OrderStatus, PaymentProvider, PaymentStatus } from '@prisma/client';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    
+
     console.log('Webhook received from Mercado Pago:', body);
 
     // Mercado Pago envía diferentes tipos de notificaciones
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     // El ID del pago viene en data.id
     const paymentId = data?.id;
-    
+
     if (!paymentId) {
       return NextResponse.json(
         { success: false, message: 'Payment ID not found' },
@@ -84,9 +84,9 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error('Error processing Mercado Pago webhook:', error);
     return NextResponse.json(
-      { 
-        success: false, 
-        message: error instanceof Error ? error.message : 'Error processing webhook' 
+      {
+        success: false,
+        message: error instanceof Error ? error.message : 'Error processing webhook'
       },
       { status: 500 }
     );
@@ -117,8 +117,8 @@ function mapMercadoPagoStatus(mpStatus: string): PaymentStatus {
 
 // Permitir peticiones GET para verificar el endpoint
 export async function GET() {
-  return NextResponse.json({ 
-    success: true, 
-    message: 'Mercado Pago webhook endpoint is active' 
+  return NextResponse.json({
+    success: true,
+    message: 'Mercado Pago webhook endpoint is active'
   });
 }

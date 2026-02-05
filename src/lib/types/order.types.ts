@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { OrderStatus, PaymentProvider, PaymentStatus, ShipmentStatus } from "@prisma/client";
+import { OrderStatus, PaymentProvider, PaymentStatus, ShipmentStatus } from "./enums";
 
-// Re-export Prisma enums
+// Re-export local enums for compatibility
 export { OrderStatus, PaymentProvider, PaymentStatus, ShipmentStatus };
 
 // =========================

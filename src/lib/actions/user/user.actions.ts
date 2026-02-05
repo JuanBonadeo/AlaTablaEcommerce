@@ -1,7 +1,7 @@
 'use server';
 
 import { userService } from '@/core/services/user.service';
-import { Role } from '@prisma/client';
+import { Role } from '@/lib/types/enums';
 import { revalidatePath } from 'next/cache';
 
 export async function getAllUsersAction() {

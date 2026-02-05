@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Mail, Search, Shield, ShieldCheck, User as UserIcon, Trash2, Calendar, ShoppingBag } from 'lucide-react';
 import { updateUserRoleAction, deleteUserAction } from '@/lib/actions/user/user.actions';
-import { Role } from '@prisma/client';
+import { Role } from '@/lib/types/enums';
 import EmailMarketingModal from './EmailMarketingModal';
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
 
