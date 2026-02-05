@@ -633,3 +633,37 @@
 2026-02-05T01:50:10.930Z | INFO | Correo Argentino: solicitando token
 2026-02-05T01:50:11.123Z | ERROR | Correo Argentino: no se pudo obtener token
 2026-02-05T01:50:11.125Z | WARN | Correo Argentino: no hay token, usando tracking simulado
+2026-02-05T17:48:57.065Z | INFO | Solicitando cotización a Correo Argentino
+2026-02-05T17:48:57.073Z | INFO | Correo Argentino: solicitando token
+2026-02-05T17:48:57.288Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-02-05T17:48:57.289Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-02-05T17:48:57.500Z | INFO | Solicitando cotización a Correo Argentino
+2026-02-05T17:48:57.501Z | INFO | Correo Argentino: solicitando token
+2026-02-05T17:48:57.604Z | ERROR | Correo Argentino: no se pudo obtener token
+2026-02-05T17:48:57.606Z | WARN | Correo Argentino: sin token, devolviendo tarifas estimadas
+2026-02-05T17:52:34.432Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T17:52:34.679Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T17:56:42.518Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T17:56:42.756Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T17:59:53.850Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T17:59:54.096Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T18:01:09.322Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T18:01:09.583Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T18:05:00.595Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T18:05:00.834Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T18:09:07.374Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T18:09:07.629Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T18:11:04.048Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T18:11:04.300Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T18:11:06.100Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T18:11:06.359Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T18:11:08.178Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T18:11:08.423Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T18:11:55.461Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T18:11:55.689Z | INFO | Andreani: usando cotizaciones estimadas
+2026-02-05T18:12:00.857Z | ERROR | Unhandled error
+2026-02-05T18:15:32.603Z | INFO | Getting shipment status
+2026-02-05T18:15:32.605Z | INFO | Andreani: solicitando token
+2026-02-05T18:15:33.357Z | ERROR | Andreani: no se pudo obtener token
+2026-02-05T18:15:50.641Z | INFO | Andreani: solicitando token
+2026-02-05T18:15:51.156Z | ERROR | Andreani: no se pudo obtener token

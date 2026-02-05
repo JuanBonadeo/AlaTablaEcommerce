@@ -309,9 +309,9 @@ trailer<< /Root 3 0 R >>
      * Calcula tarifas estimadas cuando la API no está disponible
      */
     getEstimatedRates: (request: ShippingQuoteRequest): ShippingQuoteResponse[] => {
-        const { weight, declaredValue = 0, destinationZipCode } = request;
+        const { destinationZipCode } = request;
 
-        // Tarifa especial para entrega local (mismo código postal)
+        // Tarifa especial para entrega local en Rosario (código postal 2000)
         if (destinationZipCode === "2000") {
             return [
                 {
@@ -325,34 +325,18 @@ trailer<< /Root 3 0 R >>
             ];
         }
 
-        // Cálculo básico por peso (valores aproximados en ARS)
-        const baseRatePerKg = 2000; // $2000 por kg
-        const weightInKg = weight / 1000;
-        const baseRate = Math.max(baseRatePerKg * weightInKg, 2500); // Mínimo $2500
-
-        // Seguro opcional (1% del valor declarado)
-        const insuranceCost = declaredValue > 0 ? declaredValue * 0.01 : 0;
-
-        const quotes: ShippingQuoteResponse[] = [
+        // Para el resto del país: tarifa fija de $7500
+        // El envío será manejado manualmente
+        return [
             {
-                carrier: ShippingCarrier.ANDREANI,
+                carrier: ShippingCarrier.ENTREGA_LOCAL,
                 service: ShippingService.CLASICO,
-                serviceName: "Andreani Estándar",
-                cost: Math.round(baseRate + insuranceCost),
-                estimatedDays: 5,
-                additionalInfo: "Tarifa estimada",
-            },
-            {
-                carrier: ShippingCarrier.ANDREANI,
-                service: ShippingService.EXPRESO,
-                serviceName: "Andreani Urgente",
-                cost: Math.round(baseRate * 1.8 + insuranceCost),
-                estimatedDays: 2,
-                additionalInfo: "Tarifa estimada",
+                serviceName: "Envío a Domicilio",
+                cost: 7500,
+                estimatedDays: 7,
+                additionalInfo: "Envío a todo el país",
             },
         ];
-
-        return quotes;
     },
 
     /**

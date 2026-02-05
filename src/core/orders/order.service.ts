@@ -150,23 +150,17 @@ export const OrderService = {
 
         let trackingNumber: string | null = null;
 
+        // Generar tracking number simple para todos los envíos
+        // Todos los envíos serán manejados manualmente
         if (validatedData.shipping && address) {
-          trackingNumber = await CorreoArgentinoService.createShipment({
-            orderId: createdOrder.id,
-            recipient: {
-              name: `${address.firstName} ${address.lastName}`.trim(),
-              address: address.street,
-              city: address.city,
-              state: address.state,
-              zip: address.zip,
-              phone: address.phone,
-            },
-            service: (validatedData.shipping.service as ShippingService | null) ?? ShippingService.CLASICO,
-            declaredValue: validatedData.total,
-            weightGrams: 1000,
-          });
+          const isRosario = address.zip === "2000";
+          const prefix = isRosario ? "EL" : "ENV"; // EL = Entrega Local, ENV = Envío
+          const datePart = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+          const randomPart = Math.floor(Math.random() * 1_000_000).toString().padStart(6, "0");
+          trackingNumber = `${prefix}${datePart}${randomPart}`;
         } else if (validatedData.shipping) {
-          trackingNumber = CorreoArgentinoService.generateTrackingNumber();
+          // Si hay shipping pero no address, generar tracking genérico
+          trackingNumber = `ENV${new Date().toISOString().slice(0, 10).replace(/-/g, "")}${Math.floor(Math.random() * 1_000_000).toString().padStart(6, "0")}`;
         }
 
         if (validatedData.shipping) {

@@ -308,12 +308,33 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
                     </td>
                     <td className="py-4 px-4">
                       {order.shipment ? (
-                        <div className="flex items-center gap-1">
-                          <div className={`w-2 h-2 rounded-full ${order.shipment.status === 'DELIVERED' ? 'bg-green-500' :
-                            order.shipment.status === 'SHIPPED' ? 'bg-blue-500' :
-                              'bg-gray-500'
-                            }`} />
-                          <span className="text-gray-400 text-sm capitalize">{order.shipment.status.toLowerCase()}</span>
+                        <div className="flex flex-col gap-1">
+                          <div className="flex items-center gap-2">
+                            <div className={`w-2 h-2 rounded-full ${order.shipment.status === 'DELIVERED' ? 'bg-green-500' :
+                                order.shipment.status === 'SHIPPED' ? 'bg-blue-500' :
+                                  order.shipment.status === 'PENDING' ? 'bg-yellow-500' :
+                                    'bg-gray-500'
+                              }`} />
+                            <span className="text-gray-300 text-sm font-medium">
+                              {order.shipment.status === 'DELIVERED' ? 'Entregado' :
+                                order.shipment.status === 'SHIPPED' ? 'Enviado' :
+                                  order.shipment.status === 'PENDING' ? 'Pendiente' :
+                                    order.shipment.status}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1 text-xs">
+                            <span className={`px-2 py-0.5 rounded ${order.shipment.carrier === 'ENTREGA_LOCAL'
+                                ? 'bg-orange-500/20 text-orange-400'
+                                : 'bg-blue-500/20 text-blue-400'
+                              }`}>
+                              {order.shipment.carrier === 'ENTREGA_LOCAL' ? 'Local' : order.shipment.carrier}
+                            </span>
+                          </div>
+                          {order.shipment.tracking && (
+                            <span className="text-gray-500 text-xs font-mono">
+                              #{order.shipment.tracking.slice(0, 10)}
+                            </span>
+                          )}
                         </div>
                       ) : (
                         <span className="text-gray-600 text-sm">Sin envío</span>

@@ -272,25 +272,43 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
           {/* Shipment Info */}
           {order.shipment && (
             <div className="bg-[#0a0a0a] border border-gray-800 rounded-lg p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Truck size={20} className="text-orange-400" />
-                <h3 className="text-lg font-bold text-white">Información de Envío</h3>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Truck size={20} className="text-orange-400" />
+                  <h3 className="text-lg font-bold text-white">Información de Envío</h3>
+                </div>
+                <span className={`px-3 py-1 rounded-full text-sm font-medium ${order.shipment.carrier === 'ENTREGA_LOCAL'
+                  ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
+                  : 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                  }`}>
+                  {order.shipment.carrier === 'ENTREGA_LOCAL' ? '🏠 Entrega Local' : '📦 ' + order.shipment.carrier}
+                </span>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <p className="text-gray-400 text-sm mb-1">Estado</p>
-                  <p className="text-white font-medium capitalize">{order.shipment.status.toLowerCase().replace('_', ' ')}</p>
+                  <div className="flex items-center gap-2">
+                    <div className={`w-3 h-3 rounded-full ${order.shipment.status === 'DELIVERED' ? 'bg-green-500' :
+                      order.shipment.status === 'SHIPPED' ? 'bg-blue-500' :
+                        order.shipment.status === 'PENDING' ? 'bg-yellow-500' :
+                          'bg-gray-500'
+                      }`} />
+                    <p className={`font-semibold ${order.shipment.status === 'DELIVERED' ? 'text-green-400' :
+                      order.shipment.status === 'SHIPPED' ? 'text-blue-400' :
+                        order.shipment.status === 'PENDING' ? 'text-yellow-400' :
+                          'text-gray-400'
+                      }`}>
+                      {order.shipment.status === 'DELIVERED' ? 'Entregado' :
+                        order.shipment.status === 'SHIPPED' ? 'Enviado' :
+                          order.shipment.status === 'PENDING' ? 'Pendiente' :
+                            order.shipment.status}
+                    </p>
+                  </div>
                 </div>
                 {order.shipment.serviceName && (
                   <div>
                     <p className="text-gray-400 text-sm mb-1">Servicio</p>
                     <p className="text-white font-medium">{order.shipment.serviceName}</p>
-                  </div>
-                )}
-                {order.shipment.carrier && (
-                  <div>
-                    <p className="text-gray-400 text-sm mb-1">Transportista</p>
-                    <p className="text-white font-medium">{order.shipment.carrier}</p>
                   </div>
                 )}
                 {order.shipment.cost !== undefined && order.shipment.cost !== null && (
@@ -326,59 +344,63 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
                   </div>
                 )}
               </div>
-              <div className="mt-4 space-y-4">
-                <div className="flex flex-wrap items-center gap-3">
-                  <button
-                    onClick={handleDownloadLabel}
-                    disabled={isDownloadingLabel}
-                    className="px-4 py-2 bg-orange-600 hover:bg-orange-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
-                  >
-                    {isDownloadingLabel ? 'Generando etiqueta...' : 'Descargar etiqueta PDF'}
-                  </button>
-                  {order.shipment?.tracking && (
+
+              {/* Solo mostrar acciones de Andreani si el carrier es ANDREANI */}
+              {order.shipment.carrier === 'ANDREANI' && (
+                <div className="mt-4 space-y-4">
+                  <div className="flex flex-wrap items-center gap-3">
                     <button
-                      onClick={handleGetShipmentStatus}
-                      disabled={isLoadingStatus}
-                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
+                      onClick={handleDownloadLabel}
+                      disabled={isDownloadingLabel}
+                      className="px-4 py-2 bg-orange-600 hover:bg-orange-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
                     >
-                      {isLoadingStatus ? 'Obteniendo estado...' : 'Obtener estado en vivo'}
+                      {isDownloadingLabel ? 'Generando etiqueta...' : 'Descargar etiqueta PDF'}
                     </button>
+                    {order.shipment?.tracking && (
+                      <button
+                        onClick={handleGetShipmentStatus}
+                        disabled={isLoadingStatus}
+                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
+                      >
+                        {isLoadingStatus ? 'Obteniendo estado...' : 'Obtener estado en vivo'}
+                      </button>
+                    )}
+                  </div>
+                  {labelError && <p className="text-sm text-red-400">{labelError}</p>}
+                  {statusError && <p className="text-sm text-red-400">{statusError}</p>}
+
+                  {/* Live Shipment Status */}
+                  {shipmentStatus && (
+                    <div className="bg-[#171718] border border-blue-500/30 rounded-lg p-4">
+                      <h4 className="text-blue-400 font-semibold mb-3">Estado del Envío en Vivo</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <p className="text-gray-400 text-sm mb-1">Estado Actual</p>
+                          <p className="text-white font-medium capitalize">{shipmentStatus.status}</p>
+                        </div>
+                        {shipmentStatus.location && (
+                          <div>
+                            <p className="text-gray-400 text-sm mb-1">Ubicación</p>
+                            <p className="text-white font-medium">{shipmentStatus.location}</p>
+                          </div>
+                        )}
+                        {shipmentStatus.lastUpdate && (
+                          <div>
+                            <p className="text-gray-400 text-sm mb-1">Última Actualización</p>
+                            <p className="text-white text-sm">{new Date(shipmentStatus.lastUpdate).toLocaleString('es-ES')}</p>
+                          </div>
+                        )}
+                        {shipmentStatus.estimatedDelivery && (
+                          <div>
+                            <p className="text-gray-400 text-sm mb-1">Entrega Estimada</p>
+                            <p className="text-white text-sm">{new Date(shipmentStatus.estimatedDelivery).toLocaleDateString('es-ES')}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   )}
                 </div>
-                {labelError && <p className="text-sm text-red-400">{labelError}</p>}
-                {statusError && <p className="text-sm text-red-400">{statusError}</p>}
-
-                {/* Live Shipment Status */}
-                {shipmentStatus && (
-                  <div className="bg-[#171718] border border-blue-500/30 rounded-lg p-4">
-                    <h4 className="text-blue-400 font-semibold mb-3">Estado del Envío en Vivo</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <div>
-                        <p className="text-gray-400 text-sm mb-1">Estado Actual</p>
-                        <p className="text-white font-medium capitalize">{shipmentStatus.status}</p>
-                      </div>
-                      {shipmentStatus.location && (
-                        <div>
-                          <p className="text-gray-400 text-sm mb-1">Ubicación</p>
-                          <p className="text-white font-medium">{shipmentStatus.location}</p>
-                        </div>
-                      )}
-                      {shipmentStatus.lastUpdate && (
-                        <div>
-                          <p className="text-gray-400 text-sm mb-1">Última Actualización</p>
-                          <p className="text-white text-sm">{new Date(shipmentStatus.lastUpdate).toLocaleString('es-ES')}</p>
-                        </div>
-                      )}
-                      {shipmentStatus.estimatedDelivery && (
-                        <div>
-                          <p className="text-gray-400 text-sm mb-1">Entrega Estimada</p>
-                          <p className="text-white text-sm">{new Date(shipmentStatus.estimatedDelivery).toLocaleDateString('es-ES')}</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
+              )}
             </div>
           )}
 
