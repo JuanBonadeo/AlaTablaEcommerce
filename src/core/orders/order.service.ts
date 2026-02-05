@@ -223,7 +223,7 @@ export const OrderService = {
 
       // Send order confirmation email
       try {
-        if (order.user?.email && order.user?.name) {
+        if (order?.user?.email && order?.user?.name) {
           await sendOrderConfirmationEmail({
             email: order.user.email,
             name: order.user.name,
