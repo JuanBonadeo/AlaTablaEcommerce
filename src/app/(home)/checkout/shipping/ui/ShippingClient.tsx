@@ -8,7 +8,7 @@ import { ShippingQuoteResponse, ShippingCarrier, ShippingService } from "@/lib/t
 import { getAddressByIdAction } from "@/lib/actions/address/address.actions";
 import { calculateCartShipping } from "@/lib/actions/shipping/shipping-actions";
 import { Address } from "@/lib/types/address.types";
-import { Zap, Rocket, Package, Truck, Mail, AlertTriangle, ArrowLeft, ArrowRight, Loader2, Info, Calendar } from "lucide-react";
+import { Zap, Rocket, Package, Truck, Mail, AlertTriangle, ArrowLeft, ArrowRight, Loader2, Calendar } from "lucide-react";
 
 export const ShippingClient = () => {
   const router = useRouter();

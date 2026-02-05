@@ -197,7 +197,7 @@ interface SendOrderConfirmationEmailParams {
  * Sends an order confirmation email to the user.
  * Features a detailed table of items and the official dark/orange theme.
  */
-export async function sendOrderConfirmationEmail({ email, name, orderId, total, items }: SendOrderConfirmationEmailParams) {
+export async function sendOrderConfirmationEmail({ email, orderId, total, items }: SendOrderConfirmationEmailParams) {
   try {
     const itemsHtml = items.map(item => `
       <tr>

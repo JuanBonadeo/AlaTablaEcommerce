@@ -1,6 +1,5 @@
 import type { CartItem } from "@/lib/types/cart.types";
 import { ShippingQuoteResponse } from "@/lib/types/shipping.types";
-import { add } from "winston";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { calculatePrice } from "@/lib/utils/pricing";
@@ -29,7 +28,7 @@ interface State {
 
     // current shipping value (separate field so it can be set independently)
     shipping: number
-    
+
     // información completa del envío seleccionado
     shippingQuote: ShippingQuoteResponse | null
 
@@ -45,7 +44,7 @@ interface State {
     setShippingQuote: (quote: ShippingQuoteResponse) => void
     clearShippingQuote: () => void
     getShippingQuote: () => ShippingQuoteResponse | null
-    validateForCheckout: (addressSelected?: boolean) => { ok: boolean; message?: string }
+    validateForCheckout: () => { ok: boolean; message?: string }
     updateProductQuantity: (product: CartItem, quantity: number) => void
     removeProduct: (product: CartItem) => void
     clearCart: () => void
@@ -91,19 +90,19 @@ export const useCartStore = create<State>()(
 
             setShippingQuote: (quote: ShippingQuoteResponse) => {
                 const { cart } = get()
-                set({ 
-                    shippingQuote: quote, 
-                    shipping: quote.cost, 
-                    summary: computeSummary(cart, quote.cost) 
+                set({
+                    shippingQuote: quote,
+                    shipping: quote.cost,
+                    summary: computeSummary(cart, quote.cost)
                 })
             },
 
             clearShippingQuote: () => {
                 const { cart } = get()
-                set({ 
-                    shippingQuote: null, 
-                    shipping: 0, 
-                    summary: computeSummary(cart, 0) 
+                set({
+                    shippingQuote: null,
+                    shipping: 0,
+                    summary: computeSummary(cart, 0)
                 })
             },
 
@@ -111,7 +110,7 @@ export const useCartStore = create<State>()(
                 return get().shippingQuote
             },
 
-            validateForCheckout: (_addressSelected: boolean = false) => {
+            validateForCheckout: () => {
                 const { cart } = get();
                 if (!cart || cart.length === 0) return { ok: false, message: 'El carrito está vacío' };
                 // No validar dirección seleccionada: se permite continuar sin dirección
@@ -163,17 +162,17 @@ export const useCartStore = create<State>()(
                 const updatedCart = cart.filter(item => item.productId !== product.productId || item.variantId !== product.variantId)
                 set({ cart: updatedCart, summary: computeSummary(updatedCart, get().shipping) })
             },
-            
+
             clearCart: () => {
                 const updatedCart: CartItem[] = []
-                set({ 
-                    cart: updatedCart, 
+                set({
+                    cart: updatedCart,
                     summary: computeSummary(updatedCart, 0),
                     shipping: 0,
                     shippingQuote: null
                 });
             },
-            
+
 
         })
         , {

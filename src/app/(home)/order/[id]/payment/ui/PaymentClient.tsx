@@ -8,8 +8,7 @@ import { currencyFormat } from '@/lib/helpers/currencyFormat';
 import { Order } from '@/lib/types/order.types';
 import Image from 'next/image';
 import { PaymentClientSkeleton } from '@/components/ui/skeletons/PaymentClientSkeleton';
-import { Wallet, CreditCard, ArrowLeft, CheckCircle, Copy, AlertTriangle, Package, MapPin, Truck, ChevronRight, Loader2, Info } from 'lucide-react';
-import { OrderStatus } from '@/lib/types/order.types';
+import { CreditCard, ArrowLeft, CheckCircle, Copy, AlertTriangle, Package, MapPin, Truck, Loader2 } from 'lucide-react';
 
 const BANK_ALIAS = 'ALAT.ECOMMERCE.ALIAS';
 const BANK_ACCOUNT = 'CBU: 0000000000000000000000';

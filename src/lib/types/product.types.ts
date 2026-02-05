@@ -96,14 +96,14 @@ export const CreateProductSchema = z.object({
     .optional(),
 });
 
-const createdproduct = CreateProductSchema.extend({
+export const CreateProductWithSlugSchema = CreateProductSchema.extend({
   slug: z.string().min(3, "El slug debe tener al menos 3 caracteres"),
 })
 
 export const UpdateProductSchema = CreateProductSchema.partial()
 
 export type ProductWithoutSlug = z.infer<typeof CreateProductSchema>;
-export type CreateProductInput = z.infer<typeof createdproduct>;
+export type CreateProductInput = z.infer<typeof CreateProductWithSlugSchema>;
 export type UpdateProductInput = z.infer<typeof UpdateProductSchema>;
 
 export const ListSearchParamsSchema = z.object({

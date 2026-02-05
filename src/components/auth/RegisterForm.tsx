@@ -88,7 +88,7 @@ export function RegisterForm({ onSubmit, loading }: Props) {
     e.preventDefault();
     if (!validateForm()) return;
 
-    const { confirmPassword, ...dataToSubmit } = formData;
+    const { ...dataToSubmit } = formData;
     await onSubmit(dataToSubmit);
   };
 

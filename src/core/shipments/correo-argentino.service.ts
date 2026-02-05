@@ -1,5 +1,4 @@
 import {
-  CorreoArgentinoQuoteRequest,
   CorreoArgentinoQuoteResponse,
   ShippingQuoteRequest,
   ShippingQuoteResponse,
@@ -250,7 +249,7 @@ export const CorreoArgentinoService = {
           status: response.status,
           statusText: response.statusText,
         });
-        
+
         // Si la API no está disponible, devolver tarifas estimadas
         return CorreoArgentinoService.getEstimatedRates(request);
       }
@@ -265,7 +264,7 @@ export const CorreoArgentinoService = {
       // Transformar la respuesta al formato interno
       const quotes: ShippingQuoteResponse[] = data.tarifas.map(tarifa => {
         let service = ShippingService.CLASICO;
-        
+
         if (tarifa.tipo_servicio.toLowerCase().includes("expreso")) {
           service = ShippingService.EXPRESO;
         } else if (tarifa.tipo_servicio.toLowerCase().includes("prioritario")) {
@@ -291,7 +290,7 @@ export const CorreoArgentinoService = {
 
     } catch (error) {
       logger.error("Error al obtener cotización de Correo Argentino", { error });
-      
+
       // En caso de error, devolver tarifas estimadas
       return CorreoArgentinoService.getEstimatedRates(request);
     }
@@ -303,7 +302,7 @@ export const CorreoArgentinoService = {
    */
   getEstimatedRates: (request: ShippingQuoteRequest): ShippingQuoteResponse[] => {
     const { weight, declaredValue = 0 } = request;
-    
+
     // Cálculo básico por peso (valores aproximados en ARS)
     const baseRatePerKg = 1500; // $1500 por kg
     const weightInKg = weight / 1000;
@@ -354,7 +353,7 @@ export const CorreoArgentinoService = {
         method: "GET",
         headers,
       });
-      
+
       return response.ok;
     } catch (error) {
       logger.error("API de Correo Argentino no disponible", { error });

@@ -15,11 +15,12 @@ export const OrderSummary = () => {
         setLoaded(true)
     }, [])
 
-    const { itemsIn, subTotal, total} = useCartStore(state => state.getSummaryInfo()) 
+    const { itemsIn, subTotal, total } = useCartStore(state => state.getSummaryInfo())
     const validateForCheckout = useCartStore(state => state.validateForCheckout)
 
     const onCheckout = () => {
-        const validation = validateForCheckout(false)
+        // validate cart and address via cart store helper
+        const validation = validateForCheckout();
         if (validation.ok) {
             router.push('/checkout/address')
             return
@@ -52,13 +53,13 @@ export const OrderSummary = () => {
             <div className="grid grid-cols-2 ">
 
                 <span>Nro. Productos</span>
-                <span className="text-right">{ `${itemsIn} artículos` } </span>
+                <span className="text-right">{`${itemsIn} artículos`} </span>
 
                 <span>Subtotal</span>
                 <span className="text-right">{currencyFormat(subTotal)}</span>
 
                 <span className="mt-5 text-2xl">Total:</span>
-                <span className="mt-5 text-2xl text-right">{ currencyFormat(total) }</span>
+                <span className="mt-5 text-2xl text-right">{currencyFormat(total)}</span>
 
             </div>
 

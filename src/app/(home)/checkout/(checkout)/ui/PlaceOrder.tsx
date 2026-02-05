@@ -6,14 +6,12 @@ import { useAddressStore } from "@/lib/store/address-store"
 import { useCartStore } from "@/lib/store/cart-stores"
 import { currencyFormat } from "@/lib/helpers/currencyFormat"
 import clsx from "clsx"
-import { useRouter } from "next/navigation";
 import { PlaceOrderSkeleton } from "@/components/ui/skeletons/PlaceOrderSkeleton";
 import { getAddressByIdAction } from "@/lib/actions/address/address.actions";
 import { Address } from "@/lib/types/address.types";
 import { ShippingQuoteResponse } from "@/lib/types/shipping.types";
 
 export const PlaceOrder = () => {
-    const router = useRouter();
     const [loaded, setLoaded] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [isPlacingOrder, setIsPlacingOrder] = useState(false);
@@ -21,7 +19,7 @@ export const PlaceOrder = () => {
 
 
     const addressId = useAddressStore(state => state.addressId)
-    const { itemsIn, subTotal, envio, total } = useCartStore(state => state.getSummaryInfo())
+    const { itemsIn, subTotal, total } = useCartStore(state => state.getSummaryInfo())
     const cart = useCartStore(state => state.cart)
     const clearCart = useCartStore(state => state.clearCart)
     const shippingQuote = useCartStore(state => state.getShippingQuote())

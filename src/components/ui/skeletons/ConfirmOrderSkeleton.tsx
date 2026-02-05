@@ -1,4 +1,3 @@
-import { ConfirmOrderSkeleton } from './ConfirmOrderSkeleton';
 
 const ConfirmOrderSkeletonComponent = () => {
   return (

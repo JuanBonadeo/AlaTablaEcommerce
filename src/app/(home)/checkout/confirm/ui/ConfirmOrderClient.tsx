@@ -11,7 +11,7 @@ import { authClient } from '@/lib/auth/auth-client';
 import { currencyFormat } from '@/lib/helpers/currencyFormat';
 import { Address } from '@/lib/types/address.types';
 import { ConfirmOrderSkeleton } from '@/components/ui/skeletons/ConfirmOrderSkeleton';
-import { AlertOctagon, CheckCircle2, CreditCard, Info, MapPin, Package, Smartphone, Wallet, X } from 'lucide-react';
+import { AlertOctagon, CheckCircle2, Info, MapPin, Package, Smartphone, X, Wallet, CreditCard } from 'lucide-react';
 
 const ConfirmOrderClient = () => {
   const router = useRouter();
@@ -22,9 +22,8 @@ const ConfirmOrderClient = () => {
   const [notification, setNotification] = useState<{ type: 'error' | 'success' | 'info'; message: string } | null>(null);
 
   const addressId = useAddressStore(state => state.addressId);
-  const { itemsIn, subTotal, total, envio } = useCartStore(state => state.getSummaryInfo());
+  const { itemsIn, subTotal, total } = useCartStore(state => state.getSummaryInfo());
   const cart = useCartStore(state => state.cart);
-  const clearCart = useCartStore(state => state.clearCart);
   const validateForCheckout = useCartStore(state => state.validateForCheckout);
   const shippingQuote = useCartStore(state => state.getShippingQuote());
 
@@ -67,7 +66,7 @@ const ConfirmOrderClient = () => {
       }
 
       // validate cart and address via cart store helper
-      const validation = validateForCheckout(!!address);
+      const validation = validateForCheckout();
       if (!validation.ok) {
         // Show inline notification only; do not redirect from Confirm page
         setNotification({ type: 'error', message: validation.message || 'Error en el carrito' });

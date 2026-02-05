@@ -13,7 +13,7 @@ function mapFormDataToProduct(formData: FormData) {
   if (imagesStr) {
     try {
       images = JSON.parse(imagesStr);
-    } catch (err) {
+    } catch {
       // fallback: if it's not valid JSON, try splitting (legacy)
       images = imagesStr.split(',').map(url => url.trim()).filter(Boolean);
     }

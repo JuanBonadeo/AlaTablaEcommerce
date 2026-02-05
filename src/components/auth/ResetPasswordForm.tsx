@@ -45,8 +45,8 @@ export function ResetPasswordForm() {
                     router.push("/auth/login");
                 }, 3000);
             }
-        } catch (err) {
-            setError("Error inesperado al restablecer la contraseña");
+        } catch (error) {
+            setError(`Error inesperado al restablecer la contraseña, error: ${error}`);
         } finally {
             setLoading(false);
         }
