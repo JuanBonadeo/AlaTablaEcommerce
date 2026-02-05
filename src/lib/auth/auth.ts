@@ -9,12 +9,14 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
-  trustedOrigins: [
-    "http://localhost:3000",
-    "http://192.168.0.119:3000",
-    "https://alatabla.store",
-    "https://www.alatabla.store",
-  ],
+  trustedOrigins: process.env.BETTER_AUTH_TRUSTED_ORIGINS
+    ? process.env.BETTER_AUTH_TRUSTED_ORIGINS.split(',')
+    : [
+      "http://localhost:3000",
+      "http://192.168.0.119:3000",
+      "https://alatabla.store",
+      "https://www.alatabla.store",
+    ],
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,

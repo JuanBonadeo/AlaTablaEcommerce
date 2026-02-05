@@ -2,6 +2,11 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+const OFFICIAL_EMAIL = process.env.OFFICIAL_EMAIL || 'admin@alatabla.store';
+const OFFICIAL_EMAIL_NAME = process.env.OFFICIAL_EMAIL_NAME || 'AlaTabla';
+const FROM_ADDRESS = `${OFFICIAL_EMAIL_NAME} <${OFFICIAL_EMAIL}>`;
+
 interface SendVerificationEmailParams {
   email: string;
   name: string;
@@ -15,7 +20,7 @@ interface SendVerificationEmailParams {
 export async function sendVerificationEmail({ email, name, verificationUrl }: SendVerificationEmailParams) {
   try {
     const { data, error } = await resend.emails.send({
-      from: 'AlaTabla <admin@alatabla.store>',
+      from: FROM_ADDRESS,
       to: email, // Fixed: use parameter instead of hardcoded email
       subject: 'Verifica tu email - AlaTabla',
       html: `
@@ -106,7 +111,7 @@ interface SendPasswordResetEmailParams {
 export async function sendPasswordResetEmail({ email, name, resetUrl }: SendPasswordResetEmailParams) {
   try {
     const { data, error } = await resend.emails.send({
-      from: 'AlaTabla <admin@alatabla.store>',
+      from: FROM_ADDRESS,
       to: email, // Fixed: use parameter instead of hardcoded email
       subject: 'Restablecer contraseña - AlaTabla',
       html: `
@@ -211,7 +216,7 @@ export async function sendOrderConfirmationEmail({ email, orderId, total, items 
     `).join('');
 
     const { data, error } = await resend.emails.send({
-      from: 'AlaTabla <admin@alatabla.store>',
+      from: FROM_ADDRESS,
       to: email,
       subject: `¡Confirmación de Pedido #${orderId.slice(-8)}! - AlaTabla`,
       html: `
@@ -259,7 +264,7 @@ export async function sendOrderConfirmationEmail({ email, orderId, total, items 
                             Estamos preparando tu pedido. Te enviaremos otro email cuando tu paquete esté en camino.
                           </p>
                           <div style="margin-top: 20px;">
-                            <a href="https://alatabla.store/profile/orders" style="display: inline-block; color: #fb923c; text-decoration: none; font-weight: bold; font-size: 14px; border-bottom: 2px solid #fb923c; padding-bottom: 2px;">
+                            <a href="${APP_URL}/profile/orders" style="display: inline-block; color: #fb923c; text-decoration: none; font-weight: bold; font-size: 14px; border-bottom: 2px solid #fb923c; padding-bottom: 2px;">
                               Ver mis pedidos
                             </a>
                           </div>
@@ -313,7 +318,7 @@ interface SendMarketingEmailParams {
 export async function sendMarketingEmail({ email, name, subject, message }: SendMarketingEmailParams) {
   try {
     const { data, error } = await resend.emails.send({
-      from: 'AlaTabla <admin@alatabla.store>',
+      from: FROM_ADDRESS,
       to: email,
       subject: subject,
       html: `
@@ -345,7 +350,7 @@ export async function sendMarketingEmail({ email, name, subject, message }: Send
                         </div>
                         
                         <div style="text-align: center; margin: 35px 0;">
-                          <a href="https://alatabla.store" style="display: inline-block; background-color: #fb923c; color: #ffffff; padding: 14px 35px; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 16px;">
+                          <a href="${APP_URL}" style="display: inline-block; background-color: #fb923c; color: #ffffff; padding: 14px 35px; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 16px;">
                             Visitar la Tienda
                           </a>
                         </div>
