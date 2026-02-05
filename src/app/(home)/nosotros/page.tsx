@@ -16,9 +16,9 @@ const fadeUp = {
 
 const AboutUsPage = () => {
   const stats = [
-    { number: "10+", label: "Años de experiencia" },
-    { number: "500+", label: "Clientes satisfechos" },
-    { number: "100%", label: "Madera sustentable" },
+    { number: "4+", label: "Años de experiencia" },
+    { number: "100+", label: "Clientes satisfechos" },
+    { number: "100%", label: "Maderas nobles" },
     { number: "24hs", label: "Atención personalizada" },
   ];
 
@@ -142,24 +142,29 @@ const AboutUsPage = () => {
             </div>
 
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Nacimos del amor por el{" "}
-              <span className="text-amber-400">asado</span>
+              De la parrilla a cada mesa
             </h2>
 
             <div className="space-y-6 text-white/80 text-lg leading-relaxed">
               <p>
-                Todo comenzó en el patio de casa, con un grupo de amigos
-                compartiendo domingos alrededor del fuego...
+                A la Tabla nació de algo simple: hacer asados entre amigos y notar que casi
+                nadie tenía buenas tablas, cuchillos o accesorios que realmente duraran.
+                Siempre aparecía la misma charla: “habría que conseguir algo mejor”.
               </p>
+
               <p>
-                Desde 2014, nos dedicamos a perfeccionar cada detalle. Trabajamos
-                con maderas nobles como algarrobo, quebracho y lapacho...
+                Con el tiempo empezamos a probar maderas, diseños y terminaciones por
+                nuestra cuenta, buscando piezas resistentes, funcionales y lindas para
+                usar todos los fines de semana, no solo para lucirlas una vez.
               </p>
+
               <p>
-                Hoy, &quot;A la Tabla&quot; es sinónimo de calidad artesanal, tradición
-                familiar y excelencia en cada producto.
+                Hoy seguimos con la misma idea de siempre: ofrecer productos bien hechos,
+                pensados para la parrilla real, la de todos los días. Sin vueltas, sin
+                exageraciones. Cosas que acompañen buenos momentos alrededor del fuego.
               </p>
             </div>
+
           </motion.div>
 
           <motion.div
@@ -175,11 +180,11 @@ const AboutUsPage = () => {
                   <Award className="w-12 h-12 text-amber-400" />
                 </div>
                 <h3 className="text-2xl font-bold mb-2">
-                  Reconocimiento Nacional
+                  Experiencia que se nota
                 </h3>
                 <p className="text-white/70">
-                  Premio &quot;Mejor Artesano 2023&quot; otorgado por la Fundación
-                  Pro-Artesanías Argentinas
+                  Más de cuatro años diseñando productos pensados para la parrilla real.
+                  Funcionales, resistentes y hechos para acompañar muchos fuegos.
                 </p>
               </div>
             </div>
@@ -235,7 +240,7 @@ const AboutUsPage = () => {
       </section>
 
       {/* Team */}
-      <section className="py-20 px-4">
+      {/* <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial="hidden"
@@ -285,7 +290,7 @@ const AboutUsPage = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
       <section className="py-20 px-4 bg-gradient-to-br from-amber-600/20 to-orange-600/20">

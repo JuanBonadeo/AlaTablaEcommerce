@@ -42,7 +42,7 @@ export class ConflictError extends Error {
 export class ErrorHandler {
   private static prismaErrorMessages: Record<string, ApiError> = {
     P2002: { status: 409, success: false, message: "Violación de restricción única", code: "P2002" },
-    P2003: { status: 400, success: false, message: "Clave foránea no válida", code: "P2003" },
+    P2003: { status: 400, success: false, message: "No se puede eliminar porque tiene registros asociados", code: "P2003" },
     P2025: { status: 404, success: false, message: "Registro no encontrado", code: "P2025" },
     P2016: { status: 400, success: false, message: "Error en la consulta", code: "P2016" },
     P2021: { status: 400, success: false, message: "Error de validación", code: "P2021" },

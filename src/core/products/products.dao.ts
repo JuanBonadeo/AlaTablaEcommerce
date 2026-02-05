@@ -91,6 +91,7 @@ export const ProductDAO = {
         name: data.name,
         description: data.description,
         price: data.price,
+        costPrice: data.costPrice || 0,
         stock: data.stock,
         weight: data.weight,
         length: data.length,
@@ -99,6 +100,15 @@ export const ProductDAO = {
         categoryId: data.categoryId,
         images: {
           create: data.images?.map((url) => ({ url })),
+        },
+        variants: {
+          create: data.variants?.map((v) => ({
+            name: v.name,
+            slug: v.slug!,
+            price: v.price,
+            costPrice: v.costPrice || 0,
+            stock: v.stock,
+          })),
         },
       },
 

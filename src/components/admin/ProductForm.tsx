@@ -60,11 +60,11 @@ export function ProductForm({ product, categories }: ProductFormProps) {
       base64Images.push(dataUrl);
     }
 
-  // Combine existing image URLs (that remain) with new base64 images
-  const existingUrls = existingImages.map((i) => i.url);
-  const imagesPayload = [...existingUrls, ...base64Images];
-  // Agregar imágenes base64 y variantes al FormData
-  formData.set('images', JSON.stringify(imagesPayload));
+    // Combine existing image URLs (that remain) with new base64 images
+    const existingUrls = existingImages.map((i) => i.url);
+    const imagesPayload = [...existingUrls, ...base64Images];
+    // Agregar imágenes base64 y variantes al FormData
+    formData.set('images', JSON.stringify(imagesPayload));
     // if (variants && variants.length > 0) {
     //   formData.set('variants', JSON.stringify(variants));
     // }
@@ -99,7 +99,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
     newVariants[index] = { ...newVariants[index], [field]: value };
     setVariants(newVariants);
   };
-  
+
   const [deleteImageModalOpen, setDeleteImageModalOpen] = useState(false);
   const [imagePendingDelete, setImagePendingDelete] = useState<{ id: string; url: string } | null>(null);
   const [deletingImage, setDeletingImage] = useState(false);
@@ -169,7 +169,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label htmlFor="price" className="block text-sm font-medium  mb-1">
-            Precio *
+            Precio Venta *
           </label>
           <input
             type="number"
@@ -179,6 +179,20 @@ export function ProductForm({ product, categories }: ProductFormProps) {
             step="0.01"
             min="0"
             required
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+        <div>
+          <label htmlFor="costPrice" className="block text-sm font-medium  mb-1">
+            Costo (Proveedor)
+          </label>
+          <input
+            type="number"
+            id="costPrice"
+            name="costPrice"
+            defaultValue={product?.costPrice || 0}
+            step="0.01"
+            min="0"
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
@@ -287,6 +301,19 @@ export function ProductForm({ product, categories }: ProductFormProps) {
                     />
                   </div>
                   <div>
+                    <label className="block text-xs text-gray-600 mb-1">Costo (Prov)</label>
+                    <input
+                      type="number"
+                      value={variant.costPrice || ''}
+                      onChange={(e) =>
+                        updateVariant(index, 'costPrice', e.target.value ? Number(e.target.value) : 0)
+                      }
+                      step="0.01"
+                      placeholder="0.00"
+                      className="w-full px-2 py-1 text-sm border rounded"
+                    />
+                  </div>
+                  <div>
                     <label className="block text-xs text-gray-600 mb-1">Precio extra</label>
                     <input
                       type="number"
@@ -350,6 +377,6 @@ export function ProductForm({ product, categories }: ProductFormProps) {
         onConfirm={confirmDeleteImage}
         onCancel={() => setDeleteImageModalOpen(false)}
       />
-    </form>
+    </form >
   );
 }

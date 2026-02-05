@@ -63,7 +63,7 @@ const ContactPage = () => {
                                 </div>
                                 <div>
                                     <h3 className="font-semibold text-lg">Email</h3>
-                                    <p className="text-white/60">ventas@alatabla.store</p>
+                                    <p className="text-white/60">admin@alatabla.store</p>
                                 </div>
                             </div>
 
@@ -73,7 +73,7 @@ const ContactPage = () => {
                                 </div>
                                 <div>
                                     <h3 className="font-semibold text-lg">WhatsApp</h3>
-                                    <p className="text-white/60">+54 9 341 123-4567</p>
+                                    <p className="text-white/60">+54 9 341 2510795</p>
                                 </div>
                             </div>
 
@@ -89,11 +89,11 @@ const ContactPage = () => {
                         </div>
 
                         <div className="flex gap-4">
-                            <a href="#" className="flex-1 bg-neutral-900 py-4 rounded-2xl border border-white/5 flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors">
+                            <a href="https://www.instagram.com/_alatabla_/" className="flex-1 bg-neutral-900 py-4 rounded-2xl border border-white/5 flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors">
                                 <Instagram className="w-5 h-5 text-pink-500" />
                                 <span>Instagram</span>
                             </a>
-                            <a href="#" className="flex-1 bg-neutral-900 py-4 rounded-2xl border border-white/5 flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors">
+                            <a href="https://www.facebook.com/alatabla.store" className="flex-1 bg-neutral-900 py-4 rounded-2xl border border-white/5 flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors">
                                 <Facebook className="w-5 h-5 text-blue-500" />
                                 <span>Facebook</span>
                             </a>

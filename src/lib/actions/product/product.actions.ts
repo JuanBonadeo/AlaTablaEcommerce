@@ -22,6 +22,7 @@ function mapFormDataToProduct(formData: FormData) {
   return {
     name: String(formData.get("name")),
     price: Number(formData.get("price")),
+    costPrice: Number(formData.get("costPrice") || 0),
     stock: Number(formData.get("stock")),
     weight: formData.get("weight") ? Number(formData.get("weight")) : undefined,
     length: formData.get("length") ? Number(formData.get("length")) : undefined,

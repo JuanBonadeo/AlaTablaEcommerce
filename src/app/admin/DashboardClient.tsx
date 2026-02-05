@@ -63,6 +63,12 @@ export default function DashboardClient({ data }: DashboardClientProps) {
                     iconBgColor="bg-green-500"
                 />
                 <StatCard
+                    title="Ganancia Est."
+                    value={`$${stats.totalProfit.toLocaleString()}`}
+                    icon={TrendingUp}
+                    iconBgColor="bg-emerald-500"
+                />
+                <StatCard
                     title="Órdenes"
                     value={stats.ordersCount.toString()}
                     icon={ShoppingCart}

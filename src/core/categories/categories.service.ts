@@ -33,7 +33,7 @@ export const CategoryService = {
             const result = await CategoriesDAO.create(newCategory.name);
             return ResponseHandler.created(result);
         } catch (error) {
-            throw ErrorHandler.format(error);
+            return ErrorHandler.format(error);
         }
     },
 
@@ -44,7 +44,7 @@ export const CategoryService = {
             const result = await CategoriesDAO.update(id, updatedCategory.name.trim());
             return ResponseHandler.updated(result);
         } catch (error) {
-            throw ErrorHandler.format(error);
+            return ErrorHandler.format(error);
         }
     },
 
@@ -54,7 +54,7 @@ export const CategoryService = {
             await CategoriesDAO.delete(id);
             return ResponseHandler.deleted();
         } catch (error) {
-            throw ErrorHandler.format(error);
+            return ErrorHandler.format(error);
         }
     },
 

@@ -4,6 +4,7 @@ import { OrderStatus } from "@/lib/types/enums";
 export interface DashboardData {
     stats: {
         totalRevenue: number;
+        totalProfit: number; // New field
         ordersCount: number;
         productsCount: number;
         usersCount: number;
@@ -32,6 +33,33 @@ export const DashboardService = {
         ]);
 
         const totalRevenue = totalRevenueResult._sum.total || 0;
+
+        // Calculate total profit
+        // We need to fetch items for all paid/delivered orders to calculate cost properly
+        // This might be heavy for a large database, but okay for now.
+        // Optimization: Add a `totalCost` field to Order model and update it on creation/status change.
+        const paidOrders = await prisma.order.findMany({
+            where: {
+                status: {
+                    in: [OrderStatus.PAID, OrderStatus.DELIVERED]
+                }
+            },
+            select: {
+                items: {
+                    select: {
+                        costPrice: true,
+                        quantity: true
+                    }
+                }
+            }
+        });
+
+        const totalCost = paidOrders.reduce((acc, order) => {
+            const orderCost = order.items.reduce((sum, item) => sum + (item.costPrice * item.quantity), 0);
+            return acc + orderCost;
+        }, 0);
+
+        const totalProfit = totalRevenue - totalCost;
 
         // Last 6 months revenue and orders
         const sixMonthsAgo = new Date();
@@ -126,6 +154,7 @@ export const DashboardService = {
         return {
             stats: {
                 totalRevenue,
+                totalProfit, // New field
                 ordersCount: totalOrders,
                 productsCount: totalProducts,
                 usersCount: totalUsers

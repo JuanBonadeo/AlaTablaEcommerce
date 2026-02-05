@@ -65,13 +65,13 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="mailto:alatabla2026@gmail.com" className="hover:text-white/90">
-                    alatabla2026@gmail.com
+                <a href="mailto:admin@alatabla.store" className="hover:text-white/90">
+                    admin@alatabla.store
                 </a>
               </li>
               <li>
-                <a href="tel:+5491112345678" className="hover:text-white/90">
-                  +54 9 11 1234 5678
+                <a href="tel:+5493412510795" className="hover:text-white/90">
+                  +54 9 341 2510795
                 </a>
               </li>
               <li>Rosario, Argentina</li>
@@ -93,7 +93,7 @@ export default function Footer() {
               <a href="#" className="hover:text-white/90" aria-label="Twitter">
                 <Twitter className="h-5 w-5" />
               </a>
-              <a href="mailto:hola@miemprendimiento.com" className="hover:text-white/90" aria-label="Email">
+              <a href="mailto:admin@alatabla.store" className="hover:text-white/90" aria-label="Email">
                 <Mail className="h-5 w-5" />
               </a>
             </div>

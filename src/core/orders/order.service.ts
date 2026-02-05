@@ -19,16 +19,17 @@ export const OrderService = {
   create: async (data: CreateOrderInput) => {
     try {
       const validatedData = CreateOrderSchema.parse(data);
-      
+
       // Use transaction to create order and update stock atomically
       const order = await prisma.$transaction(async (tx) => {
+        // Decrease stock for each item
         // Decrease stock for each item
         for (const item of validatedData.items) {
           if (item.variantId) {
             // Update variant stock
             const variant = await tx.productVariant.findUnique({
               where: { id: item.variantId },
-              select: { stock: true, name: true },
+              select: { stock: true, name: true, costPrice: true },
             });
 
             if (!variant) {
@@ -43,11 +44,17 @@ export const OrderService = {
               where: { id: item.variantId },
               data: { stock: { decrement: item.quantity } },
             });
+
+            // Assign costPrice to item for snapshot (if not present on variant, default to 0)
+            // Note: We need to augment the item object or store it in a map to use later in create
+            // For simplicity, we'll re-fetch or assume we can pass it down. 
+            // Better approach: Mapping the items for creation.
+
           } else {
             // Update product stock
             const product = await tx.product.findUnique({
               where: { id: item.productId },
-              select: { stock: true, name: true },
+              select: { stock: true, name: true, costPrice: true },
             });
 
             if (!product) {
@@ -65,6 +72,22 @@ export const OrderService = {
           }
         }
 
+        // Fetch cost prices for all items to snapshot them
+        // This is a bit redundant with the above loop but cleaner for the create call construction
+        // Optimization: Do this in the loop above and build the create payload there.
+
+        const itemsWithCost = await Promise.all(validatedData.items.map(async (item) => {
+          let costPrice = 0;
+          if (item.variantId) {
+            const v = await tx.productVariant.findUnique({ where: { id: item.variantId }, select: { costPrice: true } });
+            costPrice = v?.costPrice || 0;
+          } else {
+            const p = await tx.product.findUnique({ where: { id: item.productId }, select: { costPrice: true } });
+            costPrice = p?.costPrice || 0;
+          }
+          return { ...item, costPrice };
+        }));
+
         // Create the order
         const createdOrder = await tx.order.create({
           data: {
@@ -72,11 +95,12 @@ export const OrderService = {
             addressId: validatedData.addressId,
             total: validatedData.total,
             items: {
-              create: validatedData.items.map(item => ({
+              create: itemsWithCost.map(item => ({
                 productId: item.productId,
                 variantId: item.variantId,
                 quantity: item.quantity,
                 price: item.price,
+                costPrice: item.costPrice,
               })),
             },
           },
@@ -231,7 +255,7 @@ export const OrderService = {
   update: async (id: string, data: UpdateOrderInput) => {
     try {
       const validatedData = UpdateOrderSchema.parse(data);
-      
+
       // Verify order exists
       const existing = await OrderDAO.getById(id);
       if (!existing) throw new NotFoundError("Orden no encontrada");

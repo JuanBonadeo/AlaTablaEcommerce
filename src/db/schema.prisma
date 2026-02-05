@@ -112,6 +112,7 @@ model Product {
   length       Int?             @default(0) // en cm
   width        Int?             @default(0) // en cm
   height       Int?             @default(0) // en cm
+  costPrice    Float            @default(0) // Precio costo proveedor
   categoryId   String
   images       ProductImage[]
   variants     ProductVariant[]
@@ -137,6 +138,7 @@ model ProductVariant {
   slug      String  @unique
   name      String // Ej: "Mango de madera"
   price     Float?
+  costPrice Float?  @default(0) // Precio costo proveedor para la variante
   stock     Int?    @default(0)
   product   Product @relation(fields: [productId], references: [id])
   productId String
@@ -200,6 +202,7 @@ model OrderItem {
   variantId String?
   quantity  Int             @default(1)
   price     Float
+  costPrice Float           @default(0) // Snapshot del costo al momento de la compra
 }
 
 // =========================

@@ -30,6 +30,7 @@ export interface Product {
   name: string;
   description: string | null;
   price: number;
+  costPrice: number; // Nuevo campo
   stock: number;
   weight?: number | null;
   length?: number | null;
@@ -44,6 +45,7 @@ export interface Product {
     slug: string;
     name: string;
     price?: number | null;
+    costPrice?: number | null; // Nuevo campo
     stock?: number | null;
     productId: string;
   }>;
@@ -67,6 +69,7 @@ export interface ProductVariant {
   slug?: string;
   name?: string;
   price?: number;
+  costPrice?: number | null;
   stock?: number;
   productId?: string;
 }
@@ -75,6 +78,7 @@ export const CreateProductSchema = z.object({
   name: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
   description: z.string().optional(),
   price: z.number().min(0, "El precio debe ser mayor o igual a 0"),
+  costPrice: z.number().min(0, "El costo debe ser mayor o igual a 0").optional().default(0),
   stock: z.number().int().min(0, "El stock no puede ser negativo"),
   weight: z.number().min(0, "El peso no puede ser negativo").optional(),
   length: z.number().min(0, "El largo no puede ser negativo").optional(),
@@ -90,6 +94,7 @@ export const CreateProductSchema = z.object({
         // slug can be generated server-side if missing from the client
         slug: z.string().min(1, "El slug de la variante es requerido").optional(),
         price: z.number().min(0, "El precio debe ser mayor o igual a 0").optional(),
+        costPrice: z.number().min(0, "El costo debe ser mayor o igual a 0").optional().default(0),
         stock: z.number().int().min(0, "El stock no puede ser negativo").optional(),
       })
     ).describe("Variantes del producto")
