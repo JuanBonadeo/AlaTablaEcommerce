@@ -3,15 +3,9 @@ export const ProductDetailSkeleton = () => {
     <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 sm:px-6 lg:px-8">
 
       {/* Slideshow skeleton */}
-      <div className="col-span-1 lg:col-span-2 bg-[#171718] rounded-xl p-4 border border-gray-800">
-        <div className="bg-[#4e4e4e] rounded-xl animate-pulse w-full aspect-square md:aspect-auto md:h-[500px]" />
+      <div className="col-span-1 lg:col-span-2 bg-[#171718] rounded-xl p-1 border border-gray-800">
+        <div className="bg-[#4e4e4e] rounded-xl animate-pulse w-full aspect-square md:aspect-auto " />
 
-        {/* Thumbnails skeleton */}
-        <div className="flex gap-4 mt-4 overflow-hidden">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="bg-[#4e4e4e] rounded-lg animate-pulse w-24 h-24 shrink-0" />
-          ))}
-        </div>
       </div>
 
       {/* Details skeleton */}
