@@ -2,6 +2,8 @@ import React from 'react';
 import { ProductGrid } from '@/components/products/product-grid/ProductGrid';
 import { getProductsByCategoryAction } from '@/lib/actions/product/product.actions';
 
+import { serializeDates } from '@/lib/utils/obj-utils';
+
 interface Props {
   categoryName: string;
 }
@@ -19,9 +21,11 @@ export const ProductsByCategoryServer = async ({ categoryName }: Props) => {
     );
   }
 
+  const serializedProducts = serializeDates(products);
+
   return (
     <>
-      <ProductGrid products={products} />
+      <ProductGrid products={serializedProducts} />
     </>
   );
 };

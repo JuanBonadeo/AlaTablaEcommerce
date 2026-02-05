@@ -6,8 +6,8 @@ export interface OfferData {
   id: string;
   descuento: number;
   descripcion: string | null;
-  desde: Date;
-  hasta: Date;
+  desde: Date | string;
+  hasta: Date | string;
 }
 
 export interface PriceInfo {

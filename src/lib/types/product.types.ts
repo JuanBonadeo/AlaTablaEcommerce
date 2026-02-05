@@ -12,15 +12,15 @@ export interface ProductGridItem {
     id: string;
     descuento: number;
     descripcion: string | null;
-    desde: Date;
-    hasta: Date;
+    desde: Date | string;
+    hasta: Date | string;
   } | null;
   offers?: {
     id: string;
     descuento: number;
     descripcion: string | null;
-    desde: Date;
-    hasta: Date;
+    desde: Date | string;
+    hasta: Date | string;
   }[];
 }
 
@@ -51,15 +51,15 @@ export interface Product {
     id: string;
     descuento: number;
     descripcion: string | null;
-    desde: Date;
-    hasta: Date;
+    desde: Date | string;
+    hasta: Date | string;
   } | null;
   offers?: {
     id: string;
     descuento: number;
     descripcion: string | null;
-    desde: Date;
-    hasta: Date;
+    desde: Date | string;
+    hasta: Date | string;
   }[];
 }
 export interface ProductVariant {

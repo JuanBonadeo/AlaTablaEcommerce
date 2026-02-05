@@ -19,7 +19,7 @@ export interface CartItem {
         id: string;
         descuento: number;
         descripcion: string | null;
-        desde: Date;
-        hasta: Date;
+        desde: Date | string;
+        hasta: Date | string;
     } | null;
 }
