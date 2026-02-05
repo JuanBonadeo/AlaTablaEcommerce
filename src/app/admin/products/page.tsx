@@ -1,4 +1,6 @@
 import { getAllProductsAction, getAllCategoriesAction, deleteProductAction } from '@/lib/actions/product/product.actions';
+
+export const dynamic = 'force-dynamic';
 import ProductsList from './ProductsList';
 
 export default async function ProductsPage() {

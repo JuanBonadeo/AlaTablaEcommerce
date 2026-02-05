@@ -1,4 +1,6 @@
 import { getAllOrdersAction, getOrderStatsAction } from '@/lib/actions/order/order.actions';
+
+export const dynamic = 'force-dynamic';
 import OrdersClient from './OrdersClient';
 
 export default async function OrdersPage() {
