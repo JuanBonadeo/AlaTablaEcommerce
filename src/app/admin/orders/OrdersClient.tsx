@@ -71,7 +71,7 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
   };
 
   const getStatusBadge = (status: OrderStatus) => {
-    const styles = {
+    const styles: Record<OrderStatus, string> = {
       PENDING: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50',
       PAID: 'bg-blue-500/20 text-blue-400 border-blue-500/50',
       SHIPPED: 'bg-purple-500/20 text-purple-400 border-purple-500/50',
@@ -79,7 +79,7 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
       CANCELED: 'bg-red-500/20 text-red-400 border-red-500/50',
     };
 
-    const icons = {
+    const icons: Record<OrderStatus, React.ReactNode> = {
       PENDING: <Clock size={14} />,
       PAID: <DollarSign size={14} />,
       SHIPPED: <Package size={14} />,
@@ -87,7 +87,7 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
       CANCELED: <XCircle size={14} />,
     };
 
-    const labels = {
+    const labels: Record<OrderStatus, string> = {
       PENDING: 'Pendiente',
       PAID: 'Pagado',
       SHIPPED: 'Enviado',
