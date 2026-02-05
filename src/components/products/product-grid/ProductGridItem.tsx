@@ -1,5 +1,5 @@
 'use client';
-import { ProductGridItem } from '@/lib/types/product.types.js';
+import { ProductGridItem } from '@/lib/types/product.types';
 import Link from 'next/link';
 import { useState } from 'react';
 import { ProductImage } from '../../product/prduct-image/ProductImage';
@@ -15,7 +15,7 @@ interface Props {
 
 export const ProductGridItemComponent = ({ product }: Props) => {
 
-  const [displayImage, setDisplayImage] = useState(product?.images[0].url);
+  const [displayImage, setDisplayImage] = useState(product?.images?.[0]?.url || '/placeholder.png');
   const [showNotification, setShowNotification] = useState(false);
 
   // Calcular precio con oferta
@@ -52,7 +52,7 @@ export const ProductGridItemComponent = ({ product }: Props) => {
                 slug: product.slug,
                 name: product.name,
                 price: priceInfo.finalPrice, // Use final price including offer
-                image: product.images[0].url,
+                image: product?.images?.[0]?.url || '/placeholder.png',
                 quantity: 1,
                 offer: product.activeOffer
               });
