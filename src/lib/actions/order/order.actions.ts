@@ -28,7 +28,7 @@ export const getAllOrdersAction = async (params?: OrderListParams) => {
 
 export const updateOrderStatusAction = async (id: string, status: OrderStatus) => {
   const result = await OrderService.updateStatus(id, status);
-  
+
   if (!result.success) {
     return { ok: false, message: result.message || 'Error al actualizar el estado' };
   }
@@ -38,13 +38,14 @@ export const updateOrderStatusAction = async (id: string, status: OrderStatus) =
 };
 
 export const cancelOrderAction = async (id: string) => {
-  return await OrderService.updateStatus(id, OrderStatus.CANCELED);
+  const result = await OrderService.updateStatus(id, OrderStatus.CANCELED);
+  return { ok: result.success, message: result.message };
 };
 
 export async function getOrderStatsAction() {
   try {
     const result = await OrderService.list({ limit: 1000 });
-    
+
     if (!result.success || !result.data) {
       return {
         total: 0,
@@ -58,7 +59,7 @@ export async function getOrderStatsAction() {
     }
 
     const orders = result.data.items;
-    
+
     return {
       total: orders.length,
       pending: orders.filter(o => o.status === 'PENDING').length,

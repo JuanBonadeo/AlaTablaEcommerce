@@ -259,7 +259,7 @@ export async function sendOrderConfirmationEmail({ email, name, orderId, total, 
                             Estamos preparando tu pedido. Te enviaremos otro email cuando tu paquete esté en camino.
                           </p>
                           <div style="margin-top: 20px;">
-                            <a href="https://alatabla.com.ar/profile/orders" style="display: inline-block; color: #fb923c; text-decoration: none; font-weight: bold; font-size: 14px; border-bottom: 2px solid #fb923c; padding-bottom: 2px;">
+                            <a href="https://alatabla.store/profile/orders" style="display: inline-block; color: #fb923c; text-decoration: none; font-weight: bold; font-size: 14px; border-bottom: 2px solid #fb923c; padding-bottom: 2px;">
                               Ver mis pedidos
                             </a>
                           </div>

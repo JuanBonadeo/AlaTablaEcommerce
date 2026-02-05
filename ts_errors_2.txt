@@ -1,0 +1,37 @@
+.next/types/app/(home)/productos/categoria/[category]/page.ts(34,29): error TS2344: Type 'Props' does not satisfy the constraint 'PageProps'.
+  Types of property 'params' are incompatible.
+    Type '{ category: string; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+.next/types/app/admin/products/[id]/page.ts(34,29): error TS2344: Type 'EditProductPageProps' does not satisfy the constraint 'PageProps'.
+  Types of property 'params' are incompatible.
+    Type '{ id: string; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+src/app/(home)/order/[id]/payment/ui/PaymentClient.tsx(244,75): error TS2367: This comparison appears to be unintentional because the types 'OrderStatus' and '"COMPLETED"' have no overlap.
+src/app/(home)/profile/addresses/ui/ProfileAddressesClient.tsx(131,21): error TS2322: Type '{ show: true; onClose: () => void; onAddressAdded: () => Promise<void>; userId: string; editingAddress: Address | undefined; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'show' does not exist on type 'IntrinsicAttributes & Props'.
+src/app/admin/offers/page.tsx(11,24): error TS2322: Type '({ product: { id: string; name: string; price: number; slug: string; } | null; } & { id: string; createdAt: Date; updatedAt: Date; deletedAt: Date | null; productId: string | null; ... 4 more ...; hasta: Date; })[]' is not assignable to type 'Offer[]'.
+  Type '{ product: { id: string; name: string; price: number; slug: string; } | null; } & { id: string; createdAt: Date; updatedAt: Date; deletedAt: Date | null; productId: string | null; ... 4 more ...; hasta: Date; }' is not assignable to type 'Offer'.
+    Types of property 'productId' are incompatible.
+      Type 'string | null' is not assignable to type 'string'.
+        Type 'null' is not assignable to type 'string'.
+src/app/admin/orders/page.tsx(10,24): error TS2322: Type 'OrderList | undefined' is not assignable to type 'OrderList'.
+  Type 'undefined' is not assignable to type 'OrderList'.
+src/app/api/mercadopago/create-preference/route.ts(61,18): error TS2345: Argument of type '{ title: string; quantity: number; unit_price: number; currency_id: string; description: string; }' is not assignable to parameter of type '{ id: string; title: string; quantity: number; unit_price: number; currency_id: string; picture_url: string; description: string; }'.
+  Type '{ title: string; quantity: number; unit_price: number; currency_id: string; description: string; }' is missing the following properties from type '{ id: string; title: string; quantity: number; unit_price: number; currency_id: string; picture_url: string; description: string; }': id, picture_url
+src/components/admin/OrdersTable.tsx(44,19): error TS2339: Property 'success' does not exist on type 'ApiError | ApiResponse<{ status: OrderStatus; id: string; createdAt: Date; updatedAt: Date; userId: string; addressId: string | null; total: number; }> | { ...; }'.
+  Property 'success' does not exist on type '{ ok: boolean; message: string; }'.
+src/components/ui/ShippingCalculator.tsx(43,17): error TS18048: 'result.data' is possibly 'undefined'.
+src/components/ui/ShippingCalculator.tsx(45,11): error TS18048: 'result.data' is possibly 'undefined'.
+src/core/auth/auth.service.ts(12,9): error TS2322: Type '{ email: string; password: string; name: string; }' is not assignable to type '{ name: string; email: string; password: string; image?: string | undefined; callbackURL?: string | undefined; rememberMe?: boolean | undefined; } & { role: never; } & { role?: null | undefined; }'.
+  Property 'role' is missing in type '{ email: string; password: string; name: string; }' but required in type '{ role: never; }'.
+src/core/auth/auth.service.ts(43,23): error TS18046: 'error' is of type 'unknown'.
+src/core/orders/order.dao.ts(141,50): error TS2551: Property 'addressId' does not exist on type 'OrderUpdateInput'. Did you mean 'address'?
+src/core/payments/mercadopago.service.ts(110,50): error TS2322: Type '{ items: { id: string | undefined; title: string; quantity: number; unit_price: number; currency_id: string; picture_url: string | undefined; description: string | undefined; }[]; payer: MercadoPagoPayer | undefined; back_urls: { ...; }; external_reference: string | undefined; notification_url: string; statement_des...' is not assignable to type 'PreferenceRequest'.
+  Types of property 'items' are incompatible.
+    Type '{ id: string | undefined; title: string; quantity: number; unit_price: number; currency_id: string; picture_url: string | undefined; description: string | undefined; }[]' is not assignable to type 'Items[]'.
+      Type '{ id: string | undefined; title: string; quantity: number; unit_price: number; currency_id: string; picture_url: string | undefined; description: string | undefined; }' is not assignable to type 'Items'.
+        Types of property 'id' are incompatible.
+          Type 'string | undefined' is not assignable to type 'string'.
+            Type 'undefined' is not assignable to type 'string'.
+src/core/shared/logger.ts(58,52): error TS2304: Cannot find name 'LogEntry'.
+src/core/shared/logger.ts(141,52): error TS2304: Cannot find name 'LogEntry'.
+src/lib/types/offer.types.ts(19,19): error TS2353: Object literal may only specify known properties, and 'required_error' does not exist in type '{ error?: string | $ZodErrorMap<$ZodIssueInvalidType<unknown>> | undefined; message?: string | undefined; }'.
+src/lib/types/offer.types.ts(20,19): error TS2353: Object literal may only specify known properties, and 'required_error' does not exist in type '{ error?: string | $ZodErrorMap<$ZodIssueInvalidType<unknown>> | undefined; message?: string | undefined; }'.

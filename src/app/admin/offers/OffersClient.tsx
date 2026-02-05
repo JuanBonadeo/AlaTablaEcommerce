@@ -8,7 +8,7 @@ import { ConfirmModal } from '@/components/ui/ConfirmModal';
 
 type Offer = {
   id: string;
-  productId: string;
+  productId: string | null;
   descuento: number;
   descripcion: string | null;
   desde: Date;
@@ -17,8 +17,9 @@ type Offer = {
   product?: {
     id: string;
     name: string;
+    slug: string;
     price: number;
-  };
+  } | null;
 };
 
 type Product = {
@@ -91,7 +92,7 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
   const handleEdit = (offer: Offer) => {
     setEditingOffer(offer);
     setFormData({
-      productId: offer.productId,
+      productId: offer.productId || '',
       descuento: offer.descuento.toString(),
       descripcion: offer.descripcion || '',
       desde: new Date(offer.desde).toISOString().slice(0, 16),
@@ -166,16 +167,16 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-        <ConfirmModal
-          open={confirmOpen}
-          title="Eliminar oferta"
-          message={confirmMessage}
-          confirmLabel="Eliminar"
-          cancelLabel="Cancelar"
-          loading={isSubmitting}
-          onConfirm={confirmDelete}
-          onCancel={() => { setConfirmOpen(false); setPendingDeleteOfferId(null); }}
-        />
+          <ConfirmModal
+            open={confirmOpen}
+            title="Eliminar oferta"
+            message={confirmMessage}
+            confirmLabel="Eliminar"
+            cancelLabel="Cancelar"
+            loading={isSubmitting}
+            onConfirm={confirmDelete}
+            onCancel={() => { setConfirmOpen(false); setPendingDeleteOfferId(null); }}
+          />
           <h1 className="text-3xl font-bold text-white mb-1">Ofertas</h1>
           <p className="text-gray-400">
             {activeOffers.length} activas · {upcomingOffers.length} próximas · {expiredOffers.length} expiradas
@@ -234,7 +235,7 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
             </thead>
             <tbody>
               {offers.map((offer) => {
-                const product = getProductById(offer.productId);
+                const product = getProductById(offer.productId || '');
                 const isActive = isOfferActive(offer);
                 const isUpcoming = isOfferUpcoming(offer);
                 const originalPrice = product?.price || 0;
@@ -265,16 +266,16 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
                     <td className="py-4 px-4">
                       <div className="text-sm">
                         <p className="text-gray-300">
-                          {new Date(offer.desde).toLocaleDateString('es-ES', { 
-                            month: 'short', 
-                            day: 'numeric' 
+                          {new Date(offer.desde).toLocaleDateString('es-ES', {
+                            month: 'short',
+                            day: 'numeric'
                           })}
                         </p>
                         <p className="text-gray-500">hasta</p>
                         <p className="text-gray-300">
-                          {new Date(offer.hasta).toLocaleDateString('es-ES', { 
-                            month: 'short', 
-                            day: 'numeric' 
+                          {new Date(offer.hasta).toLocaleDateString('es-ES', {
+                            month: 'short',
+                            day: 'numeric'
                           })}
                         </p>
                       </div>
@@ -450,7 +451,7 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
                     const discount = parseFloat(formData.descuento) || 0;
                     const originalPrice = product?.price || 0;
                     const discountedPrice = originalPrice * (1 - discount / 100);
-                    
+
                     return (
                       <div>
                         <p className="text-white font-medium mb-1">{product?.name}</p>

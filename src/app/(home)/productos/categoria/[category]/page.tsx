@@ -1,13 +1,13 @@
 import { ProductsByCategoryServer } from "./ProductsByCategoryServer";
 
 interface Props {
-  params: {
+  params: Promise<{
     category: string;
-  };
+  }>;
 }
 
-export default function ProductsByCategoryPage({ params }: Props) {
-  const { category } = params;
+export default async function ProductsByCategoryPage({ params }: Props) {
+  const { category } = await params;
   const decodedCategory = decodeURIComponent(category);
 
   return (

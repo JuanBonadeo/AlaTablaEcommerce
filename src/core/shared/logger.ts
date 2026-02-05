@@ -3,6 +3,34 @@ import winston from 'winston';
 import chalk from 'chalk';
 
 // Interfaces para tipado
+interface LogEntry extends winston.Logform.TransformableInfo {
+  timestamp?: string;
+  level: string;
+  message: string;
+  response?: {
+    status: number;
+    dataSize: number;
+    message?: string;
+  };
+  context?: {
+    method: string;
+    endpoint: string;
+    userId: string;
+    executionTime: string;
+    requestId?: string;
+  };
+  pagination?: {
+    page: number;
+    totalPages: number;
+    recordsCount: number;
+    total: number;
+  };
+  error?: {
+    name: string;
+    message: string;
+    stack?: string;
+  };
+}
 
 
 // Función para formatear el tamaño de datos de manera más legible
@@ -47,7 +75,7 @@ const colorizeMethod = (method: string): string => {
 const formatExecutionTime = (time: string): string => {
   const timeNum = parseInt(time);
   if (isNaN(timeNum)) return chalk.gray(time);
-  
+
   if (timeNum < 100) return chalk.green(time);
   if (timeNum < 500) return chalk.yellow(time);
   if (timeNum < 1000) return chalk.red(time);
@@ -55,9 +83,9 @@ const formatExecutionTime = (time: string): string => {
 };
 
 // FORMATO PRINCIPAL - Este es el que arregla el problema
-const consoleFormat = winston.format.printf((info: LogEntry) => {
-  const { timestamp, level, message, response, context, pagination, error, ...rest } = info;
-  
+const consoleFormat = winston.format.printf((info: winston.Logform.TransformableInfo) => {
+  const { timestamp, level, message, response, context, pagination, error, ...rest } = info as LogEntry;
+
   // Manejo de errores
   if (level === 'error' && error && context) {
     const emoji = '💥';
@@ -67,27 +95,27 @@ const consoleFormat = winston.format.printf((info: LogEntry) => {
     const executionTime = chalk.red(context.executionTime);
     const errorName = chalk.red.bold(error.name || 'Error');
     const errorMsg = chalk.red(error.message || 'Unknown error');
-    
+
     let logLine = `${chalk.gray(timestamp)} ${emoji} ${chalk.red('ERROR')} ${method} ${endpoint}`;
     logLine += ` │ User: ${userId}`;
     logLine += ` │ Time: ${executionTime}`;
     logLine += `\n${chalk.red('┌─')} ${errorName}: ${errorMsg}`;
-    
+
     if (context.requestId) {
       logLine += `\n${chalk.red('│')} RequestID: ${chalk.gray(context.requestId)}`;
     }
-    
+
     if (error.stack && process.env.NODE_ENV !== 'production') {
       const stackLines = error.stack.split('\n').slice(1, 4);
       stackLines.forEach((line: string) => {
         logLine += `\n${chalk.red('│')} ${chalk.gray(line.trim())}`;
       });
     }
-    
+
     logLine += `\n${chalk.red('└─')}`;
     return logLine;
   }
-  
+
   // Manejo de respuestas exitosas
   if (response && context) {
     const emoji = getStatusEmoji(response.status);
@@ -97,36 +125,36 @@ const consoleFormat = winston.format.printf((info: LogEntry) => {
     const userId = context.userId === 'anonymous' ? chalk.gray('anonymous') : chalk.blue(context.userId);
     const executionTime = formatExecutionTime(context.executionTime);
     const dataSize = chalk.magenta(formatDataSize(response.dataSize));
-    
+
     let logLine = `${chalk.gray(timestamp)} ${emoji} ${statusText} ${method} ${endpoint}`;
     logLine += ` │ User: ${userId}`;
     logLine += ` │ Time: ${executionTime}`;
     logLine += ` │ Size: ${dataSize}`;
-    
+
     if (pagination) {
       const pageInfo = chalk.yellow(`Page ${pagination.page}/${pagination.totalPages} (${pagination.recordsCount}/${pagination.total})`);
       logLine += ` │ ${pageInfo}`;
     }
-    
+
     if (response.message && response.message !== 'Operación exitosa') {
       logLine += ` │ ${chalk.italic(response.message)}`;
     }
-    
+
     return logLine;
   }
-  
+
   // Formato por defecto para otros logs
-  const levelColor = level === 'info' ? chalk.blue : 
-                    level === 'warn' ? chalk.yellow : 
-                    level === 'error' ? chalk.red : chalk.white;
-  
+  const levelColor = level === 'info' ? chalk.blue :
+    level === 'warn' ? chalk.yellow :
+      level === 'error' ? chalk.red : chalk.white;
+
   let logLine = `${chalk.gray(timestamp)} ${levelColor(`[${level.toUpperCase()}]`)} ${message}`;
-  
+
   // Si hay metadata adicional, mostrarla de forma limpia
   if (Object.keys(rest).length > 0) {
     logLine += `\n${chalk.gray(JSON.stringify(rest, null, 2))}`;
   }
-  
+
   return logLine;
 });
 
@@ -138,27 +166,27 @@ const fileFormat = winston.format.combine(
 );
 
 // Formato para métricas específicas
-const metricsFormat = winston.format.printf((info: LogEntry) => {
-  const { timestamp, response, context, pagination } = info;
-  
+const metricsFormat = winston.format.printf((info: winston.Logform.TransformableInfo) => {
+  const { timestamp, response, context, pagination } = info as LogEntry;
+
   if (response && context) {
     let metricsLine = `${timestamp} | ${context.method} ${context.endpoint}`;
     metricsLine += ` | Status: ${response.status}`;
     metricsLine += ` | User: ${context.userId}`;
     metricsLine += ` | Time: ${context.executionTime}`;
     metricsLine += ` | Size: ${formatDataSize(response.dataSize)}`;
-    
+
     if (pagination) {
       metricsLine += ` | Records: ${pagination.recordsCount}/${pagination.total}`;
     }
-    
+
     if (context.requestId) {
       metricsLine += ` | ReqID: ${context.requestId}`;
     }
-    
+
     return metricsLine;
   }
-  
+
   return `${timestamp} | ${info.level.toUpperCase()} | ${info.message}`;
 });
 
@@ -167,20 +195,20 @@ export const logger = winston.createLogger({
   format: fileFormat,
   transports: [
     // Archivo de errores
-    new winston.transports.File({ 
-      filename: 'logs/error.log', 
+    new winston.transports.File({
+      filename: 'logs/error.log',
       level: 'error',
       format: fileFormat
     }),
-    
+
     // Archivo combinado
-    new winston.transports.File({ 
+    new winston.transports.File({
       filename: 'logs/combined.log',
       format: fileFormat
     }),
-    
+
     // Archivo específico para métricas de performance
-    new winston.transports.File({ 
+    new winston.transports.File({
       filename: 'logs/metrics.log',
       level: 'info',
       format: winston.format.combine(

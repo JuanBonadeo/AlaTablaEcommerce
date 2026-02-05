@@ -59,10 +59,12 @@ export async function POST(req: NextRequest) {
     // Agregar costo de envío si existe
     if (order.shipment?.cost && order.shipment.cost > 0) {
       items.push({
+        id: 'shipping',
         title: 'Envío',
         quantity: 1,
         unit_price: order.shipment.cost,
         currency_id: 'ARS',
+        picture_url: '',
         description: `Envío - ${order.shipment.serviceName || 'Correo Argentino'}`,
       });
     }
@@ -86,7 +88,7 @@ export async function POST(req: NextRequest) {
     console.log('Order ID:', orderId);
     console.log('Items count:', items.length);
     console.log('Total amount:', items.reduce((sum, item) => sum + (item.unit_price * item.quantity), 0));
-    
+
     const preferenceResult = await MercadoPagoService.createPreference({
       items,
       payer,
@@ -114,9 +116,9 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error('Error creating payment preference:', error);
     return NextResponse.json(
-      { 
-        success: false, 
-        message: error instanceof Error ? error.message : 'Error al crear preferencia de pago' 
+      {
+        success: false,
+        message: error instanceof Error ? error.message : 'Error al crear preferencia de pago'
       },
       { status: 500 }
     );

@@ -40,9 +40,10 @@ export function ShippingCalculator({ cartItems }: ShippingCalculatorProps) {
         return;
       }
 
-      setQuotes(result.data.quotes || []);
-      
-      if (result.data.quotes.length === 0) {
+      const quotes = result.data?.quotes || [];
+      setQuotes(quotes);
+
+      if (quotes.length === 0) {
         setError("No se encontraron opciones de envío disponibles");
       }
     } catch (err) {
@@ -101,11 +102,10 @@ export function ShippingCalculator({ cartItems }: ShippingCalculatorProps) {
             <div
               key={index}
               onClick={() => setSelectedQuote(quote.service)}
-              className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                selectedQuote === quote.service
+              className={`p-4 border rounded-lg cursor-pointer transition-all ${selectedQuote === quote.service
                   ? "border-blue-500 bg-blue-50"
                   : "border-gray-200 hover:border-blue-300"
-              }`}
+                }`}
             >
               <div className="flex justify-between items-start mb-2">
                 <div>

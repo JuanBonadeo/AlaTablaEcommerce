@@ -1,8 +1,20 @@
 import { prisma } from "@/db/client";
 import { OrderStatus } from "@prisma/client";
 
+export interface DashboardData {
+    stats: {
+        totalRevenue: number;
+        ordersCount: number;
+        productsCount: number;
+        usersCount: number;
+    };
+    revenueData: Array<{ month: string; revenue: number; orders: number }>;
+    topProducts: Array<{ name: string; sales: number; revenue: number }>;
+    activity: Array<{ action: string; detail: string; time: string | Date; color: string }>;
+}
+
 export const DashboardService = {
-    getStats: async () => {
+    getStats: async (): Promise<DashboardData> => {
         const [totalOrders, totalUsers, totalProducts, totalRevenueResult] = await Promise.all([
             prisma.order.count(),
             prisma.user.count(),
@@ -44,7 +56,7 @@ export const DashboardService = {
         });
 
         const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-        const last6Months: any[] = [];
+        const last6Months: Array<{ month: string; monthIdx: number; year: number; revenue: number; orders: number }> = [];
         for (let i = 5; i >= 0; i--) {
             const d = new Date();
             d.setMonth(d.getMonth() - i);

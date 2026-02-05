@@ -8,6 +8,7 @@ import {
 } from "@/lib/types/shipping.types";
 import { CorreoArgentinoService } from "@/core/shipments/correo-argentino.service";
 import { ProductDAO } from "@/core/products/products.dao";
+import { Product } from "@/lib/types/product.types";
 import { ErrorHandler } from "@/core/shared/errorHandler";
 import { ResponseHandler } from "@/core/shared/responseHandler";
 
@@ -38,7 +39,7 @@ export async function calculateCartShipping(data: CartShippingCalculation) {
     let totalValue = 0;
 
     for (const item of validatedData.items) {
-      const product = await ProductDAO.getById(item.productId);
+      const product = await ProductDAO.getById(item.productId) as Product | null;
 
       if (!product) {
         continue;
@@ -58,7 +59,7 @@ export async function calculateCartShipping(data: CartShippingCalculation) {
       // Calcular precio según variante o producto
       let itemPrice = product.price;
       if (item.variantId && product.variants) {
-        const variant = product.variants.find((v: any) => v.id === item.variantId);
+        const variant = product.variants.find((v) => v.id === item.variantId);
         if (variant && variant.price) {
           itemPrice = variant.price;
         }

@@ -7,7 +7,9 @@ import { User, Mail, Shield, Package, MapPin, Lock, Settings } from "lucide-reac
 
 export default async function ProfilePage() {
   const session = await requireAuth();
-  const isAdmin = (session?.user as any)?.role === 'ADMIN';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const userRole = (session?.user as any)?.role;
+  const isAdmin = userRole === 'ADMIN';
 
   return (
     <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8">
@@ -37,7 +39,7 @@ export default async function ProfilePage() {
               <>
                 <div className="space-y-1">
                   <p className="text-gray-500 text-sm flex items-center gap-2"><Shield size={14} /> Rol</p>
-                  <p className="text-white font-medium capitalize">{(session?.user as any)?.role?.toLowerCase() || 'Usuario'}</p>
+                  <p className="text-white font-medium capitalize">{userRole?.toLowerCase() || 'Usuario'}</p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-gray-500 text-sm">Estado</p>

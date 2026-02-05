@@ -58,7 +58,7 @@ const OrdersClient = ({ userId }: OrdersClientProps) => {
       setShowCancelModal(false);
       const result = await cancelOrderAction(orderToCancel);
 
-      if (!result.success) {
+      if (!result.ok) {
         return;
       }
 
@@ -131,7 +131,7 @@ const OrdersClient = ({ userId }: OrdersClientProps) => {
   };
 
   const getStatusIcon = (status: string) => {
-    const icons: Record<string, any> = {
+    const icons: Record<string, React.ElementType> = {
       'PENDING': Clock,
       'PAID': CheckCircle2,
       'SHIPPED': Truck,

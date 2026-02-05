@@ -123,6 +123,7 @@ const PaymentClient = () => {
           return;
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const mp = new (window as any).MercadoPago(mpKey, {
           locale: 'es-AR'
         });
@@ -151,6 +152,7 @@ const PaymentClient = () => {
 
       // Esperar a que el SDK esté disponible
       const checkSDK = setInterval(() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if ((window as any).MercadoPago) {
           clearInterval(checkSDK);
           renderButton();
@@ -241,7 +243,7 @@ const PaymentClient = () => {
               <h2 className="text-2xl font-bold text-white">Orden #{order.id.slice(-8)}</h2>
             </div>
             <p className="text-sm text-gray-400 flex items-center gap-2">
-              <span className={`px-2 py-0.5 rounded text-xs font-medium ${order.status === 'COMPLETED' ? 'bg-green-500/10 text-green-400 border border-green-500/20' :
+              <span className={`px-2 py-0.5 rounded text-xs font-medium ${order.status === 'PAID' ? 'bg-green-500/10 text-green-400 border border-green-500/20' :
                 order.status === 'PENDING' ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' :
                   'bg-gray-800 text-gray-300'
                 }`}>

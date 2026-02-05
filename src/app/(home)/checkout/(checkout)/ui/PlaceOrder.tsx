@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { PlaceOrderSkeleton } from "@/components/ui/skeletons/PlaceOrderSkeleton";
 import { getAddressByIdAction } from "@/lib/actions/address/address.actions";
 import { Address } from "@/lib/types/address.types";
+import { ShippingQuoteResponse } from "@/lib/types/shipping.types";
 
 export const PlaceOrder = () => {
     const router = useRouter();
@@ -17,69 +18,69 @@ export const PlaceOrder = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [isPlacingOrder, setIsPlacingOrder] = useState(false);
     const [address, setAddress] = useState<Address | null>(null);
-  
+
 
     const addressId = useAddressStore(state => state.addressId)
     const { itemsIn, subTotal, envio, total } = useCartStore(state => state.getSummaryInfo())
-    const cart  = useCartStore( state => state.cart)
-    const clearCart  = useCartStore( state => state.clearCart)
+    const cart = useCartStore(state => state.cart)
+    const clearCart = useCartStore(state => state.clearCart)
     const shippingQuote = useCartStore(state => state.getShippingQuote())
     const setShippingQuote = useCartStore(state => state.setShippingQuote)
-    
-    const [shippingOptions, setShippingOptions] = useState<any[]>([])
+
+    const [shippingOptions, setShippingOptions] = useState<ShippingQuoteResponse[]>([])
     const [isLoadingShipping, setIsLoadingShipping] = useState(false)
 
     useEffect(() => {
         const loadAddress = async () => {
-          setLoaded(true);
-          setErrorMessage('');
+            setLoaded(true);
+            setErrorMessage('');
 
-          if (addressId) {
-            try {
-              const addr = await getAddressByIdAction(addressId);
-              setAddress(addr);
-              
-              // Cargar opciones de envío para esta dirección
-              if (addr?.zip) {
-                loadShippingOptions(addr.zip, addr.city);
-              }
-            } catch (error) {
-              console.error('Error cargando dirección:', error);
-              setErrorMessage('No se pudo cargar la dirección seleccionada');
+            if (addressId) {
+                try {
+                    const addr = await getAddressByIdAction(addressId);
+                    setAddress(addr);
+
+                    // Cargar opciones de envío para esta dirección
+                    if (addr?.zip) {
+                        loadShippingOptions(addr.zip, addr.city);
+                    }
+                } catch (error) {
+                    console.error('Error cargando dirección:', error);
+                    setErrorMessage('No se pudo cargar la dirección seleccionada');
+                }
             }
-          }
         };
 
         loadAddress();
     }, [addressId])
 
     const loadShippingOptions = async (zip: string, city: string) => {
-      try {
-        setIsLoadingShipping(true);
-        const response = await fetch('/api/shipping/quote', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ zip, city }),
-        });
+        try {
+            setIsLoadingShipping(true);
+            const response = await fetch('/api/shipping/quote', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ zip, city }),
+            });
 
-        const data = await response.json();
-        if (data.success && Array.isArray(data.data)) {
-          setShippingOptions(data.data);
-          // Seleccionar automáticamente la primera opción
-          if (data.data.length > 0 && !shippingQuote) {
-            setShippingQuote(data.data[0]);
-          }
+            const data = await response.json();
+            if (data.success && Array.isArray(data.data)) {
+                setShippingOptions(data.data);
+                // Seleccionar automáticamente la primera opción
+                if (data.data.length > 0 && !shippingQuote) {
+                    setShippingQuote(data.data[0]);
+                }
+            }
+        } catch (error) {
+            console.error('Error cargando opciones de envío:', error);
+        } finally {
+            setIsLoadingShipping(false);
         }
-      } catch (error) {
-        console.error('Error cargando opciones de envío:', error);
-      } finally {
-        setIsLoadingShipping(false);
-      }
     }
 
     const onPlaceOrder = async () => {
         if (isPlacingOrder) return;
-        
+
         setIsPlacingOrder(true);
         setErrorMessage('');
 

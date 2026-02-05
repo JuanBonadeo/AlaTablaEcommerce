@@ -7,6 +7,6 @@ export default async function OrdersPage() {
     getOrderStatsAction()
   ]);
 
-  return <OrdersClient initialOrders={ordersData} stats={stats} />;
+  return <OrdersClient initialOrders={ordersData || { items: [], pagination: { totalPages: 0, currentPage: 1, limit: 50, total: 0 } }} stats={stats} />;
 }
 

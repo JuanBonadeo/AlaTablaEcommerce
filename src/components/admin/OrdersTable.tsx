@@ -41,7 +41,7 @@ export function OrdersTable({ orders }: OrdersTableProps) {
         result = await updateOrderStatusAction(modalData.orderId, modalData.newStatus);
       }
 
-      if (result?.success) {
+      if (result?.ok) {
         router.refresh();
       }
     } catch (err) {
@@ -89,7 +89,7 @@ export function OrdersTable({ orders }: OrdersTableProps) {
               {modalData.action === 'cancel' ? 'Cancelar orden' : 'Cambiar estado'}
             </h3>
             <p className="text-gray-600 mb-6">
-              {modalData.action === 'cancel' 
+              {modalData.action === 'cancel'
                 ? '¿Estás seguro de que deseas cancelar esta orden? El stock será restaurado.'
                 : `¿Confirmas cambiar el estado de la orden a "${getStatusText(modalData.newStatus || '')}"?`
               }
@@ -140,7 +140,7 @@ export function OrdersTable({ orders }: OrdersTableProps) {
             <tbody className="divide-y divide-gray-200">
               {orders.map((order) => {
                 const itemsCount = order.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
-                
+
                 return (
                   <tr key={order.id} className="hover:bg-stone-900">
                     <td className="px-6 py-4 whitespace-nowrap">

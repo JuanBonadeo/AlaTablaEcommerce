@@ -1,0 +1,6 @@
+src/app/(home)/profile/orders/ui/OrdersClient.tsx(61,19): error TS2339: Property 'success' does not exist on type '{ ok: boolean; message: string; }'.
+src/app/admin/offers/page.tsx(11,24): error TS2322: Type '({ product: { price: number; id: string; slug: string; name: string; } | null; } & { productId: string | null; variantId: string | null; id: string; createdAt: Date; updatedAt: Date; ... 4 more ...; hasta: Date; })[]' is not assignable to type 'Offer[]'.
+  Type '{ product: { price: number; id: string; slug: string; name: string; } | null; } & { productId: string | null; variantId: string | null; id: string; createdAt: Date; updatedAt: Date; ... 4 more ...; hasta: Date; }' is not assignable to type 'Offer'.
+    Types of property 'product' are incompatible.
+      Type '{ price: number; id: string; slug: string; name: string; } | null' is not assignable to type '{ id: string; name: string; price: number; } | undefined'.
+        Type 'null' is not assignable to type '{ id: string; name: string; price: number; } | undefined'.

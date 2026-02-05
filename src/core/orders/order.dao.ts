@@ -1,7 +1,7 @@
 import { prisma } from '@/db/client';
-import { 
-  CreateOrderInput, 
-  UpdateOrderInput, 
+import {
+  CreateOrderInput,
+  UpdateOrderInput,
   OrderListParams,
   OrderList
 } from '@/lib/types/order.types';
@@ -23,7 +23,7 @@ export const OrderDAO = {
           })),
         },
       },
-      include: { 
+      include: {
         items: {
           include: {
             product: {
@@ -138,7 +138,7 @@ export const OrderDAO = {
   update: async (id: string, data: UpdateOrderInput): Promise<Order> => {
     const updateData: Prisma.OrderUpdateInput = {};
     if (data.status !== undefined) updateData.status = data.status;
-    if (data.addressId !== undefined) updateData.addressId = data.addressId;
+    if (data.addressId !== undefined) updateData.address = { connect: { id: data.addressId } };
 
     return prisma.order.update({
       where: { id },

@@ -1,0 +1,9 @@
+src/app/(home)/profile/addresses/ui/ProfileAddressesClient.tsx(131,21): error TS2322: Type '{ show: true; onClose: () => void; onAddressAdded: () => Promise<void>; userId: string; editingAddress: Address | undefined; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'show' does not exist on type 'IntrinsicAttributes & Props'.
+src/app/admin/offers/page.tsx(11,24): error TS2322: Type '({ product: { price: number; name: string; id: string; slug: string; } | null; } & { productId: string | null; variantId: string | null; id: string; createdAt: Date; updatedAt: Date; ... 4 more ...; hasta: Date; })[]' is not assignable to type 'Offer[]'.
+  Type '{ product: { price: number; name: string; id: string; slug: string; } | null; } & { productId: string | null; variantId: string | null; id: string; createdAt: Date; updatedAt: Date; ... 4 more ...; hasta: Date; }' is not assignable to type 'Offer'.
+    Types of property 'productId' are incompatible.
+      Type 'string | null' is not assignable to type 'string'.
+        Type 'null' is not assignable to type 'string'.
+src/components/admin/OrdersTable.tsx(44,19): error TS2339: Property 'success' does not exist on type 'ApiError | ApiResponse<{ userId: string; addressId: string | null; total: number; id: string; status: OrderStatus; createdAt: Date; updatedAt: Date; }> | { ...; }'.
+  Property 'success' does not exist on type '{ ok: boolean; message: string; }'.

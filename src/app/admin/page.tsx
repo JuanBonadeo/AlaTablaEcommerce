@@ -1,5 +1,6 @@
 import { getDashboardStatsAction } from "@/lib/actions/admin/dashboard.actions";
 import DashboardClient from "./DashboardClient";
+import { DashboardData } from "@/core/admin/dashboard.service";
 
 export default async function AdminDashboardPage() {
   const result = await getDashboardStatsAction();
@@ -15,5 +16,5 @@ export default async function AdminDashboardPage() {
     );
   }
 
-  return <DashboardClient data={result.data as any} />;
+  return <DashboardClient data={result.data as DashboardData} />;
 }

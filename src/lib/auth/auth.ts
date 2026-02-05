@@ -12,6 +12,7 @@ export const auth = betterAuth({
   trustedOrigins: [
     "http://localhost:3000",
     "http://192.168.0.119:3000",
+    "https://alatabla.store",
   ],
   emailAndPassword: {
     enabled: true,
@@ -49,7 +50,7 @@ export const auth = betterAuth({
     },
   },
   plugins: [
-    nextCookies(), 
+    nextCookies(),
   ],
 });
 

@@ -57,12 +57,12 @@ export const MercadoPagoService = {
     try {
       // Validar que el Access Token esté configurado
       const token = process.env.MERCADO_PAGO_ACCESS_TOKEN;
-      
+
       console.log('=== Mercado Pago Debug Info ===');
       console.log('Token length:', token?.length);
       console.log('Token starts with:', token?.substring(0, 20) + '...');
       console.log('Token ends with:', token?.substring(token.length - 20));
-      
+
       if (!token || token.startsWith('TEST-12345')) {
         console.error('MERCADO_PAGO_ACCESS_TOKEN no configurado correctamente');
         return {
@@ -80,13 +80,13 @@ export const MercadoPagoService = {
 
       const body = {
         items: data.items.map(item => ({
-          id: item.id,
+          id: item.id || '',
           title: item.title,
           quantity: item.quantity,
           unit_price: item.unit_price,
           currency_id: item.currency_id || 'ARS',
-          picture_url: item.picture_url,
-          description: item.description,
+          picture_url: item.picture_url || '',
+          description: item.description || '',
         })),
         payer: data.payer,
         back_urls: {
@@ -124,7 +124,7 @@ export const MercadoPagoService = {
       };
     } catch (error) {
       console.error('Error creating Mercado Pago preference:', error);
-      
+
       // Mensaje de error más descriptivo
       let errorMessage = 'Error al crear preferencia de pago';
       if (error instanceof Error) {

@@ -13,7 +13,7 @@ export const AuthService = {
           email: validatedData.email,
           password: validatedData.password,
           name: `${validatedData.name} ${validatedData.surname}`,
-        },
+        } as any, // eslint-disable-line @typescript-eslint/no-explicit-any
       });
 
       if (!result) {
@@ -40,7 +40,8 @@ export const AuthService = {
         throw new Error("Este correo electrónico ya está registrado");
       }
 
-      throw new Error(error.message || "Error inesperado al registrar usuario");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      throw new Error((error as any).message || "Error inesperado al registrar usuario");
     }
   },
 
