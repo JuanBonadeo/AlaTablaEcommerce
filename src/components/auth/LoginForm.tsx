@@ -116,6 +116,14 @@ export function LoginForm({ onSubmit, loading }: Props) {
             onChange={handleChange}
             disabled={loading}
           />
+          <div className="flex justify-center mt-3">
+            <Link
+              href="/auth/forgot-password"
+              className="text-s font-medium text-orange-400 hover:text-orange-300 transition-colors"
+            >
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </div>
           {validationErrors.password && (
             <p className="mt-1 text-sm text-red-600">
               {validationErrors.password}
