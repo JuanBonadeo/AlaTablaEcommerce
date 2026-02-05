@@ -1,5 +1,5 @@
 import { prisma } from "@/db/client";
-import { Role } from "@prisma/client";
+import { Role } from "@/lib/types/enums";
 
 export const userService = {
   async getAllUsers() {
