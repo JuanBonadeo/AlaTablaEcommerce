@@ -13,6 +13,7 @@ export const auth = betterAuth({
     "http://localhost:3000",
     "http://192.168.0.119:3000",
     "https://alatabla.store",
+    "https://www.alatabla.store",
   ],
   emailAndPassword: {
     enabled: true,
