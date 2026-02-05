@@ -180,7 +180,7 @@ export const AddressClient = () => {
 
               <div className="ml-1 pl-4 border-l-2 border-gray-800 mt-4 space-y-1">
                 <p className="text-gray-200 font-medium">
-                  Av. La Plata 1234 - Buenos Aires
+                  Garcia del Cossio 2198 biss Barrio Palos verdes
                 </p>
                 <p className="text-sm text-gray-500">
                   Lu a Vi: 9 a 18 hs. Sá: 10 a 14 hs.

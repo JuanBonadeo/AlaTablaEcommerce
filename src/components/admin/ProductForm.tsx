@@ -65,9 +65,9 @@ export function ProductForm({ product, categories }: ProductFormProps) {
     const imagesPayload = [...existingUrls, ...base64Images];
     // Agregar imágenes base64 y variantes al FormData
     formData.set('images', JSON.stringify(imagesPayload));
-    // if (variants && variants.length > 0) {
-    //   formData.set('variants', JSON.stringify(variants));
-    // }
+    if (variants && variants.length > 0) {
+      formData.set('variants', JSON.stringify(variants));
+    }
     try {
       const result = product
         ? await updateProductAction(product.id, formData)

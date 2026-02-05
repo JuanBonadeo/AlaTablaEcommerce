@@ -34,9 +34,6 @@ export const ShippingClient = () => {
         const addr = await getAddressByIdAction(addressId);
         setAddress(addr);
 
-        const isRosario =
-          addr?.city?.toLowerCase().includes("rosario") || addr?.zip?.startsWith("2000");
-
         // Calcular envíos con el zip code de la dirección
         if (cart.length > 0 && addr?.zip) {
           const cartItems = cart.map((item) => ({
@@ -51,52 +48,12 @@ export const ShippingClient = () => {
           });
 
           if (result && "data" in result && result.data && "quotes" in result.data) {
-            let nextQuotes = result.data.quotes || [];
-
-            // Agregar opción local Rosario si aplica
-            if (isRosario) {
-              const rosarioQuote: ShippingQuoteResponse = {
-                carrier: ShippingCarrier.ENTREGA_LOCAL,
-                service: ShippingService.ROSARIO_LOCAL,
-                serviceName: "Envío Local Rosario",
-                cost: 7500,
-                estimatedDays: 1,
-              };
-
-              const exists = nextQuotes.some(
-                (q) => q.service === rosarioQuote.service && q.carrier === rosarioQuote.carrier
-              );
-              if (!exists) {
-                nextQuotes = [...nextQuotes, rosarioQuote];
-              }
-            }
-
-            setQuotes(nextQuotes);
-          } else if (isRosario) {
-            // Sin cotizaciones externas, pero habilitamos envío local
-            setQuotes([
-              {
-                carrier: ShippingCarrier.ENTREGA_LOCAL,
-                service: ShippingService.ROSARIO_LOCAL,
-                serviceName: "Envío Local Rosario",
-                cost: 7500,
-                estimatedDays: 1,
-              },
-            ]);
+            // Usar directamente las cotizaciones que vienen del servicio
+            // El AndreaniService ya maneja la lógica de zip code 2000
+            setQuotes(result.data.quotes || []);
           } else {
             setQuotes([]);
           }
-        } else if (isRosario) {
-          // No hay carrito o zip, pero dirección indica Rosario: mostrar opción local
-          setQuotes([
-            {
-              carrier: ShippingCarrier.ENTREGA_LOCAL,
-              service: ShippingService.ROSARIO_LOCAL,
-              serviceName: "Envío Local Rosario",
-              cost: 7500,
-              estimatedDays: 1,
-            },
-          ]);
         } else {
           setQuotes([]);
         }

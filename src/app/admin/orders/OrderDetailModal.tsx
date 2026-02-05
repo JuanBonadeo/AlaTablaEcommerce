@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { X, Package, MapPin, CreditCard, Truck, User, Calendar, DollarSign } from 'lucide-react';
 import { Order } from '@/lib/types/order.types';
 import { ProductImage } from '@/components/product/prduct-image/ProductImage';
+import { currencyFormat } from '@/lib/helpers/currencyFormat';
+import { createAndreaniShipmentAction } from '@/lib/actions/shipping/andreani.actions';
 
 interface OrderDetailModalProps {
   order: Order;
@@ -21,6 +23,8 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
     estimatedDelivery?: string;
   } | null>(null);
   const [statusError, setStatusError] = useState<string | null>(null);
+  const [isCreatingShipment, setIsCreatingShipment] = useState(false);
+  const [shipmentCreationError, setShipmentCreationError] = useState<string | null>(null);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -104,6 +108,26 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
     }
   };
 
+  const handleCreateAndreaniShipment = async () => {
+    try {
+      setShipmentCreationError(null);
+      setIsCreatingShipment(true);
+
+      const result = await createAndreaniShipmentAction(order.id);
+
+      if (!result.ok) {
+        throw new Error(result.message || 'No se pudo crear el envío');
+      }
+
+      // Refresh the page to show the new shipment
+      window.location.reload();
+    } catch (error) {
+      setShipmentCreationError(error instanceof Error ? error.message : 'Error inesperado');
+    } finally {
+      setIsCreatingShipment(false);
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
       <div className="bg-[#171718] border border-gray-800 rounded-xl max-w-4xl w-full my-8">
@@ -153,10 +177,10 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
               </div>
               <p className={`font-medium capitalize ${getStatusColor(order.status)}`}>
                 {order.status === 'PENDING' ? 'Pendiente' :
-                 order.status === 'PAID' ? 'Pagado' :
-                 order.status === 'SHIPPED' ? 'Enviado' :
-                 order.status === 'DELIVERED' ? 'Entregado' :
-                 'Cancelado'}
+                  order.status === 'PAID' ? 'Pagado' :
+                    order.status === 'SHIPPED' ? 'Enviado' :
+                      order.status === 'DELIVERED' ? 'Entregado' :
+                        'Cancelado'}
               </p>
             </div>
 
@@ -165,7 +189,7 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
                 <DollarSign size={16} className="text-gray-500" />
                 <span className="text-gray-400 text-sm">Total</span>
               </div>
-              <p className="text-green-400 font-bold text-xl">${order.total.toFixed(2)}</p>
+              <p className="text-green-400 font-bold text-xl">{currencyFormat(order.total)}</p>
             </div>
           </div>
 
@@ -223,10 +247,10 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
                   <p className="text-gray-400 text-sm mb-1">Estado</p>
                   <p className={`font-medium capitalize ${getPaymentStatusColor(order.payment.status)}`}>
                     {order.payment.status === 'COMPLETED' ? 'Pagado (Confirmado)' :
-                     order.payment.status === 'PENDING' ? 'Pendiente' :
-                     order.payment.status === 'TRANSFERRED' ? 'Transferido' :
-                     order.payment.status === 'REFUNDED' ? 'Reembolsado' :
-                     'Fallido'}
+                      order.payment.status === 'PENDING' ? 'Pendiente' :
+                        order.payment.status === 'TRANSFERRED' ? 'Transferido' :
+                          order.payment.status === 'REFUNDED' ? 'Reembolsado' :
+                            'Fallido'}
                   </p>
                 </div>
                 {order.payment.transactionId && (
@@ -272,7 +296,7 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
                 {order.shipment.cost !== undefined && order.shipment.cost !== null && (
                   <div>
                     <p className="text-gray-400 text-sm mb-1">Costo de envío</p>
-                    <p className="text-green-400 font-semibold">${order.shipment.cost.toFixed(2)}</p>
+                    <p className="text-green-400 font-semibold">{currencyFormat(order.shipment.cost)}</p>
                   </div>
                 )}
                 {order.shipment.estimatedDays && (
@@ -358,6 +382,25 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
             </div>
           )}
 
+          {/* Create Andreani Shipment Button (when no shipment exists) */}
+          {!order.shipment && order.address && (
+            <div className="bg-[#0a0a0a] border border-gray-800 rounded-lg p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Truck size={20} className="text-orange-400" />
+                <h3 className="text-lg font-bold text-white">Crear Envío</h3>
+              </div>
+              <p className="text-gray-400 mb-4">Esta orden aún no tiene un envío asociado. Puedes crear un envío con Andreani.</p>
+              <button
+                onClick={handleCreateAndreaniShipment}
+                disabled={isCreatingShipment}
+                className="px-6 py-3 bg-orange-600 hover:bg-orange-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
+              >
+                {isCreatingShipment ? 'Creando envío con Andreani...' : 'Crear Envío con Andreani'}
+              </button>
+              {shipmentCreationError && <p className="text-sm text-red-400 mt-3">{shipmentCreationError}</p>}
+            </div>
+          )}
+
           {/* Order Items */}
           <div className="bg-[#0a0a0a] border border-gray-800 rounded-lg p-6">
             <h3 className="text-lg font-bold text-white mb-4">Productos</h3>
@@ -381,11 +424,11 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
                     <p className="text-gray-500 text-sm">Cantidad: {item.quantity}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-white font-medium">${item.price.toFixed(2)}</p>
+                    <p className="text-white font-medium">{currencyFormat(item.price)}</p>
                     <p className="text-gray-400 text-sm">c/u</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-green-400 font-bold">${(item.price * item.quantity).toFixed(2)}</p>
+                    <p className="text-green-400 font-bold">{currencyFormat(item.price * item.quantity)}</p>
                     <p className="text-gray-400 text-sm">total</p>
                   </div>
                 </div>
@@ -395,7 +438,7 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
             {/* Total */}
             <div className="flex items-center justify-between pt-4 mt-4 border-t border-gray-800">
               <p className="text-white font-bold text-lg">Total de la Orden</p>
-              <p className="text-green-400 font-bold text-2xl">${order.total.toFixed(2)}</p>
+              <p className="text-green-400 font-bold text-2xl">{currencyFormat(order.total)}</p>
             </div>
           </div>
         </div>

@@ -46,11 +46,13 @@ export const calculatePrice = (
   };
 };
 
+import { currencyFormat } from '@/lib/helpers/currencyFormat';
+
 /**
  * Formatea un precio para mostrar
  */
 export const formatPrice = (price: number): string => {
-  return price.toFixed(2);
+  return currencyFormat(price);
 };
 
 /**

@@ -10,6 +10,8 @@ import { Order, OrderList, OrderStatus } from '@/lib/types/order.types';
 import { updateOrderStatusAction } from '@/lib/actions/order/order.actions';
 import OrderDetailModal from './OrderDetailModal';
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
+import { currencyFormat } from '@/lib/helpers/currencyFormat';
+import { formatPrice } from '@/lib/utils/pricing';
 
 interface OrdersClientProps {
   initialOrders: OrderList;
@@ -109,7 +111,7 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
       order.id,
       order.user?.name || '',
       order.user?.email || '',
-      `$${order.total.toFixed(2)}`,
+      currencyFormat(order.total),
       order.status,
       new Date(order.createdAt).toLocaleDateString('es-ES')
     ]);
@@ -188,7 +190,7 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
               <span className="text-gray-400 text-sm">Ingresos</span>
               <TrendingUp className="text-orange-500" size={20} />
             </div>
-            <p className="text-2xl font-bold text-orange-400">${stats.revenue.toFixed(2)}</p>
+            <p className="text-2xl font-bold text-orange-400">{currencyFormat(stats.revenue)}</p>
           </div>
         </div>
 
@@ -257,7 +259,7 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
                       <span className="text-gray-300">{order.items?.length || 0} items</span>
                     </td>
                     <td className="py-4 px-4">
-                      <span className="text-green-400 font-medium">${order.total.toFixed(2)}</span>
+                      <span className="text-green-400 font-medium">{formatPrice(order.total)}</span>
                     </td>
                     <td className="py-4 px-4">
                       <select

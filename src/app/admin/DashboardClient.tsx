@@ -2,6 +2,7 @@
 
 import { StatCard } from '@/components/admin/StatCard';
 import { DollarSign, ShoppingCart, Package, Users, TrendingUp, TrendingDown } from 'lucide-react';
+import { currencyFormat } from '@/lib/helpers/currencyFormat';
 import {
     AreaChart,
     Area,
@@ -13,11 +14,13 @@ import {
     Tooltip,
     ResponsiveContainer
 } from 'recharts';
+import { formatPrice } from '@/lib/utils/pricing';
 
 interface DashboardClientProps {
     data: {
         stats: {
             totalRevenue: number;
+            totalProfit: number;
             ordersCount: number;
             productsCount: number;
             usersCount: number;
@@ -35,7 +38,7 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
                 <p className="text-gray-400 text-sm mb-2">{label}</p>
                 {payload.map((entry, index: number) => (
                     <p key={index} className="text-white font-medium">
-                        {entry.name}: {entry.name.includes('Ingresos') ? `$${entry.value.toLocaleString()}` : entry.value}
+                        {entry.name}: {entry.name.includes('Ingresos') ? formatPrice(entry.value) : entry.value}
                     </p>
                 ))}
             </div>
@@ -58,13 +61,13 @@ export default function DashboardClient({ data }: DashboardClientProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <StatCard
                     title="Ventas Totales"
-                    value={`$${stats.totalRevenue.toLocaleString()}`}
+                    value={currencyFormat(stats.totalRevenue)}
                     icon={DollarSign}
                     iconBgColor="bg-green-500"
                 />
                 <StatCard
                     title="Ganancia Est."
-                    value={`$${stats.totalProfit.toLocaleString()}`}
+                    value={currencyFormat(stats.totalProfit)}
                     icon={TrendingUp}
                     iconBgColor="bg-emerald-500"
                 />
@@ -164,7 +167,7 @@ export default function DashboardClient({ data }: DashboardClientProps) {
                                     </td>
                                     <td className="py-4 px-4 text-gray-300">{product.sales} unidades</td>
                                     <td className="py-4 px-4">
-                                        <span className="font-medium text-green-500">${product.revenue.toLocaleString()}</span>
+                                        <span className="font-medium text-green-500">{formatPrice(product.revenue)}</span>
                                     </td>
                                 </tr>
                             )) : (

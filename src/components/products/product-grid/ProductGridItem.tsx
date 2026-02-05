@@ -78,15 +78,15 @@ export const ProductGridItemComponent = ({ product }: Props) => {
         {priceInfo.hasOffer ? (
           <div className="flex justify-between items-center gap-1 mt-1">
             <span className="text-gray-500 line-through text-xs">
-              ${formatPrice(priceInfo.originalPrice)}
+              {formatPrice(priceInfo.originalPrice)}
             </span>
             <span className="font-bold text-lg text-orange-500 flex items-center">
-              ${formatPrice(priceInfo.finalPrice)}
+              {formatPrice(priceInfo.finalPrice)}
             </span>
 
           </div>
         ) : (
-          <span className="font-bold text-lg text-white mt-1">${formatPrice(product.price)}</span>
+          <span className="font-bold text-lg text-white mt-1">{formatPrice(product.price)}</span>
         )}
         {priceInfo.hasOffer && activeOffer?.descripcion && (
           <span className="text-xs text-gray-500 italic mt-0.5">

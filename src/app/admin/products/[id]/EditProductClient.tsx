@@ -246,6 +246,23 @@ export default function EditProductClient({ product, categories }: EditProductCl
 
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Costo (Proveedor)
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                  <input
+                    type="number"
+                    name="costPrice"
+                    defaultValue={product.costPrice || 0}
+                    step="0.01"
+                    min="0"
+                    className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg pl-8 pr-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Stock <span className="text-red-500">*</span>
                 </label>
                 <input

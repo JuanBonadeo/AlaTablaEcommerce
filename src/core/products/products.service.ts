@@ -124,6 +124,7 @@ export const ProductService = {
           create: variants.map((v) => ({
             name: v.name as string,
             price: v.price ?? null,
+            costPrice: v.costPrice ?? 0,
             stock: v.stock ?? null,
             slug: v.slug || getSlug(String(v.name)),
           })),

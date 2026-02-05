@@ -6,7 +6,7 @@ import {
   CartShippingCalculation,
   CartShippingCalculationSchema,
 } from "@/lib/types/shipping.types";
-import { CorreoArgentinoService } from "@/core/shipments/correo-argentino.service";
+import { AndreaniService } from "@/core/shipments/andreani.service";
 import { ProductDAO } from "@/core/products/products.dao";
 import { Product } from "@/lib/types/product.types";
 import { ErrorHandler } from "@/core/shared/errorHandler";
@@ -18,7 +18,7 @@ import { ResponseHandler } from "@/core/shared/responseHandler";
 export async function getShippingQuote(data: ShippingQuoteRequest) {
   try {
     const validatedData = ShippingQuoteRequestSchema.parse(data);
-    const quotes = await CorreoArgentinoService.getQuote(validatedData);
+    const quotes = await AndreaniService.getQuote(validatedData);
 
     return ResponseHandler.success(quotes);
   } catch (error) {
@@ -82,8 +82,8 @@ export async function calculateCartShipping(data: CartShippingCalculation) {
     }
 
     // Obtener cotizaciones
-    const quotes = await CorreoArgentinoService.getQuote({
-      originZipCode: process.env.ORIGIN_ZIP_CODE || "1000",
+    const quotes = await AndreaniService.getQuote({
+      originZipCode: process.env.ORIGIN_ZIP_CODE || "2000",
       destinationZipCode: validatedData.destinationZipCode,
       weight: totalWeight,
       declaredValue: totalValue,
@@ -96,25 +96,6 @@ export async function calculateCartShipping(data: CartShippingCalculation) {
       quotes,
       totalWeight,
       totalValue,
-    });
-  } catch (error) {
-    return ErrorHandler.format(error);
-  }
-}
-
-/**
- * Verifica la disponibilidad de la API de Correo Argentino
- */
-export async function checkShippingApiAvailability() {
-  try {
-    const isAvailable = await CorreoArgentinoService.checkApiAvailability();
-
-    return ResponseHandler.success({
-      available: isAvailable,
-      carrier: "CORREO_ARGENTINO",
-      message: isAvailable
-        ? "API de Correo Argentino disponible"
-        : "API no disponible - usando tarifas estimadas",
     });
   } catch (error) {
     return ErrorHandler.format(error);

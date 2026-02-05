@@ -19,6 +19,7 @@ export default function NewProductForm({ categories }: { categories: Category[] 
     name: '',
     description: '',
     price: '',
+    costPrice: '',
     stock: '',
     weight: '',
     length: '',
@@ -28,7 +29,7 @@ export default function NewProductForm({ categories }: { categories: Category[] 
   });
 
   const [images, setImages] = useState<string[]>([]);
-  const [variants, setVariants] = useState<Array<{ name: string; price: string; stock: string }>>([]);
+  const [variants, setVariants] = useState<Array<{ name: string; price: string; costPrice: string; stock: string }>>([]);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   // auto-computed slug from product name
@@ -60,6 +61,7 @@ export default function NewProductForm({ categories }: { categories: Category[] 
     formDataToSend.append('name', formData.name);
     formDataToSend.append('description', formData.description);
     formDataToSend.append('price', formData.price);
+    formDataToSend.append('costPrice', formData.costPrice || '0');
     formDataToSend.append('stock', formData.stock);
     if (formData.weight) formDataToSend.append('weight', formData.weight);
     if (formData.length) formDataToSend.append('length', formData.length);
@@ -81,7 +83,7 @@ export default function NewProductForm({ categories }: { categories: Category[] 
   };
 
   const addVariant = () => {
-    setVariants([...variants, { name: '', price: '', stock: '' }]);
+    setVariants([...variants, { name: '', price: '', costPrice: '', stock: '' }]);
   };
 
   const removeVariant = (index: number) => {
@@ -317,7 +319,7 @@ export default function NewProductForm({ categories }: { categories: Category[] 
                         <Trash2 size={16} />
                       </button>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                       <div>
                         <label className="block text-xs font-medium text-gray-400 mb-2">Nombre</label>
                         <input
@@ -344,6 +346,20 @@ export default function NewProductForm({ categories }: { categories: Category[] 
                           }}
                           className="w-full bg-[#171718] border border-gray-800 rounded-lg px-3 py-2 text-white placeholder-gray-600 focus:outline-none focus:border-orange-500 transition-colors text-sm"
                           placeholder="0"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-400 mb-2">Costo (Prov)</label>
+                        <input
+                          type="number"
+                          value={variant.costPrice}
+                          onChange={(e) => {
+                            const newVariants = [...variants];
+                            newVariants[index].costPrice = e.target.value;
+                            setVariants(newVariants);
+                          }}
+                          className="w-full bg-[#171718] border border-gray-800 rounded-lg px-3 py-2 text-white placeholder-gray-600 focus:outline-none focus:border-orange-500 transition-colors text-sm"
+                          placeholder="0.00"
                         />
                       </div>
                       <div>
@@ -388,6 +404,24 @@ export default function NewProductForm({ categories }: { categories: Category[] 
                     placeholder="0.00"
                     step="0.01"
                     required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Costo (Proveedor)
+                </label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                  <input
+                    type="number"
+                    value={formData.costPrice}
+                    onChange={(e) => setFormData({ ...formData, costPrice: e.target.value })}
+                    className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg pl-8 pr-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+                    placeholder="0.00"
+                    step="0.01"
+                    min="0"
                   />
                 </div>
               </div>

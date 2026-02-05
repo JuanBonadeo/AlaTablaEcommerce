@@ -8,6 +8,7 @@ import { Product } from "@/lib/types/product.types";
 import { useCartStore } from "@/lib/store/cart-stores";
 import type { CartItem } from "@/lib/types/cart.types";
 import { ToastNotification } from "@/components/ui/ToastNotification";
+import { currencyFormat } from "@/lib/helpers/currencyFormat";
 
 
 interface Props {
@@ -91,7 +92,7 @@ export const AddToCart = ({ product }: Props) => {
                     >
                         {product.variants.map(v => (
                             <option key={v.id} value={v.id}>
-                                {v.name} {v.price ? ` - $${v.price}` : ''}
+                                {v.name} {v.price ? ` - ${currencyFormat(v.price)}` : ''}
                                 {(v.stock !== undefined && v.stock !== null) ? ` (Stock: ${v.stock})` : ''}
                             </option>
                         ))}

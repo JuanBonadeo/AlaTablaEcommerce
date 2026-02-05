@@ -1,51 +1,59 @@
-import { NextRequest, NextResponse } from "next/server";
-import { ShippingQuoteRequestSchema } from "@/lib/types/shipping.types";
-import { CorreoArgentinoService } from "@/core/shipments/correo-argentino.service";
-import { ErrorHandler } from "@/core/shared/errorHandler";
-import { ResponseHandler } from "@/core/shared/responseHandler";
+import { NextResponse } from "next/server";
 
-/**
- * POST /api/shipping/quote
- * Endpoint para obtener cotizaciones de envío
- */
-export async function POST(request: NextRequest) {
+import { AndreaniService } from "@/core/shipments/andreani.service";
+import {
+  ShippingQuoteRequest,
+  ShippingQuoteRequestSchema,
+} from "@/lib/types/shipping.types";
+import { logger } from "@/core/shared/logger";
+
+export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    
-    // Validar la solicitud
+    const body: ShippingQuoteRequest = await request.json();
+
+    // Validar datos de entrada
     const validatedData = ShippingQuoteRequestSchema.parse(body);
-    
-    // Obtener cotizaciones de Correo Argentino
-    const quotes = await CorreoArgentinoService.getQuote(validatedData);
-    
-    return NextResponse.json(ResponseHandler.success(quotes));
-  } catch (error) {
-    const formattedError = ErrorHandler.format(error);
-    return NextResponse.json(formattedError, { 
-      status: formattedError.status 
+
+    logger.info("Shipping quote request", { data: validatedData });
+
+    // Obtener cotización
+    const quotes = await AndreaniService.getQuote(validatedData);
+
+    return NextResponse.json({
+      success: true,
+      data: quotes,
     });
+  } catch (error) {
+    logger.error("Error getting shipping quote", { error });
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: error instanceof Error ? error.message : "Error al obtener cotización",
+      },
+      { status: 500 }
+    );
   }
 }
 
-/**
- * GET /api/shipping/quote/health
- * Verifica si la API de Correo Argentino está disponible
- */
 export async function GET() {
   try {
-    const isAvailable = await CorreoArgentinoService.checkApiAvailability();
-    
-    return NextResponse.json(ResponseHandler.success({
-      available: isAvailable,
-      carrier: "CORREO_ARGENTINO",
-      message: isAvailable 
-        ? "API de Correo Argentino disponible" 
-        : "API no disponible - usando tarifas estimadas",
-    }));
-  } catch (error) {
-    const formattedError = ErrorHandler.format(error);
-    return NextResponse.json(formattedError, { 
-      status: formattedError.status 
+    // No longer checking API availability, always return estimated rates
+    return NextResponse.json({
+      success: true,
+      data: {
+        available: true,
+        carrier: "ANDREANI",
+        message: "Usando tarifas de Andreani",
+      },
     });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Error checking API availability",
+      },
+      { status: 500 }
+    );
   }
 }

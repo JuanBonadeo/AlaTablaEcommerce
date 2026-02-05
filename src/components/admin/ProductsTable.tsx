@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
+import { currencyFormat } from '@/lib/helpers/currencyFormat';
 
 
 
@@ -95,7 +96,7 @@ export function ProductsTable({ products }: ProductsTableProps) {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm ">
                     <div className="flex flex-col">
-                      ${product.price.toFixed(2)}
+                      {currencyFormat(product.price)}
                       {product.offers && product.offers.length > 0 && product.offers[0] && (
                         <span className="text-xs text-orange-500 font-semibold">
                           -{product.offers[0].descuento}% OFF
@@ -106,10 +107,10 @@ export function ProductsTable({ products }: ProductsTableProps) {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${product.stock > 10
-                          ? 'bg-green-100 text-green-800'
-                          : product.stock > 0
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-red-100 text-red-800'
+                        ? 'bg-green-100 text-green-800'
+                        : product.stock > 0
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : 'bg-red-100 text-red-800'
                         }`}
                     >
                       {product.stock} unidades

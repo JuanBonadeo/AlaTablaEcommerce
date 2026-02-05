@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Plus, Edit, Trash2, Percent, Calendar, X, Save, Tag, Clock } from 'lucide-react';
 import { createOfferAction, updateOfferAction, deleteOfferAction } from '@/lib/actions/offer/offer.actions';
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
+import { currencyFormat } from '@/lib/helpers/currencyFormat';
 
 type Offer = {
   id: string;
@@ -258,10 +259,10 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
                       </span>
                     </td>
                     <td className="py-4 px-4">
-                      <span className="text-gray-400 line-through">${originalPrice.toFixed(2)}</span>
+                      <span className="text-gray-400 line-through">{currencyFormat(originalPrice)}</span>
                     </td>
                     <td className="py-4 px-4">
-                      <span className="text-green-400 font-bold text-lg">${discountedPrice.toFixed(2)}</span>
+                      <span className="text-green-400 font-bold text-lg">{currencyFormat(discountedPrice)}</span>
                     </td>
                     <td className="py-4 px-4">
                       <div className="text-sm">
@@ -378,7 +379,7 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
                   <option value="">Seleccionar producto</option>
                   {products.map((product) => (
                     <option key={product.id} value={product.id}>
-                      {product.name} - ${product.price}
+                      {product.name} - {currencyFormat(product.price)}
                     </option>
                   ))}
                 </select>
@@ -456,8 +457,8 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
                       <div>
                         <p className="text-white font-medium mb-1">{product?.name}</p>
                         <div className="flex items-center gap-3">
-                          <span className="text-gray-400 line-through">${originalPrice.toFixed(2)}</span>
-                          <span className="text-green-400 font-bold text-xl">${discountedPrice.toFixed(2)}</span>
+                          <span className="text-gray-400 line-through">{currencyFormat(originalPrice)}</span>
+                          <span className="text-green-400 font-bold text-xl">{currencyFormat(discountedPrice)}</span>
                           <span className="px-2 py-1 bg-orange-500/20 text-orange-400 rounded text-sm font-bold">
                             -{discount}%
                           </span>

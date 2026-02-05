@@ -12,7 +12,6 @@ import {
 import { ErrorHandler, NotFoundError } from "../shared/errorHandler";
 import { ResponseHandler } from "../shared/responseHandler";
 import { prisma } from "@/db/client";
-import { CorreoArgentinoService } from "../shipments/correo-argentino.service";
 import { ShippingService } from "@/lib/types/shipping.types";
 
 export const OrderService = {

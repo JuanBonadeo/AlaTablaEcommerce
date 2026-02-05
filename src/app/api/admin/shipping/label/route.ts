@@ -1,51 +1,56 @@
 import { NextResponse } from "next/server";
-import { CorreoArgentinoService } from "@/core/shipments/correo-argentino.service";
+import { AndreaniService } from "@/core/shipments/andreani.service";
 import { ShipmentDAO } from "@/core/shipments/shipment.dao";
-import { ResponseHandler } from "@/core/shared/responseHandler";
+import { OrderDAO } from "@/core/orders/order.dao";
 import { logger } from "@/core/shared/logger";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const orderId = body?.orderId as string | undefined;
+    const { orderId } = body;
 
     if (!orderId) {
-      return NextResponse.json({ success: false, message: "orderId es requerido" }, { status: 400 });
-    }
-
-    const shipment = await ShipmentDAO.getByOrderId(orderId);
-
-    if (!shipment || !shipment.order) {
-      return NextResponse.json({ success: false, message: "Envío no encontrado para la orden" }, { status: 404 });
-    }
-
-    const address = shipment.order.address;
-    if (!address) {
       return NextResponse.json(
-        { success: false, message: "La orden no tiene dirección asociada" },
+        { success: false, message: "orderId es requerido" },
         { status: 400 }
       );
     }
 
-    const recipientName = `${address.firstName ?? ""} ${address.lastName ?? ""}`.trim() || "Destinatario";
-    const recipientAddress = [address.street].filter(Boolean).join(" ") || "";
+    // Obtener orden y envío
+    const order = await OrderDAO.getById(orderId);
+    if (!order) {
+      return NextResponse.json(
+        { success: false, message: "Orden no encontrada" },
+        { status: 404 }
+      );
+    }
 
-    const pdfBase64 = await CorreoArgentinoService.generateLabelPdf({
-      orderId,
-      shipmentId: shipment.id,
-      recipient: {
-        name: recipientName,
-        address: recipientAddress,
-        city: address.city ?? "",
-        state: address.state ?? null,
-        zip: address.zip ?? null,
-        phone: address.phone ?? null,
-      },
+    const shipment = await ShipmentDAO.getByOrderId(orderId);
+    if (!shipment) {
+      return NextResponse.json(
+        { success: false, message: "No hay envío asociado a esta orden" },
+        { status: 404 }
+      );
+    }
+
+    // Generate label using tracking number if available, otherwise use shipment ID
+    const pdfBase64 = await AndreaniService.generateLabel(
+      shipment.tracking || shipment.id
+    );
+
+    return NextResponse.json({
+      success: true,
+      data: { pdfBase64 },
     });
-
-    return NextResponse.json(ResponseHandler.success({ pdfBase64 }, "Etiqueta generada"));
   } catch (error) {
-    logger.error("Error al generar etiqueta", { error });
-    return NextResponse.json({ success: false, message: "No se pudo generar la etiqueta" }, { status: 500 });
+    logger.error("Error generating shipping label", { error });
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: error instanceof Error ? error.message : "Error generando etiqueta",
+      },
+      { status: 500 }
+    );
   }
 }

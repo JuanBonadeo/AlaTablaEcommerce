@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { currencyFormat } from '../helpers/currencyFormat';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -210,7 +211,7 @@ export async function sendOrderConfirmationEmail({ email, orderId, total, items 
           ${item.name} <span style="color: #737373;">x ${item.quantity}</span>
         </td>
         <td align="right" style="padding: 12px 0; border-bottom: 1px solid #262626; color: #fb923c; font-size: 14px; font-weight: bold;">
-          $${item.price.toLocaleString('es-AR')}
+          ${currencyFormat(item.price)}
         </td>
       </tr>
     `).join('');
@@ -253,7 +254,7 @@ export async function sendOrderConfirmationEmail({ email, orderId, total, items 
                           <tr>
                             <td style="padding: 20px 0 0 0; color: #ffffff; font-size: 18px; font-weight: bold;">Total</td>
                             <td align="right" style="padding: 20px 0 0 0; color: #fb923c; font-size: 24px; font-weight: bold;">
-                              $${total.toLocaleString('es-AR')}
+                              ${currencyFormat(total)}
                             </td>
                           </tr>
                         </table>

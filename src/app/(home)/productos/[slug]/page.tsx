@@ -75,7 +75,7 @@ export default async function Product({ params }: PageProps) {
             <div className="mb-6 bg-[#0a0a0a] p-4 rounded-lg border border-gray-800/50">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-500 line-through text-lg">
-                  ${formatPrice(priceInfo.originalPrice)}
+                  {formatPrice(priceInfo.originalPrice)}
                 </span>
                 <div className="flex items-center gap-2 bg-orange-400 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg shadow-orange-900/40 animate-pulse">
                   <span>-{priceInfo.discount}% OFF</span>
@@ -84,12 +84,12 @@ export default async function Product({ params }: PageProps) {
 
               <div className="flex items-baseline gap-2 mb-1">
                 <span className="text-4xl font-bold text-white">
-                  ${formatPrice(priceInfo.finalPrice)}
+                  {formatPrice(priceInfo.finalPrice)}
                 </span>
               </div>
 
               <p className="text-sm text-green-500 font-medium flex items-center gap-1">
-                Ahorrás ${formatPrice(priceInfo.savings || 0)}
+                Ahorrás {formatPrice(priceInfo.savings || 0)}
               </p>
 
               {activeOffer?.descripcion && (
@@ -105,7 +105,7 @@ export default async function Product({ params }: PageProps) {
             </div>
           ) : (
             <div className="mb-6">
-              <p className="text-3xl font-bold text-white">${product.price}</p>
+              <p className="text-3xl font-bold text-white">{formatPrice(product.price)}</p>
             </div>
           )}
 

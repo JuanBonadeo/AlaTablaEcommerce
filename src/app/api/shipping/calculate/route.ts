@@ -1,75 +1,98 @@
-import { NextRequest, NextResponse } from "next/server";
-import { CartShippingCalculationSchema } from "@/lib/types/shipping.types";
+import { NextResponse } from "next/server";
+import { logger } from "@/core/shared/logger";
 import { ProductDAO } from "@/core/products/products.dao";
-import { Product } from "@/lib/types/product.types";
-import { CorreoArgentinoService } from "@/core/shipments/correo-argentino.service";
-import { ErrorHandler } from "@/core/shared/errorHandler";
-import { ResponseHandler } from "@/core/shared/responseHandler";
+import { AndreaniService } from "@/core/shipments/andreani.service";
 
-/**
- * POST /api/shipping/calculate
- * Endpoint para calcular el costo de envío basado en el carrito
- */
-export async function POST(request: NextRequest) {
+type ShippingCalculateRequest = {
+  items: {
+    productId: string;
+    quantity: number;
+  }[];
+  destinationZipCode: string;
+};
+
+export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    const body: ShippingCalculateRequest = await request.json();
 
-    // Validar la solicitud
-    const validatedData = CartShippingCalculationSchema.parse(body);
+    // Validar datos de entrada
+    if (!body.items || body.items.length === 0) {
+      return NextResponse.json(
+        { success: false, message: "No hay productos en el carrito" },
+        { status: 400 }
+      );
+    }
 
-    // Calcular peso total y valor declarado del carrito
+    if (!body.destinationZipCode || body.destinationZipCode.trim().length < 4) {
+      return NextResponse.json(
+        { success: false, message: "Código postal de destino inválido" },
+        { status: 400 }
+      );
+    }
+
+    // Calcular peso y valor total
     let totalWeight = 0;
     let totalValue = 0;
 
-    for (const item of validatedData.items) {
-      const product = await ProductDAO.getById(item.productId) as Product | null;
+    for (const item of body.items) {
+      const product = await ProductDAO.getById(item.productId);
 
       if (!product) {
+        logger.warn("Product not found in shipping calculation", {
+          productId: item.productId,
+        });
         continue;
       }
 
-      // Peso estimado por producto (500g por defecto si no tienes peso en el modelo)
-      // TODO: Agregar campo 'weight' al modelo Product si es necesario
-      const itemWeight = 500; // 500 gramos por producto
+      const itemWeight = product.weight || 500;
       totalWeight += itemWeight * item.quantity;
 
-      // Calcular precio según variante o producto
-      let itemPrice = product.price;
-      if (item.variantId && product.variants) {
-        const variant = product.variants.find((v) => v.id === item.variantId);
-        if (variant && variant.price) {
-          itemPrice = variant.price;
-        }
-      }
-
-      totalValue += itemPrice * item.quantity;
+      totalValue += product.price * item.quantity;
     }
 
-    // Si el carrito está vacío
     if (totalWeight === 0) {
-      return NextResponse.json(ResponseHandler.success({
-        quotes: [],
-        message: "El carrito está vacío",
-      }));
+      return NextResponse.json({
+        success: true,
+        data: {
+          quotes: [],
+          totalWeight: 0,
+          totalValue: 0,
+          message: "No hay productos válidos en el carrito",
+        },
+      });
     }
 
-    // Obtener cotizaciones
-    const quotes = await CorreoArgentinoService.getQuote({
-      originZipCode: process.env.ORIGIN_ZIP_CODE || "1000",
-      destinationZipCode: validatedData.destinationZipCode,
+    logger.info("Calculating shipping for cart", {
+      totalWeight,
+      totalValue,
+      destinationZipCode: body.destinationZipCode,
+    });
+
+    // Obtener cotización de Andreani
+    const quotes = await AndreaniService.getQuote({
+      originZipCode: process.env.ORIGIN_ZIP_CODE || "2000",
+      destinationZipCode: body.destinationZipCode,
       weight: totalWeight,
       declaredValue: totalValue,
     });
 
-    return NextResponse.json(ResponseHandler.success({
-      quotes,
-      totalWeight,
-      totalValue,
-    }));
-  } catch (error) {
-    const formattedError = ErrorHandler.format(error);
-    return NextResponse.json(formattedError, {
-      status: formattedError.status
+    return NextResponse.json({
+      success: true,
+      data: {
+        quotes,
+        totalWeight,
+        totalValue,
+      },
     });
+  } catch (error) {
+    logger.error("Error calculating shipping", { error });
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: error instanceof Error ? error.message : "Error al calcular envío",
+      },
+      { status: 500 }
+    );
   }
 }

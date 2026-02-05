@@ -6,6 +6,7 @@ import { Plus, Search, Filter, Edit, Trash2, Eye, Package, AlertCircle } from 'l
 import Image from 'next/image';
 import { deleteProductAction } from '@/lib/actions/product/product.actions';
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
+import { currencyFormat } from '@/lib/helpers/currencyFormat';
 
 type Product = {
   id: string;
@@ -184,8 +185,8 @@ export default function ProductsList({ initialProducts, categories }: ProductsLi
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-gray-800 rounded-lg overflow-hidden flex items-center justify-center">
                         {product.images && product.images.length > 0 ? (
-                          <Image 
-                            src={product.images[0].url} 
+                          <Image
+                            src={product.images[0].url}
                             alt={product.name}
                             width={48}
                             height={48}
@@ -208,13 +209,13 @@ export default function ProductsList({ initialProducts, categories }: ProductsLi
                     {product.offer ? (
                       <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-medium text-orange-500">${(product.price * (1 - product.offer.descuento / 100)).toFixed(2)}</span>
+                          <span className="font-medium text-orange-500">{currencyFormat(product.price * (1 - product.offer.descuento / 100))}</span>
                           <span className="text-xs bg-orange-500 text-white px-1.5 py-0.5 rounded">-{product.offer.descuento}%</span>
                         </div>
-                        <span className="text-xs text-gray-500 line-through">${product.price.toLocaleString()}</span>
+                        <span className="text-xs text-gray-500 line-through">{currencyFormat(product.price)}</span>
                       </div>
                     ) : (
-                      <span className="font-medium text-white">${product.price.toLocaleString()}</span>
+                      <span className="font-medium text-white">{currencyFormat(product.price)}</span>
                     )}
                   </td>
                   <td className="py-4 px-6">

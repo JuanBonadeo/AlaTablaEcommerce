@@ -88,19 +88,19 @@ export const ProductsIncart = () => {
                                                 )}
                                                 <div className="flex items-baseline gap-2">
                                                     <span className="text-gray-500 line-through text-sm">
-                                                        ${formatPrice(priceInfo.originalPrice)}
+                                                        {formatPrice(priceInfo.originalPrice)}
                                                     </span>
                                                     <span className="font-bold text-orange-500 text-xl">
-                                                        ${formatPrice(priceInfo.finalPrice)}
+                                                        {formatPrice(priceInfo.finalPrice)}
                                                     </span>
                                                 </div>
                                                 <p className="text-xs text-green-500 font-medium mt-1">
-                                                    Ahorrás ${formatPrice(priceInfo.savings || 0)}
+                                                    Ahorrás {formatPrice(priceInfo.savings || 0)}
                                                 </p>
                                             </div>
                                         ) : (
                                             <p className="font-bold text-white text-xl mt-3">
-                                                ${formatPrice(product.price)}
+                                                {formatPrice(product.price)}
                                             </p>
                                         )}
                                     </div>

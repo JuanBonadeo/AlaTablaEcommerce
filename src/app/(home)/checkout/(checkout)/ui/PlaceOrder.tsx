@@ -197,7 +197,7 @@ export const PlaceOrder = () => {
                                                 Llega en {option.estimatedDays} {option.estimatedDays === 1 ? 'día' : 'días'}
                                             </p>
                                         </div>
-                                        <p className="text-green-400 font-bold">${option.cost.toFixed(2)}</p>
+                                        <p className="text-green-400 font-bold">{currencyFormat(option.cost)}</p>
                                     </div>
                                 </div>
                             ))}
