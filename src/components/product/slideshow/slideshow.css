@@ -20,6 +20,23 @@
   margin-right: auto;
 }
 
+@media (max-width: 1024px) {
+  .swiper {
+    height: 400px;
+  }
+
+  /* Orange pagination bullets for mobile */
+  .swiper-pagination-bullet {
+    background-color: #fb923c;
+    opacity: 0.5;
+  }
+
+  .swiper-pagination-bullet-active {
+    background-color: #fb923c;
+    opacity: 1;
+  }
+}
+
 .swiper-slide {
   background-size: cover;
   background-position: center;

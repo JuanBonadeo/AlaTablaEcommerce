@@ -42,7 +42,7 @@ export default function Navbar() {
         <div className="flex h-20 items-center justify-between">
           {/* Marca */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative h-12 w-12 overflow-hidden rounded-full border-2 border-transparent group-hover:border-orange-500 transition-all">
+            <div className="relative h-20 w-20 overflow-hidden rounded-full group-hover:border-orange-500 transition-all">
               <Image
                 src="/logo.png"
                 alt="A la Tabla Logo"
@@ -137,12 +137,13 @@ export default function Navbar() {
                     <Link
                       onClick={() => setOpen(false)}
                       href="/profile"
-                      className="flex items-center gap-3 p-3 rounded-xl bg-gray-800/50 hover:bg-gray-800 border border-gray-700 hover:border-orange-500/30 transition-all"
+                      className="flex items-center gap-3 p-3 rounded-xl bg-black hover:bg-stone-950 border border-gray-700 hover:border-orange-500/30 transition-all"
                     >
                       <div className="p-2 bg-orange-500/10 rounded-full text-orange-500">
-                        <User className="w-5 h-5" />
+                        <User className="w-7 h-7" />
                       </div>
                       <div>
+                        <h4 className="text-primary font-bold text-lg">Ver Perfil</h4>
                         <p className="text-white font-medium text-sm">{session.user.name}</p>
                         <p className="text-gray-500 text-xs truncate">{session.user.email}</p>
                       </div>

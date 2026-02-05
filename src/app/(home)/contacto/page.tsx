@@ -26,25 +26,25 @@ const ContactPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-neutral-950 text-white py-20 px-4">
+        <div className="min-h-screen bg-[#0a0a0a] text-white py-12 sm:py-20 px-3 sm:px-4">
             <div className="max-w-6xl mx-auto">
                 <motion.div
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true }}
                     variants={fadeUp}
-                    className="text-center mb-16"
+                    className="text-center mb-12 sm:mb-16"
                 >
-                    <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                        Ponete en <span className="text-amber-400">Contacto</span>
+                    <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 sm:mb-6">
+                        Ponete en <span className="text-orange-500">Contacto</span>
                     </h1>
-                    <p className="text-xl text-white/70 max-w-2xl mx-auto">
+                    <p className="text-base sm:text-xl text-gray-400 max-w-2xl mx-auto">
                         ¿Tenés alguna duda o querés un pedido personalizado? Estamos para ayudarte
                         a encontrar la pieza perfecta para tu parrilla.
                     </p>
                 </motion.div>
 
-                <div className="grid lg:grid-cols-2 gap-12">
+                <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
                     {/* Info Side */}
                     <motion.div
                         custom={1}
@@ -52,50 +52,50 @@ const ContactPage = () => {
                         whileInView="visible"
                         viewport={{ once: true }}
                         variants={fadeUp}
-                        className="space-y-8"
+                        className="space-y-6 sm:space-y-8"
                     >
-                        <div className="bg-neutral-900/50 p-8 rounded-3xl border border-white/5 space-y-8">
-                            <h2 className="text-2xl font-bold mb-6">Información de contacto</h2>
+                        <div className="bg-gradient-to-br from-[#171718] to-[#0f0f10] p-6 sm:p-8 rounded-2xl border-2 border-gray-800/50 space-y-6 sm:space-y-8 shadow-xl">
+                            <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Información de contacto</h2>
 
-                            <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 bg-amber-400/10 rounded-2xl flex items-center justify-center text-amber-400">
-                                    <Mail className="w-6 h-6" />
+                            <div className="flex items-start gap-3 sm:gap-4">
+                                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-orange-500/50 flex-shrink-0">
+                                    <Mail className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-lg">Email</h3>
-                                    <p className="text-white/60">admin@alatabla.store</p>
+                                    <h3 className="font-semibold text-base sm:text-lg text-white">Email</h3>
+                                    <p className="text-sm sm:text-base text-gray-400">admin@alatabla.store</p>
                                 </div>
                             </div>
 
-                            <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 bg-green-400/10 rounded-2xl flex items-center justify-center text-green-400">
-                                    <MessageCircle className="w-6 h-6" />
+                            <div className="flex items-start gap-3 sm:gap-4">
+                                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-green-500/50 flex-shrink-0">
+                                    <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-lg">WhatsApp</h3>
-                                    <p className="text-white/60">+54 9 341 2510795</p>
+                                    <h3 className="font-semibold text-base sm:text-lg text-white">WhatsApp</h3>
+                                    <p className="text-sm sm:text-base text-gray-400">+54 9 341 2510795</p>
                                 </div>
                             </div>
 
-                            <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 bg-blue-400/10 rounded-2xl flex items-center justify-center text-blue-400">
-                                    <MapPin className="w-6 h-6" />
+                            <div className="flex items-start gap-3 sm:gap-4">
+                                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/50 flex-shrink-0">
+                                    <MapPin className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-lg">Ubicación</h3>
-                                    <p className="text-white/60">Rosario, Santa Fe, Argentina</p>
+                                    <h3 className="font-semibold text-base sm:text-lg text-white">Ubicación</h3>
+                                    <p className="text-sm sm:text-base text-gray-400">Rosario, Santa Fe, Argentina</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="flex gap-4">
-                            <a href="https://www.instagram.com/_alatabla_/" className="flex-1 bg-neutral-900 py-4 rounded-2xl border border-white/5 flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors">
-                                <Instagram className="w-5 h-5 text-pink-500" />
-                                <span>Instagram</span>
+                        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                            <a href="https://www.instagram.com/_alatabla_/" className="flex-1 bg-gradient-to-br from-[#171718] to-[#0f0f10] py-3 sm:py-4 rounded-xl border-2 border-gray-800/50 flex items-center justify-center gap-2 hover:border-pink-500/50 hover:shadow-lg hover:shadow-pink-500/25 transition-all hover:scale-[1.02] active:scale-[0.98]">
+                                <Instagram className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
+                                <span className="text-sm sm:text-base">Instagram</span>
                             </a>
-                            <a href="https://www.facebook.com/alatabla.store" className="flex-1 bg-neutral-900 py-4 rounded-2xl border border-white/5 flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors">
-                                <Facebook className="w-5 h-5 text-blue-500" />
-                                <span>Facebook</span>
+                            <a href="https://www.facebook.com/alatabla.store" className="flex-1 bg-gradient-to-br from-[#171718] to-[#0f0f10] py-3 sm:py-4 rounded-xl border-2 border-gray-800/50 flex items-center justify-center gap-2 hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/25 transition-all hover:scale-[1.02] active:scale-[0.98]">
+                                <Facebook className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
+                                <span className="text-sm sm:text-base">Facebook</span>
                             </a>
                         </div>
                     </motion.div>
@@ -108,45 +108,45 @@ const ContactPage = () => {
                         viewport={{ once: true }}
                         variants={fadeUp}
                     >
-                        <form onSubmit={handleSubmit} className="bg-neutral-900 p-8 md:p-10 rounded-3xl border border-white/10 shadow-2xl">
-                            <div className="space-y-6">
-                                <div className="grid md:grid-cols-2 gap-6">
+                        <form onSubmit={handleSubmit} className="bg-gradient-to-br from-[#171718] to-[#0f0f10] p-6 sm:p-8 md:p-10 rounded-2xl border-2 border-gray-800/50 shadow-2xl">
+                            <div className="space-y-5 sm:space-y-6">
+                                <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
                                     <div>
-                                        <label className="block text-sm font-medium text-white/60 mb-2">Nombre</label>
+                                        <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-2">Nombre</label>
                                         <input
                                             type="text"
                                             required
-                                            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
+                                            className="w-full bg-[#0a0a0a] border-2 border-gray-800/50 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all text-white text-sm sm:text-base"
                                             placeholder="Tu nombre"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-white/60 mb-2">Email</label>
+                                        <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-2">Email</label>
                                         <input
                                             type="email"
                                             required
-                                            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
+                                            className="w-full bg-[#0a0a0a] border-2 border-gray-800/50 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all text-white text-sm sm:text-base"
                                             placeholder="tu@email.com"
                                         />
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-white/60 mb-2">Asunto</label>
+                                    <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-2">Asunto</label>
                                     <input
                                         type="text"
                                         required
-                                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all"
+                                        className="w-full bg-[#0a0a0a] border-2 border-gray-800/50 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all text-white text-sm sm:text-base"
                                         placeholder="¿En qué podemos ayudarte?"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-white/60 mb-2">Mensaje</label>
+                                    <label className="block text-xs sm:text-sm font-medium text-gray-400 mb-2">Mensaje</label>
                                     <textarea
                                         rows={4}
                                         required
-                                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all resize-none"
+                                        className="w-full bg-[#0a0a0a] border-2 border-gray-800/50 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all resize-none text-white text-sm sm:text-base"
                                         placeholder="Escribí tu mensaje acá..."
                                     />
                                 </div>
@@ -167,7 +167,7 @@ const ContactPage = () => {
                                 </button>
 
                                 {status === "success" && (
-                                    <p className="text-green-400 text-center text-sm">
+                                    <p className="text-green-400 text-center text-xs sm:text-sm">
                                         Gracias por contactarnos. Te responderemos pronto.
                                     </p>
                                 )}

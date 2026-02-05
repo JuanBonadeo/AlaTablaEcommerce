@@ -6,11 +6,13 @@ export default async function ConfirmPage() {
   await requireAuth();
 
   return (
-    <div className="flex flex-col lg:justify-center lg:items-center mb-72 px-10 sm:px-0">
+    <div className="min-h-screen bg-[#0a0a0a] pb-20 px-3 sm:px-6 lg:px-10 pt-4 sm:pt-8">
 
-      <div className="w-full  xl:w-[1000px] flex flex-col justify-center text-left">
+      <div className="max-w-6xl mx-auto">
 
-        <Title title="Confirmar y pagar" size="3xl" />
+        <div className="mb-6 sm:mb-8">
+          <Title title="Confirmar y pagar" size="3xl" />
+        </div>
 
         <ConfirmOrderClient />
       </div>

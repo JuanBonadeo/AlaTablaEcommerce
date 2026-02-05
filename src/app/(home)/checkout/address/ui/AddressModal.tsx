@@ -35,7 +35,7 @@ export const AddressModal = ({ addresses, selected, onSelect, onClose, userId, o
         exit={{ opacity: 0 }}
       >
         <motion.div
-          className="bg-[#171718] border border-gray-800 rounded-2xl shadow-2xl w-full max-w-2xl p-6 relative max-h-[90vh] overflow-y-auto"
+          className="bg-gradient-to-br from-[#171718] to-[#0f0f10] border-2 border-gray-800/50 rounded-2xl shadow-2xl shadow-orange-500/10 w-full max-w-2xl p-6 relative max-h-[90vh] overflow-y-auto"
           initial={{ scale: 0.9, opacity: 0, y: 40 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0, y: 40 }}
@@ -43,13 +43,15 @@ export const AddressModal = ({ addresses, selected, onSelect, onClose, userId, o
         >
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+            className="absolute top-4 right-4 text-gray-400 hover:text-orange-400 transition-colors p-2 hover:bg-orange-500/10 rounded-lg"
           >
             <X className='h-6 w-6' />
           </button>
 
-          <h2 className="text-xl font-bold mb-6 text-white flex items-center gap-2">
-            <MapPin className="text-orange-400" size={24} />
+          <h2 className="text-xl font-bold mb-6 text-white flex items-center gap-3">
+            <div className="p-2 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg shadow-orange-500/50">
+              <MapPin className="text-white" size={20} />
+            </div>
             Elegí una dirección de envío
           </h2>
 
@@ -145,7 +147,7 @@ export const AddressModal = ({ addresses, selected, onSelect, onClose, userId, o
                 />
                 <button
                   onClick={onClose}
-                  className="w-full sm:w-auto px-6 py-2 bg-orange-400 hover:bg-orange-500 text-white rounded-lg font-bold transition-colors shadow-lg shadow-orange-900/20"
+                  className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:scale-[1.02] active:scale-[0.98]"
                 >
                   Confirmar selección
                 </button>

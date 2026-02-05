@@ -49,8 +49,8 @@ a {
 }
 
 .btn-primary {
-  background-color: rgb(251 146 60);
-  /* orange-400 */
+  background: linear-gradient(to right, rgb(249 115 22), rgb(234 88 12));
+  /* from-orange-500 to-orange-600 */
   color: white;
   padding: 0.75rem 1.5rem;
   height: 3rem;
@@ -63,13 +63,16 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 15px -3px rgb(194 65 12 / 0.1);
+  box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.25);
+  /* shadow-lg shadow-orange-500/25 */
 }
 
 .btn-primary:hover {
-  background-color: rgb(249 115 22);
-  /* orange-500 */
+  background: linear-gradient(to right, rgb(234 88 12), rgb(194 65 12));
+  /* from-orange-600 to-orange-700 */
   transform: scale(1.02);
+  box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.4);
+  /* shadow-orange-500/40 */
 }
 
 .btn-primary:active {
@@ -120,4 +123,34 @@ a {
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Animaciones personalizadas para el botón de procesamiento */
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-gradient {
+  animation: gradient 3s ease infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s ease-in-out infinite;
 }

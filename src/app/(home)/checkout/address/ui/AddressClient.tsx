@@ -68,7 +68,7 @@ export const AddressClient = () => {
   }
 
   return (
-    <div className="flex flex-col items-center p-5 gap-10">
+    <div className="flex flex-col items-center gap-6 sm:gap-8">
       {showModal && (
         <AddressModal
           addresses={addresses}
@@ -96,13 +96,13 @@ export const AddressClient = () => {
         />
       )}
 
-      <div className="w-full max-w-2xl flex flex-col gap-6">
+      <div className="w-full flex flex-col gap-4 sm:gap-5">
 
         {/* Opción Envío a domicilio */}
         <div
-          className={`rounded-xl p-6 transition-all cursor-pointer border ${selectedOption === 'delivery'
-              ? 'bg-orange-500/5 border-orange-500 ring-1 ring-orange-500/20 shadow-lg shadow-orange-900/10'
-              : 'bg-[#171718] border-gray-800 hover:border-gray-700 hover:bg-[#1f1f20]'
+          className={`rounded-2xl p-4 sm:p-6 transition-all cursor-pointer border-2 ${selectedOption === 'delivery'
+              ? 'bg-gradient-to-br from-orange-500/10 to-orange-600/5 border-orange-500 ring-2 ring-orange-500/20 shadow-xl shadow-orange-500/10'
+              : 'bg-gradient-to-br from-[#171718] to-[#0f0f10] border-gray-800/50 hover:border-gray-700 hover:shadow-lg'
             }`}
           onClick={() => {
             setSelectedOption('delivery');
@@ -110,40 +110,40 @@ export const AddressClient = () => {
             if (!selectedAddressId) setShowModal(true);
           }}
         >
-          <div className="flex justify-between items-start gap-4">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <div className={`p-2 rounded-lg ${selectedOption === 'delivery' ? 'bg-orange-400 text-white' : 'bg-gray-800 text-gray-400'}`}>
-                  <Truck size={20} />
+          <div className="flex justify-between items-start gap-3 sm:gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                <div className={`p-2 sm:p-2.5 rounded-xl transition-all ${selectedOption === 'delivery' ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/50' : 'bg-gray-800 text-gray-400'}`}>
+                  <Truck size={18} className="sm:w-5 sm:h-5" />
                 </div>
-                <h3 className={`font-bold text-lg ${selectedOption === 'delivery' ? 'text-orange-400' : 'text-gray-200'}`}>
+                <h3 className={`font-bold text-base sm:text-lg ${selectedOption === 'delivery' ? 'text-orange-400' : 'text-gray-200'}`}>
                   Enviar a domicilio
                 </h3>
               </div>
 
               {selectedAddress ? (
-                <div className="ml-1 pl-4 border-l-2 border-gray-800 mt-4 space-y-1">
-                  <p className="text-gray-200 font-medium">
+                <div className="ml-1 pl-3 sm:pl-4 border-l-2 border-gray-700/50 space-y-1 sm:space-y-1.5">
+                  <p className="text-white font-semibold text-sm sm:text-base">
                     {selectedAddress.street}
                   </p>
-                  <p className="text-gray-400 text-sm">
+                  <p className="text-gray-400 text-xs sm:text-sm">
                     {selectedAddress.city}, {selectedAddress.state} - CP {selectedAddress.zip}
                   </p>
-                  <p className="text-sm text-gray-500 flex items-center gap-2 mt-2">
-                    <span className="flex items-center gap-1"><MapPin size={14} /> {selectedAddress.firstName} {selectedAddress.lastName}</span>
-                    <span className="w-1 h-1 rounded-full bg-gray-700"></span>
-                    <span className="flex items-center gap-1"><Phone size={14} /> {selectedAddress.phone}</span>
-                  </p>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500 pt-2">
+                    <span className="flex items-center gap-1"><MapPin size={12} /> {selectedAddress.firstName} {selectedAddress.lastName}</span>
+                    <span className="hidden sm:block w-1 h-1 rounded-full bg-gray-700"></span>
+                    <span className="flex items-center gap-1"><Phone size={12} /> {selectedAddress.phone}</span>
+                  </div>
                 </div>
               ) : (
-                <p className="text-gray-500 mt-2 text-sm ml-12">No hay dirección seleccionada.</p>
+                <p className="text-gray-500 text-xs sm:text-sm ml-1 sm:ml-12">No hay dirección seleccionada.</p>
               )}
 
               <button
                 onClick={(e) => { e.stopPropagation(); setShowModal(true); }}
-                className="text-primary text-sm mt-4 font-medium hover:underline flex items-center gap-1 ml-1"
+                className="text-orange-400 hover:text-orange-300 text-xs sm:text-sm mt-3 sm:mt-4 font-medium flex items-center gap-1 ml-1 transition-colors"
               >
-                <Edit size={14} />
+                <Edit size={12} className="sm:w-3.5 sm:h-3.5" />
                 {selectedAddress ? 'Modificar domicilio o elegir otro' : 'Agregar o seleccionar domicilio'}
               </button>
 
@@ -155,40 +155,39 @@ export const AddressClient = () => {
                 onChange={() => setSelectedOption('delivery')}
               />
             </div>
-            {/* <p className="font-semibold text-gray-500 text-sm bg-gray-800/50 px-3 py-1 rounded">~$7500</p> */}
           </div>
         </div>
 
         {/* Opcion Retiro x Local */}
         <div
-          className={`rounded-xl p-6 transition-all cursor-pointer border ${selectedOption === 'pickup'
-              ? 'bg-orange-500/5 border-orange-500 ring-1 ring-orange-500/20 shadow-lg shadow-orange-900/10'
-              : 'bg-[#171718] border-gray-800 hover:border-gray-700 hover:bg-[#1f1f20]'
+          className={`rounded-2xl p-4 sm:p-6 transition-all cursor-pointer border-2 ${selectedOption === 'pickup'
+              ? 'bg-gradient-to-br from-orange-500/10 to-orange-600/5 border-orange-500 ring-2 ring-orange-500/20 shadow-xl shadow-orange-500/10'
+              : 'bg-gradient-to-br from-[#171718] to-[#0f0f10] border-gray-800/50 hover:border-gray-700 hover:shadow-lg'
             }`}
           onClick={() => setSelectedOption('pickup')}
         >
-          <div className="flex justify-between items-start gap-4">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <div className={`p-2 rounded-lg ${selectedOption === 'pickup' ? 'bg-orange-400 text-white' : 'bg-gray-800 text-gray-400'}`}>
-                  <Store size={20} />
+          <div className="flex justify-between items-start gap-3 sm:gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                <div className={`p-2 sm:p-2.5 rounded-xl transition-all ${selectedOption === 'pickup' ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/50' : 'bg-gray-800 text-gray-400'}`}>
+                  <Store size={18} className="sm:w-5 sm:h-5" />
                 </div>
-                <h3 className={`font-bold text-lg ${selectedOption === 'pickup' ? 'text-orange-400' : 'text-gray-200'}`}>
+                <h3 className={`font-bold text-base sm:text-lg ${selectedOption === 'pickup' ? 'text-orange-400' : 'text-gray-200'}`}>
                   Retirar en Local
                 </h3>
               </div>
 
-              <div className="ml-1 pl-4 border-l-2 border-gray-800 mt-4 space-y-1">
-                <p className="text-gray-200 font-medium">
+              <div className="ml-1 pl-3 sm:pl-4 border-l-2 border-gray-700/50 space-y-1 sm:space-y-1.5">
+                <p className="text-white font-semibold text-sm sm:text-base">
                   Garcia del Cossio 2198 biss Barrio Palos verdes
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-xs sm:text-sm text-gray-500">
                   Lu a Vi: 9 a 18 hs. Sá: 10 a 14 hs.
                 </p>
               </div>
             </div>
 
-            <span className="font-bold text-green-500 text-sm bg-green-500/10 border border-green-500/20 px-3 py-1 rounded">Gratis</span>
+            <span className="font-bold text-green-400 text-xs sm:text-sm bg-gradient-to-br from-green-500/10 to-green-600/5 border border-green-500/30 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg shadow-sm flex-shrink-0">Gratis</span>
 
             <input
               type="radio"
@@ -203,11 +202,11 @@ export const AddressClient = () => {
       </div>
 
       <button
-        className="w-full max-w-2xl py-4 btn-primary rounded-xl font-bold transition-all shadow-lg shadow-orange-900/20 flex justify-center items-center gap-2"
+        className="w-full py-3 sm:py-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:scale-[1.02] active:scale-[0.98] flex justify-center items-center gap-2 text-sm sm:text-base"
         onClick={handleContinue}
       >
         Continuar Compra
-        <ArrowRight size={20} />
+        <ArrowRight size={18} className="sm:w-5 sm:h-5" />
       </button>
     </div>
   );

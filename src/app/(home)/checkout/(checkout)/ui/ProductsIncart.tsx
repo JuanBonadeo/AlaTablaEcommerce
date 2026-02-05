@@ -51,7 +51,7 @@ export const ProductsIncart = () => {
                                         <span className="text-xs font-semibold bg-red-500 text-white px-2 py-0.5 rounded">
                                             OFERTA
                                         </span>
-                                        <span className="text-xs bg-orange-500 text-white px-2 py-0.5 rounded">
+                                        <span className="text-xs bg-linear-gradient(to right, rgb(249 115 22), rgb(234 88 12))-500 text-white px-2 py-0.5 rounded">
                                             -{priceInfo.discount}% OFF
                                         </span>
                                     </div>
@@ -60,7 +60,7 @@ export const ProductsIncart = () => {
                                             {product.offer.descripcion}
                                         </p>
                                     )}
-                                    <p className="font-bold text-orange-600">{currencyFormat(itemTotal)}</p>
+                                    <p className="font-bold text-linear-gradient(to right, rgb(249 115 22), rgb(234 88 12))-600">{currencyFormat(itemTotal)}</p>
                                 </div>
                             ) : (
                                 <p className="font-bold">{currencyFormat(itemTotal)}</p>

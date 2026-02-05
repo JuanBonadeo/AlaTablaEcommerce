@@ -9,7 +9,7 @@ export default function HomeLayout({
   return (
     <div>
       <Navbar />
-      <div className="max-w-6xl mx-auto pb-25 p-2 md:p-4">
+      <div className="max-w-6xl mx-auto pb-25 md:p-4 p-2">
         {children}
       </div>
       <Footer />
