@@ -126,3 +126,68 @@
 
 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
    Collecting page data ...
+   Generating static pages (0/38) ...
+   Generating static pages (9/38) 
+   Generating static pages (18/38) 
+   Generating static pages (28/38) 
+ Ô£ô Generating static pages (38/38)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                Size  First Load JS
+Ôöî Ôùï /                                    4.2 kB         176 kB
+Ôö£ Ôùï /_not-found                             0 B         115 kB
+Ôö£ Ôùï /admin                               109 kB         231 kB
+Ôö£ Ôùï /admin/categories                   2.86 kB         125 kB
+Ôö£ Ôùï /admin/offers                       4.17 kB         127 kB
+Ôö£ Ôùï /admin/orders                       11.9 kB         134 kB
+Ôö£ Ôùï /admin/products                     8.74 kB         131 kB
+Ôö£ ãÆ /admin/products/[id]                15.4 kB         138 kB
+Ôö£ Ôùï /admin/products/new                 4.09 kB         127 kB
+Ôö£ Ôùï /admin/users                        4.03 kB         126 kB
+Ôö£ ãÆ /api/admin/shipping/label               0 B            0 B
+Ôö£ ãÆ /api/admin/shipping/status              0 B            0 B
+Ôö£ ãÆ /api/admin/users                        0 B            0 B
+Ôö£ ãÆ /api/admin/users/[id]                   0 B            0 B
+Ôö£ ãÆ /api/admin/users/[id]/role              0 B            0 B
+Ôö£ ãÆ /api/auth/[...all]                      0 B            0 B
+Ôö£ ãÆ /api/mercadopago/create-preference      0 B            0 B
+Ôö£ ãÆ /api/mercadopago/webhook                0 B            0 B
+Ôö£ ãÆ /api/products                           0 B            0 B
+Ôö£ ãÆ /api/products/[slug]                    0 B            0 B
+Ôö£ ãÆ /api/shipping/calculate                 0 B            0 B
+Ôö£ ãÆ /api/shipping/quote                     0 B            0 B
+Ôö£ Ôùï /auth/forgot-password                 12 kB         127 kB
+Ôö£ Ôùï /auth/login                           12 kB         127 kB
+Ôö£ Ôùï /auth/register                      11.6 kB         127 kB
+Ôö£ Ôùï /auth/reset-password                12.2 kB         127 kB
+Ôö£ Ôùï /auth/verify-email                  4.31 kB         119 kB
+Ôö£ Ôùï /cart                               4.42 kB         177 kB
+Ôö£ ãÆ /checkout                           5.53 kB         178 kB
+Ôö£ ãÆ /checkout/address                   14.7 kB         187 kB
+Ôö£ ãÆ /checkout/confirm                   6.84 kB         179 kB
+Ôö£ ãÆ /checkout/shipping                  62.3 kB         234 kB
+Ôö£ Ôùï /nosotros                           3.46 kB         176 kB
+Ôö£ ãÆ /order/[id]/payment                 5.33 kB         177 kB
+Ôö£ Ôùï /order/failure                        728 B         173 kB
+Ôö£ Ôùï /order/pending                        715 B         173 kB
+Ôö£ Ôùï /order/success                      2.73 kB         175 kB
+Ôö£ Ôùï /productos                              0 B         175 kB
+Ôö£ ãÆ /productos/[slug]                   35.1 kB         207 kB
+Ôö£ ãÆ /productos/categoria/[category]         0 B         175 kB
+Ôö£ ãÆ /profile                              481 B         173 kB
+Ôö£ ãÆ /profile/addresses                   2.1 kB         174 kB
+Ôö£ ãÆ /profile/change-password            1.32 kB         173 kB
+Ôöö ãÆ /profile/orders                     4.78 kB         177 kB
++ First Load JS shared by all            130 kB
+  Ôö£ chunks/0f2388fbcca832be.js          59.2 kB
+  Ôö£ chunks/2af0e352f8da57bc.js          10.4 kB
+  Ôö£ chunks/3926ef1f2e01c38b.js          17.3 kB
+  Ôö£ chunks/a154387b40c04f3f.js          15.8 kB
+  Ôö£ chunks/864a6dcd42baa90e.css         14.6 kB
+  Ôöö other shared chunks (total)         12.3 kB
+
+
+Ôùï  (Static)   prerendered as static content
+ãÆ  (Dynamic)  server-rendered on demand
+
