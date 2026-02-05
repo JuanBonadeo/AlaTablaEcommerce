@@ -22,7 +22,7 @@ export default function EmailMarketingModal({ selectedUserIds, onClose }: EmailM
 
     try {
       const result = await sendMarketingEmailAction(selectedUserIds, subject, message);
-      
+
       if (result.ok) {
         alert(result.message);
         onClose();
@@ -42,7 +42,7 @@ export default function EmailMarketingModal({ selectedUserIds, onClose }: EmailM
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-800">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-orange-500/20 rounded-lg">
+            <div className="p-2 bg-orange-400/20 rounded-lg">
               <Mail className="text-orange-400" size={24} />
             </div>
             <div>
@@ -113,7 +113,7 @@ export default function EmailMarketingModal({ selectedUserIds, onClose }: EmailM
             <button
               type="submit"
               disabled={isSending || !subject || !message}
-              className="flex-1 flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg font-medium transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 bg-orange-400 hover:bg-orange-500 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg font-medium transition-colors"
             >
               <Send size={18} />
               {isSending ? 'Enviando...' : 'Enviar Email'}

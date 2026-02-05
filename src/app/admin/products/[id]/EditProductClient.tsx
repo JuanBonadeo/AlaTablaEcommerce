@@ -73,7 +73,7 @@ export default function EditProductClient({ product, categories }: EditProductCl
     setIsSubmitting(true);
     try {
       const result = await deleteProductAction(product.id);
-      
+
       if (result.ok) {
         router.push('/admin/products');
         router.refresh();
@@ -90,7 +90,7 @@ export default function EditProductClient({ product, categories }: EditProductCl
   const handleDeleteImage = async (imageId: string, imageUrl: string) => {
     const confirmed = confirm('¿Estás seguro de que deseas eliminar esta imagen?');
     if (!confirmed) return;
-    
+
     try {
       const result = await deleteProductImage(imageId, imageUrl, product.slug);
       if (result?.ok) {
@@ -173,7 +173,7 @@ export default function EditProductClient({ product, categories }: EditProductCl
           {/* Images */}
           <div className="bg-[#171718] border border-gray-800 rounded-xl p-6">
             <h2 className="text-xl font-bold text-white mb-6">Imágenes del Producto</h2>
-            
+
             <div className="mb-4">
               <label className="flex items-center justify-center gap-3 bg-[#0a0a0a] border-2 border-dashed border-gray-700 hover:border-orange-500 rounded-lg px-6 py-8 cursor-pointer transition-colors group">
                 <Upload className="text-gray-500 group-hover:text-orange-500" size={24} />
@@ -260,6 +260,62 @@ export default function EditProductClient({ product, categories }: EditProductCl
             </div>
           </div>
 
+
+          {/* Shipping Dimensions */}
+          <div className="bg-[#171718] border border-gray-800 rounded-xl p-6">
+            <h2 className="text-xl font-bold text-white mb-6">Envío (Opcional)</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Peso (g)
+                </label>
+                <input
+                  type="number"
+                  name="weight"
+                  defaultValue={product.weight || 0}
+                  min="0"
+                  className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Largo (cm)
+                </label>
+                <input
+                  type="number"
+                  name="length"
+                  defaultValue={product.length || 0}
+                  min="0"
+                  className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Ancho (cm)
+                </label>
+                <input
+                  type="number"
+                  name="width"
+                  defaultValue={product.width || 0}
+                  min="0"
+                  className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Alto (cm)
+                </label>
+                <input
+                  type="number"
+                  name="height"
+                  defaultValue={product.height || 0}
+                  min="0"
+                  className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Category */}
           <div className="bg-[#171718] border border-gray-800 rounded-xl p-6">
             <h2 className="text-xl font-bold text-white mb-6">Categoría</h2>
@@ -304,7 +360,7 @@ export default function EditProductClient({ product, categories }: EditProductCl
             </button>
           </div>
         </div>
-      </form>
-    </div>
+      </form >
+    </div >
   );
 }

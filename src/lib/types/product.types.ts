@@ -1,20 +1,20 @@
 import { z } from "zod";
 
 export interface ProductGridItem {
+  id: string;
+  name: string;
+  slug: string;
+  price: number;
+  stock: number;
+  images: { id: string; url: string; productId: string }[];
+  category?: { id: string; name: string }; // Agregado
+  activeOffer?: {
     id: string;
-    name: string;
-    slug: string;
-    price: number;
-    stock: number;
-    images: { id: string; url: string; productId: string }[];
-    category?: { id: string; name: string }; // Agregado
-    activeOffer?: { 
-      id: string; 
-      descuento: number; 
-      descripcion: string | null;
-      desde: Date;
-      hasta: Date;
-    } | null;
+    descuento: number;
+    descripcion: string | null;
+    desde: Date;
+    hasta: Date;
+  } | null;
 }
 
 export interface Product {
@@ -24,6 +24,10 @@ export interface Product {
   description: string | null;
   price: number;
   stock: number;
+  weight?: number | null;
+  length?: number | null;
+  width?: number | null;
+  height?: number | null;
   categoryId: string;
   // category.slug puede no estar presente en algunas consultas, lo marcamos opcional
   category?: { id: string; name: string; slug?: string } | null;
@@ -36,9 +40,9 @@ export interface Product {
     stock?: number | null;
     productId: string;
   }>;
-  activeOffer?: { 
-    id: string; 
-    descuento: number; 
+  activeOffer?: {
+    id: string;
+    descuento: number;
     descripcion: string | null;
     desde: Date;
     hasta: Date;
@@ -58,6 +62,10 @@ export const CreateProductSchema = z.object({
   description: z.string().optional(),
   price: z.number().min(0, "El precio debe ser mayor o igual a 0"),
   stock: z.number().int().min(0, "El stock no puede ser negativo"),
+  weight: z.number().min(0, "El peso no puede ser negativo").optional(),
+  length: z.number().min(0, "El largo no puede ser negativo").optional(),
+  width: z.number().min(0, "El ancho no puede ser negativo").optional(),
+  height: z.number().min(0, "El alto no puede ser negativo").optional(),
   categoryId: z.string().min(1, "Debe seleccionar una categoría"),
   // images can be either base64 strings (sent from the client) or URLs (after upload).
   images: z.array(z.string()).describe("Imagenes del producto"),
@@ -91,10 +99,10 @@ export const ListSearchParamsSchema = z.object({
 export type ListSearchParams = z.infer<typeof ListSearchParamsSchema>;
 
 export interface ProductList {
-    items: ProductGridItem[];
-    pagination: {
-        totalPages: number;
-        currentPage: number;
-        limit: number;
-    };
+  items: ProductGridItem[];
+  pagination: {
+    totalPages: number;
+    currentPage: number;
+    limit: number;
+  };
 }

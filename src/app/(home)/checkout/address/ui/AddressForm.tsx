@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { createAddressAction } from '@/lib/actions/address/address.actions';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { Address } from '@/lib/types/address.types';
+import { Plus } from 'lucide-react';
 
 interface Props {
   userId: string;
@@ -75,94 +76,97 @@ export const AddressForm = ({ userId, onSuccess, onCancel, }: Props) => {
 
 
   const inputClass =
-    'mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 rounded-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm';
+    'mt-1 appearance-none relative block w-full px-4 py-3 bg-[#0a0a0a] border border-gray-800 placeholder-gray-600 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 sm:text-sm transition-all';
+  const labelClass = 'block text-xs font-semibold text-gray-400 mb-1 ml-1';
 
   return (
     <>
       {!open ? (
         <button
           type="button"
-          className="text-sm text-primary hover:underline"
+          className="text-sm font-medium text-orange-400 hover:text-orange-400 transition-colors flex items-center gap-1"
           onClick={() => {
             setOpen(true);
           }}
           aria-expanded={open}
         >
-          + Nueva dirección
+          <Plus size={16} />
+          Nueva dirección
         </button>)
         : (
           <AnimatePresence>
             <div
-              className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50"
+              className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-[60] p-4"
             >
               <motion.div
-                className="bg rounded-3xl shadow-xl w-full max-w-2xl p-6 relative"
-                initial={{ scale: 0.9, opacity: 0}}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-[#171718] border border-gray-800 rounded-2xl shadow-2xl w-full max-w-2xl p-6 relative"
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
               >
+                <h3 className="text-xl font-bold text-white mb-6">Agregar nueva dirección</h3>
 
-                <form id="addressForm" onSubmit={handleSubmit(onSubmit)} className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <form id="addressForm" onSubmit={handleSubmit(onSubmit)} className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {errorMsg && (
-                    <div className="col-span-1 sm:col-span-2 bg-red-50 border border-red-200 text-red-700 px-3 py-2 rounded" role="alert" aria-live="assertive">
+                    <div className="col-span-1 sm:col-span-2 bg-red-500/10 border border-red-500/20 text-red-500 px-4 py-3 rounded-xl text-sm" role="alert" aria-live="assertive">
                       {errorMsg}
                     </div>
                   )}
-                  <div className="flex flex-col">
-                    <label htmlFor="firstName" className="label text-left text-white">Nombre</label>
-                    <input id="firstName" {...register('firstName', { required: 'El nombre es obligatorio' })} placeholder="Nombre" aria-invalid={errors.firstName ? 'true' : 'false'} className={inputClass} />
-                    {errors.firstName && <span className="text-sm text-red-600 text-left mt-1">{errors.firstName.message}</span>}
+                  <div className="flex flex-col text-left">
+                    <label htmlFor="firstName" className={labelClass}>Nombre</label>
+                    <input id="firstName" {...register('firstName', { required: 'El nombre es obligatorio' })} placeholder="Ej: Juan" aria-invalid={errors.firstName ? 'true' : 'false'} className={inputClass} />
+                    {errors.firstName && <span className="text-xs text-red-500 mt-1 ml-1">{errors.firstName.message}</span>}
                   </div>
 
-                  <div className="flex flex-col">
-                    <label htmlFor="lastName" className="label text-left text-white">Apellido</label>
-                    <input id="lastName" {...register('lastName', { required: 'El apellido es obligatorio' })} placeholder="Apellido" aria-invalid={errors.lastName ? 'true' : 'false'} className={inputClass} />
-                    {errors.lastName && <span className="text-sm text-red-600 text-left mt-1">{errors.lastName.message}</span>}
+                  <div className="flex flex-col text-left">
+                    <label htmlFor="lastName" className={labelClass}>Apellido</label>
+                    <input id="lastName" {...register('lastName', { required: 'El apellido es obligatorio' })} placeholder="Ej: Pérez" aria-invalid={errors.lastName ? 'true' : 'false'} className={inputClass} />
+                    {errors.lastName && <span className="text-xs text-red-500 mt-1 ml-1">{errors.lastName.message}</span>}
                   </div>
 
-                  <div className="col-span-1 sm:col-span-2 flex flex-col">
-                    <label htmlFor="street" className="label text-left text-white">Calle y número</label>
-                    <input id="street" {...register('street', { required: 'La calle y número son obligatorios' })} placeholder="Calle y número" aria-invalid={errors.street ? 'true' : 'false'} className={inputClass} />
-                    {errors.street && <span className="text-sm text-red-600 text-left mt-1">{errors.street.message}</span>}
+                  <div className="col-span-1 sm:col-span-2 flex flex-col text-left">
+                    <label htmlFor="street" className={labelClass}>Calle y número</label>
+                    <input id="street" {...register('street', { required: 'La calle y número son obligatorios' })} placeholder="Ej: Av. Libertador 1234, 5to A" aria-invalid={errors.street ? 'true' : 'false'} className={inputClass} />
+                    {errors.street && <span className="text-xs text-red-500 mt-1 ml-1">{errors.street.message}</span>}
                   </div>
 
-                  <div className="flex flex-col">
-                    <label htmlFor="city" className="label text-left text-white">Ciudad</label>
-                    <input id="city" {...register('city', { required: 'La ciudad es obligatoria' })} placeholder="Ciudad" aria-invalid={errors.city ? 'true' : 'false'} className={inputClass} />
-                    {errors.city && <span className="text-sm text-red-600 text-left mt-1">{errors.city.message}</span>}
+                  <div className="flex flex-col text-left">
+                    <label htmlFor="city" className={labelClass}>Ciudad</label>
+                    <input id="city" {...register('city', { required: 'La ciudad es obligatoria' })} placeholder="Ej: Ciudad Autónoma de Buenos Aires" aria-invalid={errors.city ? 'true' : 'false'} className={inputClass} />
+                    {errors.city && <span className="text-xs text-red-500 mt-1 ml-1">{errors.city.message}</span>}
                   </div>
 
-                  <div className="flex flex-col">
-                    <label htmlFor="state" className="label text-left text-white">Provincia</label>
-                    <input id="state" {...register('state', { required: 'La provincia es obligatoria' })} placeholder="Provincia" aria-invalid={errors.state ? 'true' : 'false'} className={inputClass} />
-                    {errors.state && <span className="text-sm text-red-600 text-left mt-1">{errors.state.message}</span>}
+                  <div className="flex flex-col text-left">
+                    <label htmlFor="state" className={labelClass}>Provincia</label>
+                    <input id="state" {...register('state', { required: 'La provincia es obligatoria' })} placeholder="Ej: Buenos Aires" aria-invalid={errors.state ? 'true' : 'false'} className={inputClass} />
+                    {errors.state && <span className="text-xs text-red-500 mt-1 ml-1">{errors.state.message}</span>}
                   </div>
 
-                  <div className="flex flex-col">
-                    <label htmlFor="zip" className="label text-left text-white">CP</label>
-                    <input id="zip" {...register('zip', { required: 'El código postal es obligatorio' })} placeholder="CP" aria-invalid={errors.zip ? 'true' : 'false'} className={inputClass} />
-                    {errors.zip && <span className="text-sm text-red-600 text-left mt-1">{errors.zip.message}</span>}
+                  <div className="flex flex-col text-left">
+                    <label htmlFor="zip" className={labelClass}>Código Postal</label>
+                    <input id="zip" {...register('zip', { required: 'El código postal es obligatorio' })} placeholder="Ej: 1425" aria-invalid={errors.zip ? 'true' : 'false'} className={inputClass} />
+                    {errors.zip && <span className="text-xs text-red-500 mt-1 ml-1">{errors.zip.message}</span>}
                   </div>
 
-                  <div className="flex flex-col">
-                    <label htmlFor="phone" className="label text-left text-white">Teléfono</label>
-                    <input id="phone" {...register('phone', { required: 'El teléfono es obligatorio' })} placeholder="Teléfono" aria-invalid={errors.phone ? 'true' : 'false'} className={inputClass} />
-                    {errors.phone && <span className="text-sm text-red-600 text-left mt-1">{errors.phone.message}</span>}
+                  <div className="flex flex-col text-left">
+                    <label htmlFor="phone" className={labelClass}>Teléfono</label>
+                    <input id="phone" {...register('phone', { required: 'El teléfono es obligatorio' })} placeholder="Ej: 11 1234 5678" aria-invalid={errors.phone ? 'true' : 'false'} className={inputClass} />
+                    {errors.phone && <span className="text-xs text-red-500 mt-1 ml-1">{errors.phone.message}</span>}
                   </div>
 
-                  <div className="col-span-1 sm:col-span-2 flex items-center gap-3 mt-1">
-                    <input id="isDefault" type="checkbox" {...register('isDefault')} className="w-4 h-4" />
-                    <label htmlFor="isDefault" className="text-sm">Usar como dirección principal</label>
+                  <div className="col-span-1 sm:col-span-2 flex items-center gap-3 mt-2 mb-2">
+                    <input id="isDefault" type="checkbox" {...register('isDefault')} className="w-4 h-4 rounded text-orange-500 focus:ring-orange-500 bg-gray-800 border-gray-600" />
+                    <label htmlFor="isDefault" className="text-sm text-gray-300">Usar como dirección principal</label>
                   </div>
 
-                  <div className="col-span-1 sm:col-span-2">
+                  <div className="col-span-1 sm:col-span-2 mt-4 pt-4 border-t border-gray-800">
                     <div className="flex items-center gap-3">
                       <button
                         type="submit"
                         disabled={!isValid || submitting}
-                        className="btn-primary w-full sm:w-1/2"
+                        className="flex-1 py-3 px-4 bg-orange-400 hover:bg-orange-500 text-white rounded-xl font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        {submitting ? 'Guardando...' : 'Guardar'}
+                        {submitting ? 'Guardando...' : 'Guardar dirección'}
                       </button>
 
                       {onCancel && (
@@ -172,7 +176,7 @@ export const AddressForm = ({ userId, onSuccess, onCancel, }: Props) => {
                             setOpen(false);
                             onCancel();
                           }}
-                          className="text-sm text-gray-600 hover:underline"
+                          className="px-6 py-3 border border-gray-700 hover:bg-gray-800 text-gray-300 rounded-xl transition-all font-medium"
                         >
                           Cancelar
                         </button>

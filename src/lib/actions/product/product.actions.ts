@@ -23,6 +23,10 @@ function mapFormDataToProduct(formData: FormData) {
     name: String(formData.get("name")),
     price: Number(formData.get("price")),
     stock: Number(formData.get("stock")),
+    weight: formData.get("weight") ? Number(formData.get("weight")) : undefined,
+    length: formData.get("length") ? Number(formData.get("length")) : undefined,
+    width: formData.get("width") ? Number(formData.get("width")) : undefined,
+    height: formData.get("height") ? Number(formData.get("height")) : undefined,
     categoryId: String(formData.get("categoryId")),
     images,
     description: formData.get("description") ? String(formData.get("description")) : undefined,
@@ -34,7 +38,7 @@ export const createProductAction = async (formData: FormData) => {
   try {
     const data = mapFormDataToProduct(formData);
     const result = await ProductService.create(data);
-    
+
     // Verificar si es un error
     if (!result.success) {
       return {
@@ -65,7 +69,7 @@ export const createProductAction = async (formData: FormData) => {
 export async function deleteProductAction(id: string) {
   try {
     const result = await ProductService.delete(id);
-    
+
     // Verificar si es un error
     if (!result.success) {
       return {
@@ -124,13 +128,13 @@ export const updateProductAction = async (id: string, formData: FormData) => {
 export const getAllProductsAction = async () => {
   try {
     const result = await ProductService.getAll();
-    
+
     // Si es un error, retornar array vacío
     if (!result.success) {
       console.error('Error getting products:', result.message);
       return [];
     }
-    
+
     return result.data || [];
   } catch (error) {
     console.error('Error en getAllProductsAction:', error);
@@ -141,13 +145,13 @@ export const getAllProductsAction = async () => {
 export const getProductsByCategoryAction = async (categoryName: string) => {
   try {
     const result = await ProductService.getByCategory(categoryName);
-    
+
     // Si es un error, retornar array vacío
     if (!result.success) {
       console.error('Error getting products by category:', result.message);
       return [];
     }
-    
+
     return result.data || [];
   } catch (error) {
     console.error('Error en getProductsByCategoryAction:', error);
@@ -158,12 +162,12 @@ export const getProductsByCategoryAction = async (categoryName: string) => {
 export const getProductBySlugAction = async (slug: string) => {
   try {
     const result = await ProductService.getBySlug(slug);
-    
+
     // Si es un error, retornar null
     if (!result.success) {
       return null;
     }
-    
+
     return result.data || null;
   } catch (error) {
     console.error('Error en getProductBySlugAction:', error);
@@ -174,12 +178,12 @@ export const getProductBySlugAction = async (slug: string) => {
 export const getProductByIdAction = async (id: string) => {
   try {
     const result = await ProductService.getById(id);
-    
+
     // Si es un error, retornar null
     if (!result.success) {
       return null;
     }
-    
+
     return result.data || null;
   } catch (error) {
     console.error('Error en getProductByIdAction:', error);

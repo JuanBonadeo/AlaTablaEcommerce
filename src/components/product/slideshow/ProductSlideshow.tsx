@@ -25,71 +25,71 @@ interface Props {
 
 
 
-export const ProductSlideshow = ( { images, title, className }: Props ) => {
+export const ProductSlideshow = ({ images, title, className }: Props) => {
 
-  const [ thumbsSwiper, setThumbsSwiper ] = useState<SwiperObject>();
+  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperObject>();
 
 
   return (
-    <div className={ className }>
+    <div className={className}>
 
       <Swiper
-        style={ {
+        style={{
           '--swiper-navigation-color': '#fff',
           '--swiper-pagination-color': '#fff',
         } as React.CSSProperties
         }
-        spaceBetween={ 10 }
-        navigation={ true }
+        spaceBetween={10}
+        navigation={true}
         autoplay={{
           delay: 2500
         }}
-        thumbs={ {
+        thumbs={{
           swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null
-        } }
-        modules={ [ FreeMode, Navigation, Thumbs, Autoplay ] }
-        className="mySwiper2 "
+        }}
+        modules={[FreeMode, Navigation, Thumbs, Autoplay]}
+        className="mySwiper2 aspect-square rounded-xl overflow-hidden mb-4"
       >
 
         {
-          images.map( (image, index) => (
-            <SwiperSlide key={ image + index }>
+          images.map((image, index) => (
+            <SwiperSlide key={image + index} className="bg-[#0a0a0a]">
               <ProductImage
-                width={ 1024 }
-                height={ 800 }
-                src={ image }
-                alt={ title }
-                className="rounded-lg object-fill "
+                width={1024}
+                height={1024}
+                src={image}
+                alt={title}
+                className="w-full h-full object-contain"
               />
             </SwiperSlide>
 
-          ) )
+          ))
         }
       </Swiper>
 
 
       <Swiper
-        onSwiper={ setThumbsSwiper }
-        spaceBetween={ 10 }
-        slidesPerView={ 4 }
-        freeMode={ true }
-        watchSlidesProgress={ true }
-        modules={ [ FreeMode, Navigation, Thumbs ] }
+        onSwiper={setThumbsSwiper}
+        spaceBetween={10}
+        slidesPerView={4}
+        freeMode={true}
+        watchSlidesProgress={true}
+        modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper"
       >
         {
-          images.map( (image, index) => (
-            <SwiperSlide key={ image + index }>
+          images.map((image, index) => (
+            <SwiperSlide key={image + index} className="rounded-lg overflow-hidden cursor-pointer opacity-60 hover:opacity-100 transition-opacity">
               <ProductImage
-                width={ 300 }
-                height={ 300 }
-                src={  image  }
-                alt={ title }
-                className="rounded-lg object-fill"
+                width={300}
+                height={300}
+                src={image}
+                alt={title}
+                className="w-full h-full object-cover rounded-lg"
               />
             </SwiperSlide>
 
-          ) )
+          ))
         }
       </Swiper>
 

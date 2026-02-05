@@ -3,6 +3,7 @@
 import { useShippingCalculator } from "@/lib/hooks/useShippingCalculator";
 import { useState } from "react";
 import { ShippingQuoteResponse } from "@/lib/types/shipping.types";
+import { Zap, Rocket, Package, Mail, Calendar, Info, XCircle, AlertTriangle, Loader2, Check } from "lucide-react";
 
 interface ShippingCalculatorAdvancedProps {
   cartItems: {
@@ -56,13 +57,13 @@ export function ShippingCalculatorAdvanced({
   const getServiceIcon = (service: string) => {
     switch (service) {
       case "PRIORITARIO":
-        return "⚡";
+        return <Zap className="text-orange-500" size={24} />;
       case "EXPRESO":
-        return "🚀";
+        return <Rocket className="text-orange-500" size={24} />;
       case "CLASICO":
-        return "📦";
+        return <Package className="text-orange-500" size={24} />;
       default:
-        return "📬";
+        return <Mail className="text-orange-500" size={24} />;
     }
   };
 
@@ -71,8 +72,8 @@ export function ShippingCalculatorAdvanced({
   return (
     <div className="w-full space-y-4">
       {/* Input Section */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+      <div className="bg-[#171718] rounded-xl border border-gray-800 p-6">
+        <h3 className="text-lg font-bold text-white mb-4">
           Calcular costo de envío
         </h3>
 
@@ -80,7 +81,7 @@ export function ShippingCalculatorAdvanced({
           <div>
             <label
               htmlFor="zipCode"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-gray-400 mb-2"
             >
               Código Postal de Destino
             </label>
@@ -91,41 +92,21 @@ export function ShippingCalculatorAdvanced({
                 value={zipCode}
                 onChange={(e) => setZipCode(e.target.value)}
                 placeholder="Ej: 1425"
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="flex-1 bg-[#0a0a0a] px-4 py-2 border border-gray-800 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
                 maxLength={8}
                 disabled={loading}
               />
               <button
                 onClick={handleCalculate}
                 disabled={isDisabled}
-                className={`px-6 py-2 rounded-lg font-medium transition-all ${
-                  isDisabled
-                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : "bg-blue-600 text-white hover:bg-blue-700 active:scale-95"
-                }`}
+                className={`px-6 py-2 rounded-lg font-medium transition-all ${isDisabled
+                    ? "bg-gray-800 text-gray-500 cursor-not-allowed"
+                    : "bg-orange-600 text-white hover:bg-orange-700 active:scale-95"
+                  }`}
               >
                 {loading ? (
                   <span className="flex items-center gap-2">
-                    <svg
-                      className="animate-spin h-4 w-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      />
-                    </svg>
+                    <Loader2 className="animate-spin" size={18} />
                     Calculando
                   </span>
                 ) : (
@@ -136,8 +117,9 @@ export function ShippingCalculatorAdvanced({
           </div>
 
           {cartItems.length === 0 && (
-            <div className="text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-lg p-3">
-              ⚠️ Agrega productos al carrito para calcular el envío
+            <div className="flex items-center gap-2 text-sm text-yellow-500 bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-3">
+              <AlertTriangle size={18} />
+              Agrega productos al carrito para calcular el envío
             </div>
           )}
         </div>
@@ -145,14 +127,14 @@ export function ShippingCalculatorAdvanced({
 
       {/* Error Section */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4">
           <div className="flex items-start gap-3">
-            <span className="text-red-600 text-xl">❌</span>
+            <XCircle className="text-red-500" size={24} />
             <div>
-              <h4 className="font-medium text-red-900 mb-1">
+              <h4 className="font-medium text-red-400 mb-1">
                 Error al calcular envío
               </h4>
-              <p className="text-sm text-red-700">{error}</p>
+              <p className="text-sm text-red-300/80">{error}</p>
             </div>
           </div>
         </div>
@@ -161,7 +143,7 @@ export function ShippingCalculatorAdvanced({
       {/* Quotes Section */}
       {quotes.length > 0 && (
         <div className="space-y-3">
-          <h3 className="text-lg font-semibold text-gray-900">
+          <h3 className="text-lg font-bold text-white">
             Opciones de envío disponibles
           </h3>
 
@@ -175,29 +157,28 @@ export function ShippingCalculatorAdvanced({
                 <button
                   key={index}
                   onClick={() => handleSelectQuote(quote)}
-                  className={`text-left p-4 rounded-lg border-2 transition-all ${
-                    isSelected
-                      ? "border-blue-500 bg-blue-50 shadow-md"
-                      : "border-gray-200 bg-white hover:border-blue-300 hover:shadow-sm"
-                  }`}
+                  className={`text-left p-4 rounded-xl border transition-all ${isSelected
+                      ? "border-orange-500 bg-orange-500/5 shadow-md"
+                      : "border-gray-800 bg-[#171718] hover:border-gray-700 hover:bg-[#202022]"
+                    }`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-2xl">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="bg-[#0a0a0a] p-2 rounded-lg border border-gray-800">
                           {getServiceIcon(quote.service)}
                         </span>
-                        <h4 className="font-semibold text-gray-900">
+                        <h4 className="font-bold text-white">
                           {quote.serviceName}
                         </h4>
                       </div>
 
-                      <div className="space-y-1 text-sm">
-                        <p className="text-gray-600 flex items-center gap-2">
-                          <span>📅</span>
+                      <div className="space-y-1 text-sm pl-12">
+                        <p className="text-gray-400 flex items-center gap-2">
+                          <Calendar size={14} />
                           <span>
                             Llega en{" "}
-                            <strong className="text-gray-900">
+                            <strong className="text-gray-200">
                               {quote.estimatedDays}{" "}
                               {quote.estimatedDays === 1
                                 ? "día hábil"
@@ -208,7 +189,7 @@ export function ShippingCalculatorAdvanced({
 
                         {quote.additionalInfo && (
                           <p className="text-gray-500 flex items-center gap-2">
-                            <span>ℹ️</span>
+                            <Info size={14} />
                             <span>{quote.additionalInfo}</span>
                           </p>
                         )}
@@ -216,11 +197,11 @@ export function ShippingCalculatorAdvanced({
                     </div>
 
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-gray-900">
+                      <p className="text-xl font-bold text-white">
                         {formatCurrency(quote.cost)}
                       </p>
                       {quote.estimatedDays === 1 && (
-                        <span className="inline-block mt-1 px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded">
+                        <span className="inline-block mt-2 px-2 py-1 bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-medium rounded-md">
                           Más rápido
                         </span>
                       )}
@@ -228,9 +209,9 @@ export function ShippingCalculatorAdvanced({
                   </div>
 
                   {isSelected && (
-                    <div className="mt-3 pt-3 border-t border-blue-200">
-                      <p className="text-sm text-blue-700 font-medium flex items-center gap-2">
-                        <span>✓</span>
+                    <div className="mt-3 pt-3 border-t border-orange-500/20 pl-12">
+                      <p className="text-sm text-orange-400 font-medium flex items-center gap-2">
+                        <Check size={16} />
                         <span>Opción seleccionada</span>
                       </p>
                     </div>
@@ -242,17 +223,17 @@ export function ShippingCalculatorAdvanced({
 
           {/* Summary */}
           {selectedQuote && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="bg-orange-500/5 border border-orange-500/20 rounded-xl p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-blue-700 font-medium">
+                  <p className="text-sm text-orange-400 font-medium">
                     Costo de envío:
                   </p>
-                  <p className="text-xs text-blue-600 mt-1">
+                  <p className="text-xs text-orange-500/80 mt-1">
                     {selectedQuote.serviceName}
                   </p>
                 </div>
-                <p className="text-xl font-bold text-blue-900">
+                <p className="text-xl font-bold text-white">
                   {formatCurrency(selectedQuote.cost)}
                 </p>
               </div>

@@ -20,6 +20,10 @@ export default function NewProductForm({ categories }: { categories: Category[] 
     description: '',
     price: '',
     stock: '',
+    weight: '',
+    length: '',
+    width: '',
+    height: '',
     categoryId: '',
   });
 
@@ -51,12 +55,16 @@ export default function NewProductForm({ categories }: { categories: Category[] 
       setErrorMessage('La categoría es obligatoria.');
       return;
     }
-    
+
     const formDataToSend = new FormData();
     formDataToSend.append('name', formData.name);
     formDataToSend.append('description', formData.description);
     formDataToSend.append('price', formData.price);
     formDataToSend.append('stock', formData.stock);
+    if (formData.weight) formDataToSend.append('weight', formData.weight);
+    if (formData.length) formDataToSend.append('length', formData.length);
+    if (formData.width) formDataToSend.append('width', formData.width);
+    if (formData.height) formDataToSend.append('height', formData.height);
     formDataToSend.append('categoryId', formData.categoryId);
     formDataToSend.append('images', JSON.stringify(images));
     formDataToSend.append('variants', JSON.stringify(variants));
@@ -399,7 +407,68 @@ export default function NewProductForm({ categories }: { categories: Category[] 
                 />
               </div>
             </div>
+
+            {/* Shipping Dimensions */}
+            <div className="pt-4 border-t border-gray-800">
+              <h3 className="text-sm font-semibold text-gray-300 mb-4">Envío (Opcional)</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-gray-400 mb-1">
+                    Peso (g)
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.weight}
+                    onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
+                    className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors text-sm"
+                    placeholder="0"
+                    min="0"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-400 mb-1">
+                    Largo (cm)
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.length}
+                    onChange={(e) => setFormData({ ...formData, length: e.target.value })}
+                    className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors text-sm"
+                    placeholder="0"
+                    min="0"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-400 mb-1">
+                    Ancho (cm)
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.width}
+                    onChange={(e) => setFormData({ ...formData, width: e.target.value })}
+                    className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors text-sm"
+                    placeholder="0"
+                    min="0"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-400 mb-1">
+                    Alto (cm)
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.height}
+                    onChange={(e) => setFormData({ ...formData, height: e.target.value })}
+                    className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors text-sm"
+                    placeholder="0"
+                    min="0"
+                  />
+                </div>
+              </div>
+            </div>
+
           </div>
+
 
           {/* Category */}
           <div className="bg-[#171718] border border-gray-800 rounded-xl p-6">
@@ -444,7 +513,7 @@ export default function NewProductForm({ categories }: { categories: Category[] 
             </div>
           </div>
         </div>
-      </form>
-    </div>
+      </form >
+    </div >
   );
 }

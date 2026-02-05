@@ -10,22 +10,22 @@ const categories = [
   {
     name: "Tablas",
     href: "productos/categoria/tablas",
-    image: "/categorias/tablas.jpg",
+    image: "/tablas.png",
   },
   {
     name: "Cuchillos",
     href: "productos/categoria/cuchillos",
-    image: "/categorias/cuchillos.jpg",
+    image: "/cuchillos.jpeg",
   },
   {
     name: "Accesorios",
-    href: "productos/categorias/accesorios",
-    image: "/categorias/accesorios.jpg",
+    href: "productos/categoria/accesorios",
+    image: "/accesorios.png",
   },
   {
-    name: "Promos",
-    href: "productos/categoria/promos",
-    image: "/categorias/promos.jpg",
+    name: "Combos",
+    href: "productos/categoria/combos",
+    image: "/combos.jpeg",
   },
 ];
 

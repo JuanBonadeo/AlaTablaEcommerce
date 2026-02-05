@@ -46,18 +46,37 @@ export async function deleteUserAction(id: string) {
   }
 }
 
+import { sendMarketingEmail } from '@/lib/email/resend';
+
 export async function sendMarketingEmailAction(userIds: string[], subject: string, message: string) {
   try {
-    // TODO: Implementar envío de emails
-    // Por ahora solo retornamos éxito
-    console.log('Sending marketing email to:', userIds, subject, message);
-    
-    return { 
-      ok: true, 
-      message: `Email enviado a ${userIds.length} usuario(s)` 
+    const users = await userService.getUsersByIds(userIds);
+
+    if (!users || users.length === 0) {
+      return { ok: false, message: 'No se encontraron usuarios seleccionados' };
+    }
+
+    // Send emails (concurrently for better performance, but mind rate limits)
+    const results = await Promise.allSettled(
+      users.map(user =>
+        sendMarketingEmail({
+          email: user.email,
+          name: user.name,
+          subject,
+          message
+        })
+      )
+    );
+
+    const successful = results.filter(r => r.status === 'fulfilled').length;
+    const failed = results.filter(r => r.status === 'rejected').length;
+
+    return {
+      ok: true,
+      message: `Email enviado con éxito a ${successful} usuario(s).${failed > 0 ? ` Fallaron ${failed}.` : ''}`
     };
   } catch (error) {
     console.error('Error en sendMarketingEmailAction:', error);
-    return { ok: false, message: 'Error al enviar el email' };
+    return { ok: false, message: 'Error al procesar el envío de emails' };
   }
 }

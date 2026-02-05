@@ -78,4 +78,26 @@ export const userService = {
       throw new Error("Failed to delete user");
     }
   },
+
+  async getUsersByIds(ids: string[]) {
+    try {
+      const users = await prisma.user.findMany({
+        where: {
+          id: {
+            in: ids,
+          },
+        },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+        },
+      });
+
+      return users;
+    } catch (error) {
+      console.error("Error fetching users by ids:", error);
+      throw new Error("Failed to fetch users");
+    }
+  },
 };

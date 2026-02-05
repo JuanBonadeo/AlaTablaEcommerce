@@ -82,12 +82,22 @@ export async function POST(req: NextRequest) {
     };
 
     // Crear preferencia de pago
+    console.log('=== API: Creating Mercado Pago Preference ===');
+    console.log('Order ID:', orderId);
+    console.log('Items count:', items.length);
+    console.log('Total amount:', items.reduce((sum, item) => sum + (item.unit_price * item.quantity), 0));
+    
     const preferenceResult = await MercadoPagoService.createPreference({
       items,
       payer,
       external_reference: orderId,
       statement_descriptor: 'ALA TABLA',
     });
+
+    console.log('=== API: Preference Result ===');
+    console.log('Success:', preferenceResult.success);
+    console.log('Message:', preferenceResult.message);
+    console.log('Data:', preferenceResult.data);
 
     if (!preferenceResult.success) {
       return NextResponse.json(

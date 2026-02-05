@@ -56,7 +56,14 @@ export const MercadoPagoService = {
   createPreference: async (data: CreatePreferenceInput) => {
     try {
       // Validar que el Access Token esté configurado
-      if (!process.env.MERCADO_PAGO_ACCESS_TOKEN || process.env.MERCADO_PAGO_ACCESS_TOKEN.startsWith('TEST-12345')) {
+      const token = process.env.MERCADO_PAGO_ACCESS_TOKEN;
+      
+      console.log('=== Mercado Pago Debug Info ===');
+      console.log('Token length:', token?.length);
+      console.log('Token starts with:', token?.substring(0, 20) + '...');
+      console.log('Token ends with:', token?.substring(token.length - 20));
+      
+      if (!token || token.startsWith('TEST-12345')) {
         console.error('MERCADO_PAGO_ACCESS_TOKEN no configurado correctamente');
         return {
           success: false,
@@ -94,7 +101,18 @@ export const MercadoPagoService = {
         statement_descriptor: data.statement_descriptor || 'ALA TABLA',
       };
 
+      console.log('=== Mercado Pago Request Body ===');
+      console.log('Items:', JSON.stringify(body.items, null, 2));
+      console.log('Payer:', JSON.stringify(body.payer, null, 2));
+      console.log('Back URLs:', JSON.stringify(body.back_urls, null, 2));
+      console.log('External Reference:', body.external_reference);
+
       const response = await preference.create({ body });
+
+      console.log('=== Mercado Pago Response ===');
+      console.log('Preference ID:', response.id);
+      console.log('Init Point:', response.init_point);
+      console.log('Sandbox Init Point:', response.sandbox_init_point);
 
       return {
         success: true,

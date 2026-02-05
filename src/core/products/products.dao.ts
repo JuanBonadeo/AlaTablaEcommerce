@@ -31,9 +31,9 @@ export const ProductDAO = {
   getAll: async () => {
     return prisma.product.findMany({
       where: { deletedAt: null },
-      include: { 
-        category: true, 
-        images: true, 
+      include: {
+        category: true,
+        images: true,
         variants: true,
         offers: getOfferInclude(),
       },
@@ -42,7 +42,7 @@ export const ProductDAO = {
 
   getByCategory: async (categoryName: string) => {
     return prisma.product.findMany({
-      where: { 
+      where: {
         deletedAt: null,
         category: {
           name: {
@@ -51,9 +51,9 @@ export const ProductDAO = {
           }
         }
       },
-      include: { 
-        category: true, 
-        images: true, 
+      include: {
+        category: true,
+        images: true,
         variants: true,
         offers: getOfferInclude(),
       },
@@ -63,28 +63,28 @@ export const ProductDAO = {
   getBySlug: async (slug: string) => {
     return prisma.product.findFirst({
       where: { slug: slug, deletedAt: null },
-      include: { 
-        category: true, 
-        images: true, 
-        variants: true,
-        offers: getOfferInclude(),
-      },
-    });
-  },
-  
-  getById: async (id: string)=> {
-    return prisma.product.findFirst({
-      where: { id: id, deletedAt: null },
-      include: { 
-        category: true, 
-        images: true, 
+      include: {
+        category: true,
+        images: true,
         variants: true,
         offers: getOfferInclude(),
       },
     });
   },
 
-  create: async (data: CreateProductInput) : Promise<Product> => {
+  getById: async (id: string) => {
+    return prisma.product.findFirst({
+      where: { id: id, deletedAt: null },
+      include: {
+        category: true,
+        images: true,
+        variants: true,
+        offers: getOfferInclude(),
+      },
+    });
+  },
+
+  create: async (data: CreateProductInput): Promise<Product> => {
     return prisma.product.create({
       data: {
         slug: data.slug,
@@ -92,12 +92,16 @@ export const ProductDAO = {
         description: data.description,
         price: data.price,
         stock: data.stock,
+        weight: data.weight,
+        length: data.length,
+        width: data.width,
+        height: data.height,
         categoryId: data.categoryId,
         images: {
           create: data.images?.map((url) => ({ url })),
         },
       },
-      
+
     });
   },
 
@@ -118,28 +122,28 @@ export const ProductDAO = {
     const take = limit;
     const [items, total] = await Promise.all([
       prisma.product.findMany({
-        skip, 
+        skip,
         take,
-        select: { 
-          id: true, 
-          name: true, 
-          slug: true, 
-          price: true, 
-          stock: true, 
-          images: true, 
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          price: true,
+          stock: true,
+          images: true,
           category: true,
           offers: getOfferInclude(),
         },
       }),
       prisma.product.count(),
     ]);
-    return { 
+    return {
       items,
-      pagination : {
+      pagination: {
         totalPages: Math.ceil(total / limit),
         currentPage: page,
         limit,
       }
-      };
+    };
   }
 };

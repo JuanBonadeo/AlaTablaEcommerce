@@ -9,8 +9,9 @@ interface EditProductPageProps {
 }
 
 export default async function EditProductPage({ params }: EditProductPageProps) {
+  const { id } = await params;
   const [product, categories] = await Promise.all([
-    getProductByIdAction(params.id),
+    getProductByIdAction(id),
     getAllCategoriesAction(),
   ]);
 

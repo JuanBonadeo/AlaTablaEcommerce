@@ -7,6 +7,7 @@ import { QuantitySelector } from "../quantity-selector/QuantitySelector";
 import { Product } from "@/lib/types/product.types";
 import { useCartStore } from "@/lib/store/cart-stores";
 import type { CartItem } from "@/lib/types/cart.types";
+import { ToastNotification } from "@/components/ui/ToastNotification";
 
 
 interface Props {
@@ -14,7 +15,7 @@ interface Props {
 }
 export const AddToCart = ({ product }: Props) => {
 
-    const addProuctToCart = useCartStore( state => state.addProductToCart);
+    const addProuctToCart = useCartStore(state => state.addProductToCart);
 
     const [quantity, setQuantity] = useState<number>(1)
     const [posted, setPosted] = useState(false)
@@ -37,7 +38,7 @@ export const AddToCart = ({ product }: Props) => {
 
         // Check stock availability
         const availableStock = selectedVariant?.stock ?? product.stock;
-        
+
         if (availableStock < quantity) {
             setQuantity(Math.min(quantity, availableStock));
             setPosted(false);
@@ -75,8 +76,8 @@ export const AddToCart = ({ product }: Props) => {
 
     return (
         <>
-            
-            
+
+
 
 
             {/* Selector de Cantidad */}
@@ -90,7 +91,7 @@ export const AddToCart = ({ product }: Props) => {
                     >
                         {product.variants.map(v => (
                             <option key={v.id} value={v.id}>
-                                {v.name} {v.price ? ` - $${v.price}` : ''} 
+                                {v.name} {v.price ? ` - $${v.price}` : ''}
                                 {(v.stock !== undefined && v.stock !== null) ? ` (Stock: ${v.stock})` : ''}
                             </option>
                         ))}
@@ -110,24 +111,15 @@ export const AddToCart = ({ product }: Props) => {
 
 
             {/* Button */}
-            <button 
-                onClick={addToCart} 
-                className="btn-primary my-5" 
+            <button
+                onClick={addToCart}
+                className="btn-primary my-5"
                 disabled={posted || (selectedVariant?.stock ?? product.stock) === 0}
             >
                 {posted ? 'Agregando...' : (selectedVariant?.stock ?? product.stock) === 0 ? 'Sin stock' : 'Agregar al carrito'}
             </button>
 
-            {/* simple inline notification */}
-            {showNotification && (
-                <div
-                    role="status"
-                    aria-live="polite"
-                    className="fixed right-6 bottom-6 bg-blue-600 text-white px-4 py-2 rounded shadow-lg z-50"
-                >
-                     Producto agregado
-                </div>
-            )}
+            <ToastNotification show={showNotification} />
 
 
         </>

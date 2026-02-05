@@ -11,6 +11,7 @@ import { authClient } from '@/lib/auth/auth-client';
 import { currencyFormat } from '@/lib/helpers/currencyFormat';
 import { Address } from '@/lib/types/address.types';
 import { ConfirmOrderSkeleton } from '@/components/ui/skeletons/ConfirmOrderSkeleton';
+import { AlertOctagon, CheckCircle2, CreditCard, Info, MapPin, Package, Smartphone, Wallet, X } from 'lucide-react';
 
 const ConfirmOrderClient = () => {
   const router = useRouter();
@@ -53,12 +54,12 @@ const ConfirmOrderClient = () => {
 
   const onConfirm = async () => {
     if (isCreatingOrder) return;
-    
+
     setIsCreatingOrder(true);
-    
+
     try {
       const userId = session?.user?.id;
-      
+
       if (!userId) {
         setNotification({ type: 'error', message: 'Debes iniciar sesión para crear una orden' });
         setIsCreatingOrder(false);
@@ -87,12 +88,12 @@ const ConfirmOrderClient = () => {
         })),
         shipping: shippingQuote
           ? {
-              carrier: shippingQuote.carrier,
-              service: shippingQuote.service,
-              serviceName: shippingQuote.serviceName,
-              cost: shippingQuote.cost,
-              estimatedDays: shippingQuote.estimatedDays,
-            }
+            carrier: shippingQuote.carrier,
+            service: shippingQuote.service,
+            serviceName: shippingQuote.serviceName,
+            cost: shippingQuote.cost,
+            estimatedDays: shippingQuote.estimatedDays,
+          }
           : undefined,
       };
 
@@ -120,38 +121,8 @@ const ConfirmOrderClient = () => {
         console.warn('Could not save payment method', e);
       }
 
-      // SI es Mercado Pago, crear preferencia y redirigir
-      if (paymentMethod === 'mercadopago' && result.data?.id) {
-        try {
-          const preferenceResponse = await fetch('/api/mercadopago/create-preference', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ orderId: result.data.id }),
-          });
-
-          const preferenceData = await preferenceResponse.json();
-
-          if (preferenceData.success) {
-            // NO limpiar carrito aún - se limpiará SOLO si llega a success
-            // Redirigir a Mercado Pago
-            const paymentUrl = preferenceData.data.sandbox_init_point || preferenceData.data.init_point;
-            window.location.href = paymentUrl;
-            return;
-          } else {
-            setNotification({ type: 'error', message: 'Error al crear preferencia de pago. Por favor intenta de nuevo.' });
-            setIsCreatingOrder(false);
-            return;
-          }
-        } catch (error) {
-          console.error('Error creating Mercado Pago preference:', error);
-          setNotification({ type: 'error', message: 'Error al procesar el pago con Mercado Pago' });
-          setIsCreatingOrder(false);
-          return;
-        }
-      }
-
-      // Para transferencia bancaria, limpiar carrito y redirigir
-      clearCart();
+      // Redirigir a la página de pago para ambos métodos
+      // El usuario podrá iniciar el pago desde allí
       if (result.data?.id) {
         router.push(`/order/${result.data.id}/payment`);
       } else {
@@ -160,7 +131,7 @@ const ConfirmOrderClient = () => {
     } catch (error) {
       console.error('Error creating order:', error);
       const errorMsg = error instanceof Error ? error.message : 'Error al crear la orden';
-      
+
       if (errorMsg.toLowerCase().includes('stock')) {
         setNotification({ type: 'error', message: `⚠️ ${errorMsg}. Por favor, verifica las cantidades en tu carrito.` });
       } else {
@@ -174,91 +145,180 @@ const ConfirmOrderClient = () => {
   if (!loaded) return <ConfirmOrderSkeleton />;
 
   return (
-    <div className="flex justify-center items-center mb-20 px-2 lg:px-0">
-      <div className="flex flex-col w-[1000px] gap-6">
+    <div className="flex justify-center items-start mb-20 px-4 xl:px-0 py-8">
+      <div className="flex flex-col w-full max-w-[1000px] gap-8">
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+        {/* Header con pasos o titulo */}
+        <div className="flex items-center gap-3 pb-6 border-b border-gray-800">
+          <CheckCircle2 className="text-orange-400" size={32} />
+          <div>
+            <h1 className="text-2xl font-bold text-white">Confirmar Pedido</h1>
+            <p className="text-gray-400">Revisá los detalles antes de finalizar</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
           {/* Left: Cart (non editable) */}
-          <div className="bg rounded-xl shadow-xl p-6">
-            <h2 className="text-2xl mb-4">Carrito</h2>
-            <div className="text-sm text-gray-600 mb-4">No podés editar el carrito desde aquí — volvé a la página del carrito para cambios.</div>
-            <ProductsIncart />
-          </div>
-
-          {/* Right: Address + Payment */}
-          <div className="bg rounded-xl shadow-xl p-6">
-            <h2 className="text-2xl mb-3">Dirección de entrega</h2>
-            {address ? (
-              <div className="mb-4">
-                <p className="font-medium">{address.firstName} {address.lastName}</p>
-                <p className="text-sm">{address.street} - {address.city}, {address.state} - CP {address.zip}</p>
-                <p className="text-sm">{address.phone}</p>
-              </div>
-            ) : (
-              <div className="mb-4 text-sm text-gray-500">No hay dirección seleccionada. <button onClick={() => router.push('/checkout/address')} className="underline text-primary">Elegir dirección</button></div>
-            )}
-
-            <div className="w-full h-0.5 rounded bg-gray-200 mb-4" />
-
-            <h2 className="text-2xl mb-3">Resumen de orden</h2>
+          <div className="lg:col-span-7 space-y-6">
             {/* Notification banner */}
             {notification && (
-              <div className={`mb-4 p-3 rounded-lg border ${notification.type === 'error' ? 'bg border-red text-red-800' : notification.type === 'success' ? 'bg-green-50 border-green-200 text-green-800' : 'bg-blue-50 border-blue-200 text-blue-800'}`}>
-                <div className="flex justify-between items-start gap-4">
-                  <div className="text-sm font-bold">{notification.message}</div>
-                  <button onClick={() => setNotification(null)} className="text-sm opacity-70 hover:opacity-100">Cerrar</button>
+              <div className={`p-4 rounded-xl border flex items-start gap-3 ${notification.type === 'error' ? 'bg-red-500/10 border-red-500/20 text-red-500' :
+                notification.type === 'success' ? 'bg-green-500/10 border-green-500/20 text-green-500' :
+                  'bg-blue-500/10 border-blue-500/20 text-blue-500'
+                }`}>
+                {notification.type === 'error' ? <AlertOctagon size={20} className="shrink-0 mt-0.5" /> : <Info size={20} className="shrink-0 mt-0.5" />}
+                <div className="flex-1">
+                  <p className="font-medium text-sm">{notification.message}</p>
                 </div>
+                <button onClick={() => setNotification(null)} className="opacity-70 hover:opacity-100"><X size={18} /></button>
               </div>
             )}
 
-            <div className="grid grid-cols-2 mb-4">
-              <span>Nro. Productos</span>
-              <span className="text-right">{itemsIn === 1 ? '1 artículo' : `${itemsIn} artículos`}</span>
-              <span>Subtotal</span>
-              <span className="text-right">{currencyFormat(subTotal)}</span>
-              <span>Envío</span>
+            <div className="bg-[#171718] border border-gray-800 rounded-xl p-6 shadow-sm">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <Package className="text-orange-400" size={20} />
+                  Carrito ({itemsIn})
+                </h2>
+                <button onClick={() => router.push('/cart')} className="text-sm text-gray-400 hover:text-white hover:underline transition-colors">
+                  Editar carrito
+                </button>
+              </div>
+              <ProductsIncart />
+            </div>
+
+            <div className="bg-[#171718] border border-gray-800 rounded-xl p-6 shadow-sm">
+              <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <MapPin className="text-orange-400" size={20} />
+                Envío y Entrega
+              </h2>
 
               {address ? (
-                <span className="text-right">
-                  {shippingQuote ? currencyFormat(shippingQuote.cost) : currencyFormat(envio)}
-                </span>
+                <div className="pl-4 border-l-2 border-gray-700 space-y-1">
+                  <p className="font-medium text-white">{address.firstName} {address.lastName}</p>
+                  <p className="text-gray-400">{address.street} - {address.city}, {address.state} - CP {address.zip}</p>
+                  <p className="text-sm text-gray-500 flex items-center gap-2 mt-2">
+                    <Smartphone size={14} /> {address.phone}
+                  </p>
+                </div>
               ) : (
-                <span className="text-right">-</span>
+                <div className="text-gray-500 flex items-center gap-4 p-4 bg-gray-800/20 rounded-lg">
+                  <span>No seleccionaste una dirección.</span>
+                  <button onClick={() => router.push('/checkout/address')} className="text-orange-400 font-medium hover:underline">Elegir dirección</button>
+                </div>
               )}
 
               {shippingQuote && (
-                <span className="text-xs text-gray-500 col-span-2">
-                  {shippingQuote.serviceName} • Llega en {shippingQuote.estimatedDays} {shippingQuote.estimatedDays === 1 ? 'día' : 'días'}
-                </span>
+                <div className="mt-4 pt-4 border-t border-gray-800 flex justify-between items-center">
+                  <span className="text-gray-300 font-medium">{shippingQuote.serviceName}</span>
+                  <div className="text-right">
+                    <p className="font-bold text-green-500">{currencyFormat(shippingQuote.cost)}</p>
+                    <p className="text-xs text-gray-500">Llega en {shippingQuote.estimatedDays} días aprox.</p>
+                  </div>
+                </div>
               )}
-              
-              <span className="mt-5 text-2xl">Total:</span>
-              <span className="mt-5 text-2xl text-right">{currencyFormat(total)}</span>
             </div>
+          </div>
 
-            <div className="w-full h-0.5 rounded bg-gray-200 mb-4" />
+          {/* Right: Payment + Summary */}
+          <div className="lg:col-span-5 flex flex-col gap-6">
 
-            <h3 className="text-lg mb-2">Forma de pago</h3>
-            <div className="flex flex-col gap-3 mb-4">
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input type="radio" name="payment" checked={paymentMethod === 'transfer'} onChange={() => setPaymentMethod('transfer')} />
-                <span className="ml-2">Transferencia bancaria</span>
-              </label>
+            <div className="bg-[#171718] border border-gray-800 rounded-xl p-6 shadow-lg sticky top-24">
+              <h2 className="text-xl font-bold text-white mb-6">Resumen de cuenta</h2>
 
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input type="radio" name="payment" checked={paymentMethod === 'mercadopago'} onChange={() => setPaymentMethod('mercadopago')} />
-                <span className="ml-2">Mercado Pago</span>
-              </label>
-            </div>
+              <div className="space-y-3 mb-6">
+                <div className="flex justify-between text-gray-300">
+                  <span>Subtotal</span>
+                  <span className="font-medium text-white">{currencyFormat(subTotal)}</span>
+                </div>
+                <div className="flex justify-between text-gray-300">
+                  <span>Envío</span>
+                  <span className={shippingQuote ? 'font-medium text-white' : 'text-gray-500'}>
+                    {shippingQuote ? currencyFormat(shippingQuote.cost) : (address ? 'Calculando...' : '-')}
+                  </span>
+                </div>
+                <div className="border-t border-gray-800 my-2 pt-2 flex justify-between items-end">
+                  <span className="text-lg font-bold text-white">Total</span>
+                  <span className="text-2xl font-bold text-orange-400">{currencyFormat(total)}</span>
+                </div>
+              </div>
 
-            <div className="flex justify-end">
-              <button 
-                className="btn-primary" 
+              <div className="h-px bg-gray-800 mb-6" />
+
+              <h3 className="text-lg font-bold text-white mb-4">Forma de pago</h3>
+              <div className="flex flex-col gap-3 mb-8">
+                {/* Transferencia Bancaria */}
+                <label
+                  className={`
+                    relative flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all
+                    ${paymentMethod === 'transfer'
+                      ? 'border-orange-400 bg-orange-400/5'
+                      : 'border-gray-700 bg-transparent hover:border-gray-600 hover:bg-gray-800'
+                    } shadow-lg shadow-orange-900/20
+                  `}
+                >
+                  <input
+                    type="radio"
+                    name="payment"
+                    checked={paymentMethod === 'transfer'}
+                    onChange={() => setPaymentMethod('transfer')}
+                    className="sr-only"
+                  />
+                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === 'transfer' ? 'border-orange-500' : 'border-gray-500'}`}>
+                    {paymentMethod === 'transfer' && <div className="w-2.5 h-2.5 rounded-full bg-orange-400" />}
+                  </div>
+
+                  <div className="flex items-center gap-3 flex-1">
+                    <div className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center text-gray-300">
+                      <Wallet size={20} />
+                    </div>
+                    <div>
+                      <div className={`font-semibold ${paymentMethod === 'transfer' ? 'text-white' : 'text-gray-300'}`}>Transferencia</div>
+                      <div className="text-xs text-gray-500">10% de descuento</div>
+                    </div>
+                  </div>
+                </label>
+
+                {/* Mercado Pago */}
+                <label
+                  className={`
+                    relative flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all
+                    ${paymentMethod === 'mercadopago'
+                      ? 'border-orange-400 bg-orange-400/5'
+                      : 'border-gray-700 bg-transparent hover:border-gray-600 hover:bg-gray-800'
+                    } shadow-lg shadow-orange-900/20
+                  `}
+                >
+                  <input
+                    type="radio"
+                    name="payment"
+                    checked={paymentMethod === 'mercadopago'}
+                    onChange={() => setPaymentMethod('mercadopago')}
+                    className="sr-only"
+                  />
+                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === 'mercadopago' ? 'border-orange-500' : 'border-gray-500'}`}>
+                    {paymentMethod === 'mercadopago' && <div className="w-2.5 h-2.5 rounded-full bg-orange-400" />}
+                  </div>
+
+                  <div className="flex items-center gap-3 flex-1">
+                    <div className="w-10 h-10 rounded-lg bg-[#009EE3]/10 flex items-center justify-center text-[#009EE3]">
+                      <CreditCard size={20} />
+                    </div>
+                    <div>
+                      <div className={`font-semibold ${paymentMethod === 'mercadopago' ? 'text-white' : 'text-gray-300'}`}>Mercado Pago</div>
+                      <div className="text-xs text-gray-500">Tarjetas, rapipago, etc.</div>
+                    </div>
+                  </div>
+                </label>
+              </div>
+
+              <button
+                className="w-full py-4 btn-primary rounded-xl font-bold transition-all shadow-lg shadow-orange-900/20 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={onConfirm}
                 disabled={isCreatingOrder}
               >
-                {isCreatingOrder ? 'Procesando...' : 'Confirmar y pagar'}
+                {isCreatingOrder ? 'Procesando...' : 'Confirmar y Pagar'}
               </button>
             </div>
           </div>

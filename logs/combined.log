@@ -312,3 +312,324 @@
 {"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-02T13:56:59.338Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
 {"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-02T13:56:59.664Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
 {"level":"warn","message":"Correo Argentino: no hay token, usando tracking simulado","timestamp":"2026-01-02T13:56:59.667Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"weight":500},"timestamp":"2026-01-03T13:50:01.952Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T13:50:01.965Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T13:50:02.416Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-01-03T13:50:02.419Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"weight":500},"timestamp":"2026-01-03T13:50:03.148Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T13:50:03.150Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T13:50:03.306Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-01-03T13:50:03.309Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T13:50:14.903Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T13:50:15.211Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: no hay token, usando tracking simulado","timestamp":"2026-01-03T13:50:15.213Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T13:52:12.042Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T13:52:12.423Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: no hay token, usando tracking simulado","timestamp":"2026-01-03T13:52:12.425Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2026-01-03T13:55:03.357Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2026-01-03T13:55:22.025Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2026-01-03T13:55:30.446Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":150000,"weight":1000},"timestamp":"2026-01-03T13:55:58.969Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T13:55:58.974Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T13:55:59.423Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-01-03T13:55:59.425Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":150000,"weight":1000},"timestamp":"2026-01-03T13:56:00.673Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T13:56:00.676Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T13:56:00.943Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-01-03T13:56:00.946Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T13:56:07.598Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T13:56:07.895Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: no hay token, usando tracking simulado","timestamp":"2026-01-03T13:56:07.897Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":150000,"weight":1000},"timestamp":"2026-01-03T14:08:04.121Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T14:08:04.133Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T14:08:04.593Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-01-03T14:08:04.597Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":150000,"weight":1000},"timestamp":"2026-01-03T14:08:05.723Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T14:08:05.725Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T14:08:05.942Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-01-03T14:08:05.945Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T14:08:14.863Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T14:08:15.255Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: no hay token, usando tracking simulado","timestamp":"2026-01-03T14:08:15.259Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":121212,"weight":500},"timestamp":"2026-01-03T14:25:35.414Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T14:25:35.423Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T14:25:36.190Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-01-03T14:25:36.193Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":121212,"weight":500},"timestamp":"2026-01-03T14:25:36.910Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T14:25:36.912Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T14:25:37.045Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-01-03T14:25:37.047Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T14:25:52.022Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T14:25:52.522Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: no hay token, usando tracking simulado","timestamp":"2026-01-03T14:25:52.524Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":150000,"weight":1000},"timestamp":"2026-01-03T14:33:05.510Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T14:33:05.513Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T14:33:05.973Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-01-03T14:33:05.976Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":150000,"weight":1000},"timestamp":"2026-01-03T14:33:07.279Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T14:33:07.281Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T14:33:07.447Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-01-03T14:33:07.451Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2026-01-03T14:33:13.256Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"weight":500},"timestamp":"2026-01-03T14:34:13.274Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T14:34:13.277Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T14:34:13.656Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-01-03T14:34:13.659Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"weight":500},"timestamp":"2026-01-03T14:34:14.334Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T14:34:14.337Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T14:34:14.464Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-01-03T14:34:14.467Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T14:34:22.710Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T14:34:23.026Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: no hay token, usando tracking simulado","timestamp":"2026-01-03T14:34:23.029Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"weight":500},"timestamp":"2026-01-03T14:40:30.040Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T14:40:30.048Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T14:40:31.209Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-01-03T14:40:31.213Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"weight":500},"timestamp":"2026-01-03T14:40:32.366Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T14:40:32.369Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T14:40:32.566Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-01-03T14:40:32.570Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-01-03T14:43:10.298Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-01-03T14:43:10.812Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: no hay token, usando tracking simulado","timestamp":"2026-01-03T14:43:10.814Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Unhandled error","timestamp":"2026-02-02T21:20:31.799Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Unhandled error","timestamp":"2026-02-04T22:14:39.748Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":121212,"weight":500},"timestamp":"2026-02-04T22:17:18.107Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:17:18.113Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:17:18.336Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:17:18.338Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":121212,"weight":500},"timestamp":"2026-02-04T22:17:18.707Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:17:18.709Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:17:18.818Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:17:18.820Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":242424,"height":13,"length":13,"weight":1000,"width":13},"timestamp":"2026-02-04T22:26:19.775Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:26:19.777Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:26:20.048Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:26:20.050Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":242424,"height":13,"length":13,"weight":1000,"width":13},"timestamp":"2026-02-04T22:26:20.680Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:26:20.683Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:26:20.789Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:26:20.791Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2026-02-04T22:27:03.335Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2026-02-04T22:27:12.545Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":121212,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T22:27:24.734Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:27:24.735Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:27:24.930Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:27:24.932Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":121212,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T22:27:25.293Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:27:25.295Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:27:25.411Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:27:25.413Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:27:35.230Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:27:35.426Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: no hay token, usando tracking simulado","timestamp":"2026-02-04T22:27:35.428Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":121212,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T22:33:33.951Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:33:33.957Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:33:34.131Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:33:34.133Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":121212,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T22:33:34.471Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:33:34.473Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:33:34.582Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:33:34.584Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2026-02-04T22:34:13.739Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":225000,"height":14,"length":14,"weight":1500,"width":14},"timestamp":"2026-02-04T22:34:34.085Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:34:34.088Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:34:34.284Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:34:34.286Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":225000,"height":14,"length":14,"weight":1500,"width":14},"timestamp":"2026-02-04T22:34:34.613Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:34:34.614Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:34:34.714Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:34:34.716Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:34:57.646Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:34:57.824Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: no hay token, usando tracking simulado","timestamp":"2026-02-04T22:34:57.826Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientValidationError"},"level":"error","message":"Unhandled error","timestamp":"2026-02-04T22:38:39.777Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":225000,"height":14,"length":14,"weight":1500,"width":14},"timestamp":"2026-02-04T22:39:29.576Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:39:29.578Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:39:29.776Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:39:29.778Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":225000,"height":14,"length":14,"weight":1500,"width":14},"timestamp":"2026-02-04T22:39:30.166Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:39:30.169Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:39:30.276Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:39:30.278Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":225000,"height":14,"length":14,"weight":1500,"width":14},"timestamp":"2026-02-04T22:39:58.980Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:39:58.981Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:39:59.136Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:39:59.137Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":225000,"height":14,"length":14,"weight":1500,"width":14},"timestamp":"2026-02-04T22:39:59.512Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:39:59.513Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:39:59.642Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:39:59.643Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:43:39.163Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:43:39.341Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: no hay token, usando tracking simulado","timestamp":"2026-02-04T22:43:39.343Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":225000,"height":14,"length":14,"weight":1500,"width":14},"timestamp":"2026-02-04T22:44:00.691Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:44:00.693Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:44:00.853Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:44:00.854Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":225000,"height":14,"length":14,"weight":1500,"width":14},"timestamp":"2026-02-04T22:44:01.234Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:44:01.237Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:44:01.341Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:44:01.343Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":225000,"height":14,"length":14,"weight":1500,"width":14},"timestamp":"2026-02-04T22:45:36.664Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:45:36.666Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:45:36.851Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:45:36.854Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":225000,"height":14,"length":14,"weight":1500,"width":14},"timestamp":"2026-02-04T22:45:37.210Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:45:37.212Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:45:37.318Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:45:37.321Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":225000,"height":14,"length":14,"weight":1500,"width":14},"timestamp":"2026-02-04T22:47:34.791Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:47:34.793Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:47:34.960Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:47:34.961Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":225000,"height":14,"length":14,"weight":1500,"width":14},"timestamp":"2026-02-04T22:47:35.294Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:47:35.296Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:47:35.402Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:47:35.404Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":225000,"height":14,"length":14,"weight":1500,"width":14},"timestamp":"2026-02-04T22:47:53.219Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:47:53.221Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:47:53.371Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:47:53.373Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":225000,"height":14,"length":14,"weight":1500,"width":14},"timestamp":"2026-02-04T22:47:53.722Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:47:53.724Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:47:53.830Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T22:47:53.832Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T22:48:29.272Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T22:48:29.480Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: no hay token, usando tracking simulado","timestamp":"2026-02-04T22:48:29.483Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":1142424,"height":24,"length":24,"weight":7000,"width":24},"timestamp":"2026-02-04T23:19:15.804Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:19:15.807Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:19:15.995Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:19:15.997Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":1142424,"height":24,"length":24,"weight":7000,"width":24},"timestamp":"2026-02-04T23:19:16.850Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:19:16.852Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:19:16.953Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:19:16.957Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":1217424,"height":25,"length":25,"weight":7500,"width":25},"timestamp":"2026-02-04T23:26:49.855Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:26:49.859Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:26:50.038Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:26:50.040Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":1217424,"height":25,"length":25,"weight":7500,"width":25},"timestamp":"2026-02-04T23:26:50.790Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:26:50.792Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:26:50.901Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:26:50.903Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2026-02-04T23:30:09.620Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":900000,"height":23,"length":23,"weight":6000,"width":23},"timestamp":"2026-02-04T23:30:24.262Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:30:24.267Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:30:24.428Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:30:24.431Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":900000,"height":23,"length":23,"weight":6000,"width":23},"timestamp":"2026-02-04T23:30:24.839Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:30:24.841Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:30:24.951Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:30:24.952Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":150000,"height":13,"length":13,"weight":1000,"width":13},"timestamp":"2026-02-04T23:30:41.176Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:30:41.178Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:30:41.357Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:30:41.359Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":150000,"height":13,"length":13,"weight":1000,"width":13},"timestamp":"2026-02-04T23:30:41.734Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:30:41.736Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:30:41.857Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:30:41.859Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":150000,"height":13,"length":13,"weight":1000,"width":13},"timestamp":"2026-02-04T23:30:54.219Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:30:54.220Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:30:54.452Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:30:54.454Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":150000,"height":13,"length":13,"weight":1000,"width":13},"timestamp":"2026-02-04T23:30:54.843Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:30:54.845Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:30:54.972Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:30:54.974Z"}
+{"error":{},"level":"error","message":"Unhandled error","timestamp":"2026-02-04T23:31:05.616Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T23:31:20.514Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:31:20.516Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:31:20.669Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:31:20.672Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T23:31:21.018Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:31:21.020Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:31:21.130Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:31:21.131Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:31:34.943Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:31:35.130Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: no hay token, usando tracking simulado","timestamp":"2026-02-04T23:31:35.132Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T23:33:17.835Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:33:17.837Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:33:18.018Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:33:18.020Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T23:33:18.404Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:33:18.406Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:33:18.523Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:33:18.524Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T23:33:32.768Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:33:32.769Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:33:32.926Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:33:32.927Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T23:33:33.275Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:33:33.276Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:33:33.381Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:33:33.383Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T23:33:47.796Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:33:47.797Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:33:47.970Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:33:47.971Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T23:33:48.347Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:33:48.349Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:33:48.458Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:33:48.460Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T23:33:57.137Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:33:57.138Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:33:57.292Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:33:57.293Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T23:33:57.660Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:33:57.661Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:33:57.760Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:33:57.762Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T23:34:01.980Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:34:01.981Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:34:02.184Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:34:02.185Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T23:34:02.544Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:34:02.544Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:34:02.684Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:34:02.687Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T23:34:15.670Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:34:15.675Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:34:15.851Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:34:15.854Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-04T23:34:16.249Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:34:16.250Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:34:16.364Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:34:16.365Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":150000,"height":13,"length":13,"weight":1000,"width":13},"timestamp":"2026-02-04T23:36:08.582Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:36:08.583Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:36:08.768Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:36:08.770Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":150000,"height":13,"length":13,"weight":1000,"width":13},"timestamp":"2026-02-04T23:36:09.350Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-04T23:36:09.351Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-04T23:36:09.470Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-04T23:36:09.471Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientValidationError"},"level":"error","message":"Unhandled error","timestamp":"2026-02-04T23:37:05.978Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientValidationError"},"level":"error","message":"Unhandled error","timestamp":"2026-02-04T23:39:04.997Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientValidationError"},"level":"error","message":"Unhandled error","timestamp":"2026-02-04T23:39:38.657Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":225000,"height":14,"length":14,"weight":1500,"width":14},"timestamp":"2026-02-05T01:17:41.613Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-05T01:17:41.622Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-05T01:17:41.863Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-05T01:17:41.865Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":225000,"height":14,"length":14,"weight":1500,"width":14},"timestamp":"2026-02-05T01:17:42.466Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-05T01:17:42.468Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-05T01:17:42.608Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-05T01:17:42.609Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-05T01:17:56.794Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-05T01:17:56.956Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: no hay token, usando tracking simulado","timestamp":"2026-02-05T01:17:56.957Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-05T01:49:52.077Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-05T01:49:52.084Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-05T01:49:52.260Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-05T01:49:52.261Z"}
+{"level":"info","message":"Solicitando cotización a Correo Argentino","request":{"cpReceiver":"2000","cpSender":"2000","declaredValue":75000,"height":10,"length":10,"weight":500,"width":10},"timestamp":"2026-02-05T01:49:52.659Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-05T01:49:52.660Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-05T01:49:52.766Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: sin token, devolviendo tarifas estimadas","timestamp":"2026-02-05T01:49:52.768Z"}
+{"level":"info","message":"Correo Argentino: solicitando token","timestamp":"2026-02-05T01:50:10.930Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token","user":"jua***"}
+{"body":"{\"code\":401,\"message\":\"Unauthorized\"}","level":"error","message":"Correo Argentino: no se pudo obtener token","status":401,"statusText":"Unauthorized","timestamp":"2026-02-05T01:50:11.123Z","url":"https://api.correoargentino.com.ar/micorreo/v1/token"}
+{"level":"warn","message":"Correo Argentino: no hay token, usando tracking simulado","timestamp":"2026-02-05T01:50:11.125Z"}
