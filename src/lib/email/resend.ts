@@ -305,6 +305,123 @@ export async function sendOrderConfirmationEmail({ email, orderId, total, items 
   }
 }
 
+interface SendPaymentConfirmationEmailParams {
+  email: string;
+  name: string;
+  orderId: string;
+  total: number;
+}
+
+/**
+ * Sends a payment confirmation email to the user after successful payment.
+ * Features a thank you message and notifies that contact will be made soon.
+ */
+export async function sendPaymentConfirmationEmail({ email, name, orderId, total }: SendPaymentConfirmationEmailParams) {
+  try {
+    const { data, error } = await resend.emails.send({
+      from: FROM_ADDRESS,
+      to: email,
+      subject: `¡Pago Confirmado - Orden #${orderId.slice(-8)}! - AlaTabla`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Pago Confirmado</title>
+          </head>
+          <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #ffffff; background-color: #0a0a0a; margin: 0; padding: 0;">
+            <table width="100%" cellpadding="0" cellspacing="0" style="width: 100%; margin: 0; padding: 40px 0;">
+              <tr>
+                <td align="center">
+                  <table width="600" cellpadding="0" cellspacing="0" style="background-color: #171718; border-radius: 16px; border: 1px solid #262626; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                    <!-- Header -->
+                    <tr>
+                      <td align="center" style="padding: 40px 40px 30px 40px; background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);">
+                        <div style="background-color: rgba(255,255,255,0.1); border-radius: 50%; width: 80px; height: 80px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
+                          <div style="color: #ffffff; font-size: 48px;">✓</div>
+                        </div>
+                        <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: bold;">¡Gracias por tu compra!</h1>
+                        <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 16px;">Tu pago ha sido confirmado exitosamente</p>
+                      </td>
+                    </tr>
+                    
+                    <!-- Content -->
+                    <tr>
+                      <td style="padding: 40px;">
+                        <div style="text-align: center; margin-bottom: 30px;">
+                          <p style="color: #a3a3a3; font-size: 16px; line-height: 1.8; margin: 0;">
+                            Hola <strong style="color: #ffffff;">${name}</strong>,
+                          </p>
+                          <p style="color: #a3a3a3; font-size: 16px; line-height: 1.8; margin: 20px 0;">
+                            Hemos recibido tu pago correctamente. En breve nos pondremos en contacto contigo para coordinar la entrega de tu pedido.
+                          </p>
+                        </div>
+                        
+                        <div style="background-color: #0a0a0a; border-radius: 12px; padding: 25px; border: 1px solid #262626; margin-bottom: 30px;">
+                          <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td style="padding: 10px 0;">
+                                <p style="color: #737373; margin: 0; font-size: 14px;">Número de Orden</p>
+                                <p style="color: #ffffff; margin: 5px 0 0 0; font-size: 18px; font-weight: bold;">#${orderId.slice(-8)}</p>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="padding: 10px 0; border-top: 1px solid #262626;">
+                                <p style="color: #737373; margin: 0; font-size: 14px;">Total Pagado</p>
+                                <p style="color: #fb923c; margin: 5px 0 0 0; font-size: 24px; font-weight: bold;">${currencyFormat(total)}</p>
+                              </td>
+                            </tr>
+                          </table>
+                        </div>
+                        
+                        <div style="background-color: rgba(251, 146, 60, 0.1); border-left: 4px solid #fb923c; border-radius: 8px; padding: 20px; margin-bottom: 30px;">
+                          <p style="color: #ffffff; margin: 0 0 10px 0; font-weight: bold; font-size: 16px;">📦 Próximos Pasos</p>
+                          <p style="color: #a3a3a3; margin: 0; font-size: 14px; line-height: 1.6;">
+                            Nuestro equipo está preparando tu pedido. Te contactaremos pronto por email o WhatsApp para coordinar los detalles del envío o retiro.
+                          </p>
+                        </div>
+                        
+                        <div style="text-align: center;">
+                          <a href="${APP_URL}/profile/orders" style="display: inline-block; background-color: #fb923c; color: #ffffff; padding: 14px 35px; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 16px; transition: all 0.3s ease;">
+                            Ver Estado de mi Orden
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                      <td style="padding: 20px 40px 40px 40px; text-align: center; border-top: 1px solid #262626;">
+                        <p style="font-size: 12px; color: #525252; margin: 0;">
+                          Si tienes alguna consulta, no dudes en respondernos a este email.
+                        </p>
+                        <p style="font-size: 12px; color: #525252; margin: 10px 0 0 0;">
+                          © ${new Date().getFullYear()} AlaTabla. Todos los derechos reservados.
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </body>
+        </html>
+      `,
+    });
+
+    if (error) {
+      console.error('Error sending payment confirmation email:', error);
+      return { success: false, error };
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.error('Error sending payment confirmation email:', error);
+    return { success: false, error };
+  }
+}
+
 interface SendMarketingEmailParams {
   email: string;
   name: string;

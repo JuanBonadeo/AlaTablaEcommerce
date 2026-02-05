@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PaymentDAO } from '@/core/payments/payment.dao';
 import { OrderDAO } from '@/core/orders/order.dao';
 import { OrderStatus, PaymentProvider, PaymentStatus } from '@/lib/types/enums';
+import { sendPaymentConfirmationEmail } from '@/lib/email/resend';
 
 /**
  * Webhook de Mercado Pago para recibir notificaciones de pagos
@@ -72,6 +73,22 @@ export async function POST(req: NextRequest) {
       await OrderDAO.update(orderId, {
         status: OrderStatus.PAID,
       });
+      
+      // Send payment confirmation email
+      try {
+        const order = await OrderDAO.getById(orderId);
+        if (order?.user?.email && order?.user?.name) {
+          await sendPaymentConfirmationEmail({
+            email: order.user.email,
+            name: order.user.name,
+            orderId: order.id,
+            total: order.total,
+          });
+        }
+      } catch (emailError) {
+        console.error('Error sending payment confirmation email:', emailError);
+        // Don't fail the webhook if email fails
+      }
     } else if (payment.status === PaymentStatus.FAILED) {
       await OrderDAO.update(orderId, {
         status: OrderStatus.CANCELLED,

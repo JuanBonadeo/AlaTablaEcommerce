@@ -13,6 +13,7 @@ import { ErrorHandler, NotFoundError } from "../shared/errorHandler";
 import { ResponseHandler } from "../shared/responseHandler";
 import { prisma } from "@/db/client";
 import { ShippingService } from "@/lib/types/shipping.types";
+import { sendOrderConfirmationEmail, sendPaymentConfirmationEmail } from "@/lib/email/resend";
 
 export const OrderService = {
   create: async (data: CreateOrderInput) => {
@@ -220,6 +221,29 @@ export const OrderService = {
         return updatedOrder;
       });
 
+      // Send order confirmation email
+      try {
+        if (order.user?.email && order.user?.name) {
+          await sendOrderConfirmationEmail({
+            email: order.user.email,
+            name: order.user.name,
+            orderId: order.id,
+            total: order.total,
+            items: order.items.map(item => ({
+              id: item.id,
+              name: item.variant 
+                ? `${item.product.name} - ${item.variant.name}`
+                : item.product.name,
+              quantity: item.quantity,
+              price: item.price,
+            })),
+          });
+        }
+      } catch (emailError) {
+        console.error('Error sending order confirmation email:', emailError);
+        // Don't fail the order creation if email fails
+      }
+
       return ResponseHandler.created(order);
     } catch (error) {
       return ErrorHandler.format(error);
@@ -384,6 +408,21 @@ export const OrderService = {
 
           return updatedOrder;
         });
+
+        // Send payment confirmation email when status changes to PAID
+        try {
+          if (order.user?.email && order.user?.name) {
+            await sendPaymentConfirmationEmail({
+              email: order.user.email,
+              name: order.user.name,
+              orderId: order.id,
+              total: order.total,
+            });
+          }
+        } catch (emailError) {
+          console.error('Error sending payment confirmation email:', emailError);
+          // Don't fail the status update if email fails
+        }
 
         return ResponseHandler.updated(order);
       }
