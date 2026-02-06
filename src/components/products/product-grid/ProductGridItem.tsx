@@ -59,10 +59,10 @@ export const ProductGridItemComponent = ({ product }: Props) => {
               setShowNotification(true);
               setTimeout(() => setShowNotification(false), 3000);
             }}
-            className="absolute bottom-3 right-3 bg-orange-500 text-white p-2.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 hover:bg-orange-600 hover:scale-110 z-20"
+            className="absolute bottom-2 right-2 md:bottom-3 md:right-3 bg-orange-500 text-white p-1.5 md:p-2.5 rounded-full shadow-lg md:opacity-0 md:group-hover:opacity-100 transform md:translate-y-2 md:group-hover:translate-y-0 transition-all duration-300 hover:bg-orange-600 hover:scale-110 z-20"
             title="Agregar al carrito"
           >
-            <Plus size={20} strokeWidth={3} />
+            <Plus size={16} strokeWidth={3} className="md:w-6 md:h-6" />
           </button>
         </div>
       </Link>
