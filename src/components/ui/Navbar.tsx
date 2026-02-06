@@ -7,6 +7,7 @@ import { LogIn, Menu, ShoppingCart, User, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image.js";
 import { authClient } from "@/lib/auth/auth-client";
+import { useCartStore } from "@/lib/store/cart-stores";
 
 
 const linksMobile = [
@@ -30,6 +31,7 @@ export default function Navbar() {
   } = authClient.useSession()
   const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
+  const totalItems = useCartStore((state) => state.getTotalItems());
 
   React.useEffect(() => {
     if (open) document.body.style.overflow = "hidden";
@@ -100,7 +102,29 @@ export default function Navbar() {
               className="relative p-2 text-gray-300 hover:text-orange-500 transition-colors group"
             >
               <ShoppingCart className="w-7 h-7" />
-              {/* Optional: Add badge here if needed */}
+              
+              {/* Badge contador animado */}
+              <AnimatePresence mode="wait">
+                {totalItems > 0 && (
+                  <motion.span
+                    key={totalItems}
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ 
+                      scale: 1, 
+                      opacity: 1,
+                      transition: {
+                        type: "spring",
+                        stiffness: 260,
+                        damping: 20
+                      }
+                    }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg shadow-orange-500/50"
+                  >
+                    {totalItems > 99 ? '99+' : totalItems}
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </Link>
 
             <button
