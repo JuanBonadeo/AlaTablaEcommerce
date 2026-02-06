@@ -44,7 +44,7 @@ export function CategoryForm({ category }: CategoryFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg rounded-lg shadow p-6 space-y-6">
+    <form onSubmit={handleSubmit} className="bg rounded-lg shadow p-3 sm:p-6 space-y-4 sm:space-y-6">
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
           {error}
@@ -72,7 +72,7 @@ export function CategoryForm({ category }: CategoryFormProps) {
 
 
       {/* Botones */}
-      <div className="flex gap-3 pt-4 border-t">
+      <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t">
         <button
           type="submit"
           disabled={isSubmitting}

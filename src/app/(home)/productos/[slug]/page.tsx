@@ -6,6 +6,8 @@ import { ProductSlideshow } from '@/components/product/slideshow/ProductSlidesho
 import { getProductBySlugAction } from '@/lib/actions/product/product.actions';
 import { calculatePrice, formatPrice } from '@/lib/utils/pricing';
 import { AlertCircle, CheckCircle2, Truck } from 'lucide-react';
+import { Metadata } from 'next';
+import { generateProductSchema } from '@/lib/utils/structured-data';
 
 
 type PageProps = {
@@ -14,6 +16,45 @@ type PageProps = {
   }>;
 };
 
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProductBySlugAction(slug);
+
+  if (!product) {
+    return {
+      title: 'Producto no encontrado',
+    };
+  }
+
+  const activeOffer = product.offers?.[0] || null;
+  const priceInfo = calculatePrice(product.price, activeOffer);
+  const images = product.images?.map((img: { url: string }) => img.url) ?? [];
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://alatabla.store';
+
+  return {
+    title: product.name,
+    description: product.description || `${product.name} - Artesanía en madera de alta calidad. ${product.stock > 0 ? 'Disponible ahora' : 'Consultar disponibilidad'}.`,
+    keywords: [product.name, product.category?.name, 'artesanía', 'madera', 'handmade', 'hecho a mano'],
+    openGraph: {
+      title: product.name,
+      description: product.description || `${product.name} - Artesanía en madera de alta calidad`,
+      type: 'website',
+      url: `${baseUrl}/productos/${product.slug}`,
+      images: images.length > 0 ? [{
+        url: images[0],
+        width: 800,
+        height: 600,
+        alt: product.name,
+      }] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: product.name,
+      description: product.description || `${product.name} - Artesanía en madera`,
+      images: images.length > 0 ? [images[0]] : [],
+    },
+  };
+}
 
 export default async function Product({ params }: PageProps) {
 
@@ -28,9 +69,24 @@ export default async function Product({ params }: PageProps) {
   const activeOffer = product.offers?.[0] || null;
   const priceInfo = calculatePrice(product.price, activeOffer);
 
+  // Generate structured data
+  const productSchema = generateProductSchema({
+    name: product.name,
+    description: product.description || `${product.name} - Artesanía en madera`,
+    images: product.images?.map((img: { url: string }) => img.url) ?? [],
+    price: priceInfo.finalPrice,
+    stock: product.stock,
+    slug: product.slug,
+  });
+
 
   return (
-    <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 sm:px-6 lg:px-8">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 sm:px-6 lg:px-8">
 
       {/* Slideshow */}
       <div className="col-span-1 lg:col-span-2 bg-[#171718] rounded-xl overflow-hidden border border-gray-800 shadow-xl">
@@ -135,5 +191,6 @@ export default async function Product({ params }: PageProps) {
       </div>
 
     </div>
+    </>
   );
 }

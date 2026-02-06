@@ -1,37 +1,37 @@
 'use client';
 
-import { Bell, Search, User } from 'lucide-react';
+import { Menu, Home } from 'lucide-react';
+import Link from 'next/link';
 
-export function Header() {
+interface HeaderProps {
+  onToggleSidebar: () => void;
+}
+
+export function Header({ onToggleSidebar }: HeaderProps) {
   return (
-    <header className="bg-[#171718] border-b border-gray-800 px-8 py-4">
-      <div className="flex items-center justify-between">
-        <div className="flex-1 max-w-xl">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-            <input
-              type="text"
-              placeholder="Buscar productos, órdenes, usuarios..."
-              className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg pl-10 pr-4 py-2 text-gray-300 placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
-            />
-          </div>
+    <header className="bg-[#171718] border-b border-gray-800 px-3 sm:px-4 md:px-6 lg:px-8 py-3 sm:py-4">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <button
+            onClick={onToggleSidebar}
+            className="lg:hidden p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-all"
+            aria-label="Abrir menú"
+          >
+            <Menu size={20} />
+          </button>
+          
+          <Link
+            href="/"
+            className="flex items-center gap-2 p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-all"
+            title="Ir a la tienda"
+          >
+            <Home size={20} />
+            <span className="hidden sm:inline text-sm font-medium">Volver a la tienda</span>
+          </Link>
         </div>
 
-        <div className="flex items-center gap-4 ml-6">
-          <button className="relative p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-all">
-            <Bell size={20} />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-orange-500 rounded-full"></span>
-          </button>
-
-          <div className="flex items-center gap-3 pl-4 border-l border-gray-800">
-            <div className="text-right">
-              <p className="text-sm font-medium text-white">Admin User</p>
-              <p className="text-xs text-gray-400">Administrador</p>
-            </div>
-            <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
-              <User size={20} className="text-white" />
-            </div>
-          </div>
+        <div className="text-right">
+          <p className="text-xs sm:text-sm font-medium text-white">Panel Admin</p>
         </div>
       </div>
     </header>

@@ -129,68 +129,69 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
     <>
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-1">Órdenes</h1>
-            <p className="text-gray-400">{stats.total} órdenes en total</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">Órdenes</h1>
+            <p className="text-sm sm:text-base text-gray-400">{stats.total} órdenes en total</p>
           </div>
           <button
             onClick={exportToCSV}
-            className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+            className="flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap"
           >
             <Download size={18} />
-            Exportar CSV
+            <span className="hidden sm:inline">Exportar CSV</span>
+            <span className="sm:hidden">Exportar</span>
           </button>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
-          <div className="bg-[#171718] border border-gray-800 rounded-xl p-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-400 text-sm">Total</span>
-              <ShoppingBag className="text-gray-500" size={20} />
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
+          <div className="bg-[#171718] border border-gray-800 rounded-xl p-3">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-gray-400 text-xs">Total</span>
+              <ShoppingBag className="text-gray-500" size={16} />
             </div>
-            <p className="text-2xl font-bold text-white">{stats.total}</p>
+            <p className="text-lg sm:text-xl font-bold text-white">{stats.total}</p>
           </div>
 
-          <div className="bg-[#171718] border border-yellow-800/50 rounded-xl p-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-400 text-sm">Pendientes</span>
-              <Clock className="text-yellow-500" size={20} />
+          <div className="bg-[#171718] border border-yellow-800/50 rounded-xl p-3">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-gray-400 text-xs">Pendientes</span>
+              <Clock className="text-yellow-500" size={16} />
             </div>
-            <p className="text-2xl font-bold text-yellow-400">{stats.pending}</p>
+            <p className="text-lg sm:text-xl font-bold text-yellow-400">{stats.pending}</p>
           </div>
 
-          <div className="bg-[#171718] border border-blue-800/50 rounded-xl p-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-400 text-sm">Pagadas</span>
-              <DollarSign className="text-blue-500" size={20} />
+          <div className="bg-[#171718] border border-blue-800/50 rounded-xl p-3">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-gray-400 text-xs">Pagadas</span>
+              <DollarSign className="text-blue-500" size={16} />
             </div>
-            <p className="text-2xl font-bold text-blue-400">{stats.paid}</p>
+            <p className="text-lg sm:text-xl font-bold text-blue-400">{stats.paid}</p>
           </div>
 
-          <div className="bg-[#171718] border border-purple-800/50 rounded-xl p-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-400 text-sm">Enviadas</span>
-              <Package className="text-purple-500" size={20} />
+          <div className="bg-[#171718] border border-purple-800/50 rounded-xl p-3">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-gray-400 text-xs">Enviadas</span>
+              <Package className="text-purple-500" size={16} />
             </div>
-            <p className="text-2xl font-bold text-purple-400">{stats.shipped}</p>
+            <p className="text-lg sm:text-xl font-bold text-purple-400">{stats.shipped}</p>
           </div>
 
-          <div className="bg-[#171718] border border-green-800/50 rounded-xl p-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-400 text-sm">Entregadas</span>
-              <CheckCircle className="text-green-500" size={20} />
+          <div className="bg-[#171718] border border-green-800/50 rounded-xl p-3">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-gray-400 text-xs">Entregadas</span>
+              <CheckCircle className="text-green-500" size={16} />
             </div>
-            <p className="text-2xl font-bold text-green-400">{stats.delivered}</p>
+            <p className="text-lg sm:text-xl font-bold text-green-400">{stats.delivered}</p>
           </div>
 
-          <div className="bg-[#171718] border border-orange-800/50 rounded-xl p-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-400 text-sm">Ingresos</span>
-              <TrendingUp className="text-orange-500" size={20} />
+          <div className="bg-[#171718] border border-orange-800/50 rounded-xl p-3">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-gray-400 text-xs">Ingresos</span>
+              <TrendingUp className="text-orange-500" size={16} />
             </div>
-            <p className="text-2xl font-bold text-orange-400">{currencyFormat(stats.revenue)}</p>
+            <p className="text-lg sm:text-xl font-bold text-orange-400 truncate">{currencyFormat(stats.revenue)}</p>
           </div>
         </div>
 

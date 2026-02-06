@@ -24,11 +24,33 @@ const menuItems = [
   { icon: Settings, label: 'Configuración', href: '/admin/settings' },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 min-h-screen bg-[#0a0a0a] border-r border-gray-800 flex flex-col">
+    <>
+      {/* Overlay */}
+      {isOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={onClose}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`
+          fixed lg:static inset-y-0 left-0 z-40
+          w-64 min-h-screen bg-[#0a0a0a] border-r border-gray-800 flex flex-col
+          transform transition-transform duration-300 ease-in-out
+          ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `}
+      >
       <div className="p-6 border-b border-gray-800">
         <h1 className="text-2xl font-bold text-orange-500">AlaTabla</h1>
         <p className="text-sm text-gray-400 mt-1">Panel de Administración</p>
@@ -44,6 +66,7 @@ export function Sidebar() {
               <li key={item.href}>
                 <Link
                   href={item.href}
+                  onClick={onClose}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                     isActive
                       ? 'bg-orange-500 text-white'
@@ -66,5 +89,6 @@ export function Sidebar() {
         </button>
       </div>
     </aside>
+    </>
   );
 }

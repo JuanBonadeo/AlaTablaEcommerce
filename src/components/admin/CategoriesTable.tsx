@@ -37,7 +37,8 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
 
   return (
     <>
-      <div className="bg rounded-lg shadow overflow-hidden">
+      {/* Desktop Table */}
+      <div className="hidden md:block bg rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-stone-800 border-b">
@@ -92,6 +93,40 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
           </table>
         </div>
       </div>
+
+      {/* Mobile Cards */}
+      <div className="md:hidden space-y-3">
+        {categories.map((category) => (
+          <div key={category.id} className="bg-[#171718] rounded-lg p-4 border border-gray-800">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-medium text-gray-200">{category.name}</h3>
+              <span className="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                {category._count?.products || 0}
+              </span>
+            </div>
+            <div className="flex gap-2 pt-3 border-t border-gray-800">
+              <Link
+                href={`/admin/categories/${category.id}`}
+                className="flex-1 text-center text-xs text-blue-600 hover:text-blue-900 font-medium py-2 px-3 rounded bg-blue-50"
+              >
+                Editar
+              </Link>
+              <button
+                onClick={() => handleDelete(
+                  category.id,
+                  category.name,
+                  category._count?.products
+                )}
+                disabled={deletingId === category.id}
+                className="flex-1 text-xs text-red-600 hover:text-red-900 disabled:opacity-50 font-medium py-2 px-3 rounded bg-red-50"
+              >
+                {deletingId === category.id ? 'Eliminando...' : 'Eliminar'}
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <ConfirmModal
         open={confirmOpen}
         title="Eliminar categoría"

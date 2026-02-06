@@ -72,17 +72,18 @@ export default function CategoriesClient({ categories }: CategoriesClientProps) 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-1">Categorías</h1>
-          <p className="text-gray-400">{categories.length} categorías en total</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">Categorías</h1>
+          <p className="text-sm sm:text-base text-gray-400">{categories.length} categorías en total</p>
         </div>
         <button
           onClick={handleNew}
-          className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+          className="flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap"
         >
           <Plus size={18} />
-          Nueva Categoría
+          <span className="hidden sm:inline">Nueva Categoría</span>
+          <span className="sm:hidden">Nueva</span>
         </button>
       </div>
 

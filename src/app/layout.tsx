@@ -14,8 +14,47 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "A la Tabla",
-  description: "E-commerce demo with Next.js, Prisma, and Tailwind CSS",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://alatabla.store'),
+  title: {
+    default: 'A la Tabla - Todo para tu asado',
+    template: '%s | A la Tabla'
+  },
+  description: 'Descubre artesanías únicas en madera hechas a mano. Tablas de cortar, utensilios de cocina y productos artesanales de alta calidad.',
+  keywords: ['artesanías', 'madera', 'tablas de cortar', 'cocina', 'artesanal', 'productos de madera', 'decoración'],
+  authors: [{ name: 'A la Tabla' }],
+  creator: 'A la Tabla',
+  publisher: 'A la Tabla',
+  openGraph: {
+    type: 'website',
+    locale: 'es_AR',
+    url: '/',
+    title: 'A la Tabla - Todo para tu asado',
+    description: 'Descubre artesanías únicas en madera hechas a mano. Tablas de cortar, utensilios de cocina y productos artesanales de alta calidad.',
+    siteName: 'A la Tabla',
+    images: [{
+      url: '/logo.png',
+      width: 800,
+      height: 600,
+      alt: 'A la Tabla Logo'
+    }]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'A la Tabla - Todo para tu asado',
+    description: 'Descubre artesanías únicas en madera hechas a mano.',
+    images: ['/logo.png']
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    }
+  }
 };
 
 export default function RootLayout({
@@ -24,7 +63,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

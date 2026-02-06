@@ -51,14 +51,14 @@ export default function DashboardClient({ data }: DashboardClientProps) {
     const { stats, revenueData, topProducts, activity } = data;
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-4 sm:space-y-6">
             <div>
-                <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>
-                <p className="text-gray-400">Resumen real de tu tienda basado en datos</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">Dashboard</h1>
+                <p className="text-sm sm:text-base text-gray-400">Resumen real de tu tienda basado en datos</p>
             </div>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 lg:gap-4">
                 <StatCard
                     title="Ventas Totales"
                     value={currencyFormat(stats.totalRevenue)}
@@ -92,12 +92,12 @@ export default function DashboardClient({ data }: DashboardClientProps) {
             </div>
 
             {/* Charts */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
                 {/* Revenue Chart */}
-                <div className="bg-[#171718] border border-gray-800 rounded-xl p-6">
-                    <div className="mb-6">
-                        <h2 className="text-xl font-bold text-white mb-1">Ingresos Mensuales</h2>
-                        <p className="text-sm text-gray-400">Últimos 6 meses</p>
+                <div className="bg-[#171718] border border-gray-800 rounded-xl p-3 sm:p-4 lg:p-6">
+                    <div className="mb-4 sm:mb-6">
+                        <h2 className="text-lg sm:text-xl font-bold text-white mb-1">Ingresos Mensuales</h2>
+                        <p className="text-xs sm:text-sm text-gray-400">Últimos 6 meses</p>
                     </div>
                     <ResponsiveContainer width="100%" height={300}>
                         <AreaChart data={revenueData}>
@@ -125,10 +125,10 @@ export default function DashboardClient({ data }: DashboardClientProps) {
                 </div>
 
                 {/* Orders Chart */}
-                <div className="bg-[#171718] border border-gray-800 rounded-xl p-6">
-                    <div className="mb-6">
-                        <h2 className="text-xl font-bold text-white mb-1">Órdenes por Mes</h2>
-                        <p className="text-sm text-gray-400">Últimos 6 meses</p>
+                <div className="bg-[#171718] border border-gray-800 rounded-xl p-3 sm:p-4 lg:p-6">
+                    <div className="mb-4 sm:mb-6">
+                        <h2 className="text-lg sm:text-xl font-bold text-white mb-1">Órdenes por Mes</h2>
+                        <p className="text-xs sm:text-sm text-gray-400">Últimos 6 meses</p>
                     </div>
                     <ResponsiveContainer width="100%" height={300}>
                         <BarChart data={revenueData}>
@@ -143,12 +143,13 @@ export default function DashboardClient({ data }: DashboardClientProps) {
             </div>
 
             {/* Top Products Table */}
-            <div className="bg-[#171718] border border-gray-800 rounded-xl p-6">
-                <div className="mb-6">
-                    <h2 className="text-xl font-bold text-white mb-1">Productos Más Vendidos</h2>
-                    <p className="text-sm text-gray-400">Histórico por volumen de ventas</p>
+            <div className="bg-[#171718] border border-gray-800 rounded-xl p-3 sm:p-4 lg:p-6">
+                <div className="mb-4 sm:mb-6">
+                    <h2 className="text-lg sm:text-xl font-bold text-white mb-1">Productos Más Vendidos</h2>
+                    <p className="text-xs sm:text-sm text-gray-400">Histórico por volumen de ventas</p>
                 </div>
-                <div className="overflow-x-auto">
+                {/* Desktop Table */}
+                <div className="hidden md:block overflow-x-auto">
                     <table className="w-full">
                         <thead>
                             <tr className="border-b border-gray-800">
@@ -178,13 +179,29 @@ export default function DashboardClient({ data }: DashboardClientProps) {
                         </tbody>
                     </table>
                 </div>
+                
+                {/* Mobile Cards */}
+                <div className="md:hidden space-y-3">
+                    {topProducts.length > 0 ? topProducts.map((product, index) => (
+                        <div key={index} className="bg-gray-900/50 rounded-lg p-4 border border-gray-800">
+                            <div className="flex items-center justify-between mb-2">
+                                <span className="text-gray-400 text-sm">#{index + 1}</span>
+                                <span className="font-medium text-green-500">{formatPrice(product.revenue)}</span>
+                            </div>
+                            <h3 className="font-medium text-white mb-1">{product.name}</h3>
+                            <p className="text-sm text-gray-300">{product.sales} unidades vendidas</p>
+                        </div>
+                    )) : (
+                        <p className="py-8 text-center text-gray-500">No hay datos de ventas aún</p>
+                    )}
+                </div>
             </div>
 
             {/* Recent Activity */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="bg-[#171718] border border-gray-800 rounded-xl p-6">
-                    <h2 className="text-xl font-bold text-white mb-4">Actividad Reciente</h2>
-                    <div className="space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
+                <div className="bg-[#171718] border border-gray-800 rounded-xl p-3 sm:p-4 lg:p-6">
+                    <h2 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">Actividad Reciente</h2>
+                    <div className="space-y-3 sm:space-y-4">
                         {activity.length > 0 ? activity.map((act, index) => {
                             const date = new Date(act.time);
                             const now = new Date();
@@ -197,32 +214,32 @@ export default function DashboardClient({ data }: DashboardClientProps) {
                             else timeStr = date.toLocaleDateString('es-ES');
 
                             return (
-                                <div key={index} className="flex items-start gap-3 pb-4 border-b border-gray-800 last:border-0 last:pb-0">
+                                <div key={index} className="flex items-start gap-2 sm:gap-3 pb-3 sm:pb-4 border-b border-gray-800 last:border-0 last:pb-0">
                                     <div className={`w-2 h-2 ${act.color.replace('text-', 'bg-')} rounded-full mt-2`}></div>
-                                    <div className="flex-1">
-                                        <p className="text-white font-medium">{act.action}</p>
-                                        <p className="text-sm text-gray-400">{act.detail}</p>
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-sm sm:text-base text-white font-medium">{act.action}</p>
+                                        <p className="text-xs sm:text-sm text-gray-400">{act.detail}</p>
                                     </div>
-                                    <span className="text-xs text-gray-500">
+                                    <span className="text-xs text-gray-500 shrink-0">
                                         {timeStr}
                                     </span>
                                 </div>
                             );
                         }) : (
-                            <p className="text-gray-500 text-center py-4">Sin actividad reciente</p>
+                            <p className="text-gray-500 text-center py-4 text-sm">Sin actividad reciente</p>
                         )}
                     </div>
                 </div>
 
-                <div className="bg-[#171718] border border-gray-800 rounded-xl p-6">
-                    <h2 className="text-xl font-bold text-white mb-4">Información de la Tienda</h2>
-                    <div className="space-y-3">
-                        <div className="p-4 rounded-lg border bg-blue-500/10 border-blue-500/50">
-                            <p className="text-white text-sm font-medium mb-1">Estado del Sistema</p>
+                <div className="bg-[#171718] border border-gray-800 rounded-xl p-3 sm:p-4 lg:p-6">
+                    <h2 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">Información de la Tienda</h2>
+                    <div className="space-y-2 sm:space-y-3">
+                        <div className="p-3 sm:p-4 rounded-lg border bg-blue-500/10 border-blue-500/50">
+                            <p className="text-white text-xs sm:text-sm font-medium mb-1">Estado del Sistema</p>
                             <p className="text-blue-400 text-xs">Todos los servicios operando normalmente.</p>
                         </div>
-                        <div className="p-4 rounded-lg border bg-orange-500/10 border-orange-500/50">
-                            <p className="text-white text-sm font-medium mb-1">Próximos Pasos</p>
+                        <div className="p-3 sm:p-4 rounded-lg border bg-orange-500/10 border-orange-500/50">
+                            <p className="text-white text-xs sm:text-sm font-medium mb-1">Próximos Pasos</p>
                             <p className="text-orange-400 text-xs">Asegúrate de revisar las órdenes pendientes de confirmación.</p>
                         </div>
                     </div>

@@ -41,7 +41,8 @@ export function ProductsTable({ products }: ProductsTableProps) {
 
   return (
     <>
-      <div className="bg rounded-lg shadow overflow-hidden">
+      {/* Desktop Table */}
+      <div className="hidden lg:block bg rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-stone-800 border-b">
@@ -137,6 +138,72 @@ export function ProductsTable({ products }: ProductsTableProps) {
           </table>
         </div>
       </div>
+
+      {/* Mobile Cards */}
+      <div className="lg:hidden space-y-3">
+        {products.map((product) => (
+          <div key={product.id} className="bg-[#171718] rounded-lg p-4 border border-gray-800">
+            <div className="flex gap-3 mb-3">
+              {product.images && product.images[0] && typeof product.images[0] !== 'string' ? (
+                <img
+                  src={product.images[0].url}
+                  alt={product.name}
+                  className="h-16 w-16 rounded object-cover shrink-0"
+                />
+              ) : (
+                <div className="h-16 w-16 rounded bg-gray-700 shrink-0 flex items-center justify-center">
+                  <span className="text-gray-400 text-xs">Sin img</span>
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <h3 className="text-sm font-medium text-gray-200 truncate">{product.name}</h3>
+                <p className="text-xs text-gray-500 truncate">{product.slug}</p>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                    {product?.category?.name}
+                  </span>
+                  <span
+                    className={`px-2 py-0.5 text-xs font-semibold rounded-full ${product.stock > 10
+                      ? 'bg-green-100 text-green-800'
+                      : product.stock > 0
+                        ? 'bg-yellow-100 text-yellow-800'
+                        : 'bg-red-100 text-red-800'
+                      }`}
+                  >
+                    {product.stock}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center justify-between pt-3 border-t border-gray-800">
+              <div>
+                <p className="text-sm font-semibold text-white">{currencyFormat(product.price)}</p>
+                {product.offers && product.offers.length > 0 && product.offers[0] && (
+                  <span className="text-xs text-orange-500 font-semibold">
+                    -{product.offers[0].descuento}% OFF
+                  </span>
+                )}
+              </div>
+              <div className="flex gap-2">
+                <Link
+                  href={`/admin/products/${product.id}`}
+                  className="text-xs text-blue-600 hover:text-blue-900 font-medium"
+                >
+                  Editar
+                </Link>
+                <button
+                  onClick={() => openDeleteModal(product.id, product.name)}
+                  disabled={deletingId === product.id}
+                  className="text-xs text-red-600 hover:text-red-900 disabled:opacity-50 font-medium"
+                >
+                  {deletingId === product.id ? 'Eliminando...' : 'Eliminar'}
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <ConfirmModal
         open={deleteModalOpen}
         title="Eliminar producto"

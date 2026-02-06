@@ -112,7 +112,8 @@ export function OrdersTable({ orders }: OrdersTableProps) {
         </div>
       )}
 
-      <div className="bg rounded-lg shadow overflow-hidden">
+      {/* Desktop Table */}
+      <div className="hidden lg:block bg rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-stone-800 border-b">
@@ -200,6 +201,76 @@ export function OrdersTable({ orders }: OrdersTableProps) {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Mobile Cards */}
+      <div className="lg:hidden space-y-3">
+        {orders.map((order) => {
+          const itemsCount = order.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
+
+          return (
+            <div key={order.id} className="bg-[#171718] rounded-lg p-4 border border-gray-800">
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <h3 className="text-sm font-medium text-gray-200">
+                    #{order.id.slice(-8)}
+                  </h3>
+                  <p className="text-xs text-gray-500">
+                    {itemsCount} {itemsCount === 1 ? 'artículo' : 'artículos'}
+                  </p>
+                </div>
+                <select
+                  className={`px-2 py-1 text-xs font-semibold rounded-full border-0 ${getStatusColor(order.status)} cursor-pointer disabled:opacity-30`}
+                  value={order.status}
+                  onChange={(e) => handleChangeStatus(order.id, e.target.value as OrderStatus)}
+                  disabled={processingId === order.id || order.status === 'CANCELED'}
+                >
+                  <option value="PENDING">Pendiente</option>
+                  <option value="PAID">Pagado</option>
+                  <option value="SHIPPED">Enviado</option>
+                  <option value="DELIVERED">Entregado</option>
+                  <option value="CANCELED">Cancelado</option>
+                </select>
+              </div>
+              
+              <div className="space-y-2 text-sm mb-3">
+                <div>
+                  <span className="text-gray-500">Cliente:</span>{' '}
+                  <span className="text-gray-200">{order.user?.name || 'N/A'}</span>
+                </div>
+                <div className="text-xs text-gray-500">{order.user?.email}</div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Fecha:</span>
+                  <span className="text-gray-200">
+                    {new Date(order.createdAt).toLocaleDateString('es-AR')}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Total:</span>
+                  <span className="text-white font-semibold">{currencyFormat(order.total)}</span>
+                </div>
+              </div>
+
+              <div className="flex gap-2 pt-3 border-t border-gray-800">
+                <Link
+                  href={`/order/${order.id}/payment`}
+                  className="flex-1 text-center text-xs text-blue-600 hover:text-blue-900 font-medium py-2 px-3 rounded bg-blue-50"
+                >
+                  Ver detalles
+                </Link>
+                {order.status !== 'CANCELED' && order.status !== 'DELIVERED' && (
+                  <button
+                    onClick={() => handleCancelOrder(order.id)}
+                    disabled={processingId === order.id}
+                    className="flex-1 text-xs text-red-600 hover:text-red-900 disabled:opacity-50 font-medium py-2 px-3 rounded bg-red-50"
+                  >
+                    {processingId === order.id ? 'Cancelando...' : 'Cancelar'}
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </>
   );

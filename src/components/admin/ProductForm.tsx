@@ -129,7 +129,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg rounded-lg shadow p-6 space-y-6">
+    <form onSubmit={handleSubmit} className="bg rounded-lg shadow p-3 sm:p-6 space-y-4 sm:space-y-6">
       {error && (
         <div className="text-red-700 px-4 py-3 rounded">
           {error}
@@ -166,7 +166,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
       </div>
 
       {/* Precio y Stock */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label htmlFor="price" className="block text-sm font-medium  mb-1">
             Precio Venta *
@@ -287,9 +287,9 @@ export function ProductForm({ product, categories }: ProductFormProps) {
 
         <div className="space-y-4">
           {variants.map((variant, index) => (
-            <div key={index} className="border rounded-lg p-4 bg-gray-50">
-              <div className="flex items-start gap-4">
-                <div className="flex-1 grid grid-cols-3 gap-3">
+            <div key={index} className="border rounded-lg p-3 sm:p-4 bg-gray-50">
+              <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+                <div className="flex-1 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                   <div>
                     <label className="block text-xs text-gray-600 mb-1">Nombre</label>
                     <input
@@ -340,7 +340,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
                 <button
                   type="button"
                   onClick={() => removeVariant(index)}
-                  className="text-red-600 hover:text-red-800 text-sm mt-5"
+                  className="text-red-600 hover:text-red-800 text-sm sm:mt-5 self-end sm:self-start"
                 >
                   Eliminar
                 </button>
@@ -351,7 +351,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
       </div>
 
       {/* Botones */}
-      <div className="flex gap-3 pt-4 border-t">
+      <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t">
         <button
           type="submit"
           disabled={isSubmitting}
