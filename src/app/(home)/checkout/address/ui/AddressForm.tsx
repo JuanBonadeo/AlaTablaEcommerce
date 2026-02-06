@@ -76,8 +76,8 @@ export const AddressForm = ({ userId, onSuccess, onCancel, }: Props) => {
 
 
   const inputClass =
-    'mt-1 appearance-none relative block w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-[#0a0a0a] border-2 border-gray-800/50 placeholder-gray-600 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 text-xs sm:text-sm transition-all';
-  const labelClass = 'block text-xs sm:text-sm font-semibold text-gray-400 mb-1 ml-1';
+    'mt-1 appearance-none relative block w-full px-3 py-2.5 sm:px-4 sm:py-3 bg-[#0a0a0a] border-2 border-gray-800/50 placeholder-gray-600 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 text-xs sm:text-sm transition-all';
+  const labelClass = 'block text-xs sm:text-sm font-semibold text-gray-400 mb-1';
 
   return (
     <>
@@ -96,24 +96,24 @@ export const AddressForm = ({ userId, onSuccess, onCancel, }: Props) => {
         : (
           <AnimatePresence>
             <div
-              className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-[60] p-3 sm:p-4"
+              className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-start sm:items-center justify-center z-[60] p-3 sm:p-6 overflow-y-auto"
             >
               <motion.div
-                className="bg-gradient-to-br from-[#171718] to-[#0f0f10] border-2 border-gray-800/50 rounded-2xl shadow-2xl w-full max-w-2xl p-4 sm:p-6 relative"
+                className="bg-gradient-to-br from-[#171718] to-[#0f0f10] border-2 border-gray-800/50 rounded-2xl shadow-2xl w-full max-w-2xl p-5 sm:p-6 lg:p-8 relative my-4 sm:my-8"
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.95, opacity: 0 }}
               >
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 sm:p-3 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl text-white shadow-lg shadow-orange-500/50">
-                    <Plus size={20} />
+                <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                  <div className="p-2 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl text-white shadow-lg shadow-orange-500/50 shrink-0">
+                    <Plus size={18} className="sm:w-5 sm:h-5" />
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white">Agregar nueva dirección</h3>
+                  <h3 className="text-base sm:text-lg lg:text-xl font-bold text-white">Agregar nueva dirección</h3>
                 </div>
 
                 <form id="addressForm" onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   {errorMsg && (
-                    <div className="col-span-1 sm:col-span-2 bg-red-500/10 border-2 border-red-500/20 text-red-500 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm" role="alert" aria-live="assertive">
+                    <div className="col-span-1 sm:col-span-2 bg-red-500/10 border-2 border-red-500/20 text-red-500 px-3 py-2.5 rounded-xl text-xs sm:text-sm" role="alert" aria-live="assertive">
                       {errorMsg}
                     </div>
                   )}
@@ -159,17 +159,17 @@ export const AddressForm = ({ userId, onSuccess, onCancel, }: Props) => {
                     {errors.phone && <span className="text-xs text-red-500 mt-1 ml-1">{errors.phone.message}</span>}
                   </div>
 
-                  <div className="col-span-1 sm:col-span-2 flex items-center gap-3 mt-1 mb-1">
-                    <input id="isDefault" type="checkbox" {...register('isDefault')} className="w-4 h-4 sm:w-5 sm:h-5 rounded text-orange-500 focus:ring-orange-500 focus:ring-2 bg-gray-800 border-2 border-gray-600" />
+                  <div className="col-span-1 sm:col-span-2 flex items-center gap-2 sm:gap-3 mt-1 mb-1">
+                    <input id="isDefault" type="checkbox" {...register('isDefault')} className="w-4 h-4 rounded text-orange-500 focus:ring-orange-500 focus:ring-2 bg-gray-800 border-2 border-gray-600 shrink-0" />
                     <label htmlFor="isDefault" className="text-xs sm:text-sm text-gray-300">Usar como dirección principal</label>
                   </div>
 
-                  <div className="col-span-1 sm:col-span-2 mt-3 sm:mt-4 pt-3 sm:pt-4 border-t-2 border-gray-800/50">
+                  <div className="col-span-1 sm:col-span-2 mt-2 sm:mt-3 pt-3 sm:pt-4 border-t-2 border-gray-800/50">
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
                       <button
                         type="submit"
                         disabled={!isValid || submitting}
-                        className="flex-1 py-2.5 sm:py-3 px-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:scale-[1.02] active:scale-[0.98] text-sm sm:text-base"
+                        className="flex-1 py-2.5 sm:py-3 px-4 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:scale-[1.02] active:scale-[0.98] text-sm sm:text-base order-1"
                       >
                         {submitting ? 'Guardando...' : 'Guardar dirección'}
                       </button>
@@ -181,7 +181,7 @@ export const AddressForm = ({ userId, onSuccess, onCancel, }: Props) => {
                             setOpen(false);
                             onCancel();
                           }}
-                          className="px-4 sm:px-6 py-2.5 sm:py-3 border-2 border-gray-700/50 hover:bg-gray-800/50 text-gray-300 rounded-xl transition-all font-medium hover:scale-[1.02] active:scale-[0.98] text-sm sm:text-base"
+                          className="px-4 py-2.5 sm:py-3 border-2 border-gray-700/50 hover:bg-gray-800/50 text-gray-300 rounded-xl transition-all font-medium hover:scale-[1.02] active:scale-[0.98] text-sm sm:text-base order-2"
                         >
                           Cancelar
                         </button>

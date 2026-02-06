@@ -222,8 +222,9 @@ export const OrderService = {
       });
 
       // Send order confirmation email
+      // Solo enviar si NO es Mercado Pago (para MP se enviará cuando se confirme el pago)
       try {
-        if (order?.user?.email && order?.user?.name) {
+        if (order?.user?.email && order?.user?.name && validatedData.paymentMethod !== 'mercadopago') {
           await sendOrderConfirmationEmail({
             email: order.user.email,
             name: order.user.name,
@@ -417,6 +418,14 @@ export const OrderService = {
               name: order.user.name,
               orderId: order.id,
               total: order.total,
+              items: order.items?.map(item => ({
+                id: item.id,
+                name: item.variant 
+                  ? `${item.product.name} - ${item.variant.name}`
+                  : item.product.name,
+                quantity: item.quantity,
+                price: item.price,
+              })) || [],
             });
           }
         } catch (emailError) {

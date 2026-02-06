@@ -106,6 +106,7 @@ const ConfirmOrderClient = () => {
             estimatedDays: shippingQuote.estimatedDays,
           }
           : undefined,
+        paymentMethod,
       };
 
       const result = await createOrderAction(orderData);

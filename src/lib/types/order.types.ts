@@ -109,6 +109,7 @@ export const CreateOrderSchema = z.object({
     cost: z.number().min(0).optional(),
     estimatedDays: z.number().int().min(0).optional(),
   }).optional(),
+  paymentMethod: z.enum(['transfer', 'mercadopago']).optional(),
 });
 
 export const UpdateOrderSchema = z.object({

@@ -83,6 +83,14 @@ export async function POST(req: NextRequest) {
             name: order.user.name,
             orderId: order.id,
             total: order.total,
+            items: order.items?.map(item => ({
+              id: item.id,
+              name: item.variant 
+                ? `${item.product.name} - ${item.variant.name}`
+                : item.product.name,
+              quantity: item.quantity,
+              price: item.price,
+            })) || [],
           });
         }
       } catch (emailError) {

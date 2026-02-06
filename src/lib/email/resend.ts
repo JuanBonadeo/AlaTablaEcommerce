@@ -7,6 +7,7 @@ const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 const OFFICIAL_EMAIL = process.env.OFFICIAL_EMAIL || 'admin@alatabla.store';
 const OFFICIAL_EMAIL_NAME = process.env.OFFICIAL_EMAIL_NAME || 'AlaTabla';
 const FROM_ADDRESS = `${OFFICIAL_EMAIL_NAME} <${OFFICIAL_EMAIL}>`;
+const LOGO_URL = process.env.LOGO_URL || 'https://alatabla.store/logo.png';
 
 interface SendVerificationEmailParams {
   email: string;
@@ -22,7 +23,7 @@ export async function sendVerificationEmail({ email, name, verificationUrl }: Se
   try {
     const { data, error } = await resend.emails.send({
       from: FROM_ADDRESS,
-      to: email, // Fixed: use parameter instead of hardcoded email
+      to: email,
       subject: 'Verifica tu email - AlaTabla',
       html: `
         <!DOCTYPE html>
@@ -37,10 +38,10 @@ export async function sendVerificationEmail({ email, name, verificationUrl }: Se
               <tr>
                 <td align="center">
                   <table width="600" cellpadding="0" cellspacing="0" style="background-color: #171718; border-radius: 16px; border: 1px solid #262626; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-                    <!-- Header -->
+                    <!-- Logo Header -->
                     <tr>
-                      <td align="center" style="padding: 40px 40px 20px 40px;">
-                        <h1 style="color: #fb923c; margin: 0; font-size: 28px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">AlaTabla</h1>
+                      <td align="center" style="padding: 30px 40px 20px 40px; background-color: #0a0a0a;">
+                        <img src="${LOGO_URL}" alt="AlaTabla" style="width: 80px; height: 80px; border-radius: 50%;" />
                       </td>
                     </tr>
                     
@@ -113,7 +114,7 @@ export async function sendPasswordResetEmail({ email, name, resetUrl }: SendPass
   try {
     const { data, error } = await resend.emails.send({
       from: FROM_ADDRESS,
-      to: email, // Fixed: use parameter instead of hardcoded email
+      to: email,
       subject: 'Restablecer contraseña - AlaTabla',
       html: `
         <!DOCTYPE html>
@@ -127,11 +128,11 @@ export async function sendPasswordResetEmail({ email, name, resetUrl }: SendPass
             <table width="100%" cellpadding="0" cellspacing="0" style="width: 100%; margin: 0; padding: 40px 0;">
               <tr>
                 <td align="center">
-                  <table width="600" cellpadding="0" cellspacing="0" style="border-radius: 16px; border: 1px solid #262626; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-                    <!-- Header -->
+                  <table width="600" cellpadding="0" cellspacing="0" style="background-color: #171718; border-radius: 16px; border: 1px solid #262626; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                    <!-- Logo Header -->
                     <tr>
-                      <td align="center" style="padding: 40px 40px 20px 40px;">
-                        <h1 style="color: #fb923c; margin: 0; font-size: 28px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">AlaTabla</h1>
+                      <td align="center" style="padding: 30px 40px 20px 40px; background-color: #0a0a0a;">
+                        <img src="${LOGO_URL}" alt="AlaTabla" style="width: 80px; height: 80px; border-radius: 50%;" />
                       </td>
                     </tr>
                     
@@ -232,10 +233,16 @@ export async function sendOrderConfirmationEmail({ email, orderId, total, items 
             <table width="100%" cellpadding="0" cellspacing="0" style="width: 100%; margin: 0; padding: 40px 0;">
               <tr>
                 <td align="center">
-                  <table width="600" cellpadding="0" cellspacing="0" style="border-radius: 16px; border: 1px solid #262626; overflow: hidden;">
-                    <!-- Header -->
+                  <table width="600" cellpadding="0" cellspacing="0" style="background-color: #171718; border-radius: 16px; border: 1px solid #262626; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                    <!-- Logo Header -->
                     <tr>
-                      <td align="center" style="padding: 40px 40px 20px 40px; background-color: #fb923c;">
+                      <td align="center" style="padding: 30px 40px 20px 40px; background-color: #0a0a0a;">
+                        <img src="${LOGO_URL}" alt="AlaTabla" style="width: 80px; height: 80px; border-radius: 50%;" />
+                      </td>
+                    </tr>
+                    <!-- Title -->
+                    <tr>
+                      <td align="center" style="padding: 20px 40px 20px 40px; background-color: #fb923c;">
                         <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: bold; text-transform: uppercase;">¡Gracias por tu compra!</h1>
                         <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;">Hemos recibido tu pedido correctamente.</p>
                       </td>
@@ -310,13 +317,14 @@ interface SendPaymentConfirmationEmailParams {
   name: string;
   orderId: string;
   total: number;
+  items: OrderItem[];
 }
 
 /**
  * Sends a payment confirmation email to the user after successful payment.
  * Features a thank you message and notifies that contact will be made soon.
  */
-export async function sendPaymentConfirmationEmail({ email, name, orderId, total }: SendPaymentConfirmationEmailParams) {
+export async function sendPaymentConfirmationEmail({ email, name, orderId, total, items }: SendPaymentConfirmationEmailParams) {
   try {
     const { data, error } = await resend.emails.send({
       from: FROM_ADDRESS,
@@ -335,12 +343,16 @@ export async function sendPaymentConfirmationEmail({ email, name, orderId, total
               <tr>
                 <td align="center">
                   <table width="600" cellpadding="0" cellspacing="0" style="background-color: #171718; border-radius: 16px; border: 1px solid #262626; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-                    <!-- Header -->
+                    <!-- Logo Header -->
                     <tr>
-                      <td align="center" style="padding: 40px 40px 30px 40px; background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);">
-                        <div style="background-color: rgba(255,255,255,0.1); border-radius: 50%; width: 80px; height: 80px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
-                          <div style="color: #ffffff; font-size: 48px;">✓</div>
-                        </div>
+                      <td align="center" style="padding: 30px 40px 20px 40px; background-color: #0a0a0a;">
+                        <img src="${LOGO_URL}" alt="AlaTabla" style="width: 80px; height: 80px; border-radius: 50%;" />
+                      </td>
+                    </tr>
+                    <!-- Title with Check -->
+                    <tr>
+                      <td align="center" style="padding: 30px 40px; background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);">
+                        <div style="color: #ffffff; font-size: 48px; margin-bottom: 15px;">✓</div>
                         <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: bold;">¡Gracias por tu compra!</h1>
                         <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 16px;">Tu pago ha sido confirmado exitosamente</p>
                       </td>
@@ -357,6 +369,24 @@ export async function sendPaymentConfirmationEmail({ email, name, orderId, total
                             Hemos recibido tu pago correctamente. En breve nos pondremos en contacto contigo para coordinar la entrega de tu pedido.
                           </p>
                         </div>
+                        
+                        ${items.length > 0 ? `
+                        <div style="margin-bottom: 25px;">
+                          <p style="color: #fb923c; font-weight: bold; margin: 0 0 15px 0; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;">Productos de tu Orden</p>
+                          <table width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #262626; border-radius: 8px; overflow: hidden;">
+                            ${items.map(item => `
+                              <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid #262626; color: #ffffff; font-size: 14px; background-color: #0a0a0a;">
+                                  ${item.name} <span style="color: #737373;">x ${item.quantity}</span>
+                                </td>
+                                <td align="right" style="padding: 12px; border-bottom: 1px solid #262626; color: #fb923c; font-size: 14px; font-weight: bold; background-color: #0a0a0a;">
+                                  ${currencyFormat(item.price)}
+                                </td>
+                              </tr>
+                            `).join('')}
+                          </table>
+                        </div>
+                        ` : ''}
                         
                         <div style="background-color: #0a0a0a; border-radius: 12px; padding: 25px; border: 1px solid #262626; margin-bottom: 30px;">
                           <table width="100%" cellpadding="0" cellspacing="0">
@@ -447,15 +477,15 @@ export async function sendMarketingEmail({ email, name, subject, message }: Send
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>${subject}</title>
           </head>
-          <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #ffffff; margin: 0; padding: 0;">
+          <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #ffffff; background-color: #0a0a0a; margin: 0; padding: 0;">
             <table width="100%" cellpadding="0" cellspacing="0" style="width: 100%; margin: 0; padding: 40px 0;">
               <tr>
                 <td align="center">
                   <table width="600" cellpadding="0" cellspacing="0" style="background-color: #171718; border-radius: 16px; border: 1px solid #262626; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-                    <!-- Header -->
+                    <!-- Logo Header -->
                     <tr>
-                      <td align="center" style="padding: 40px 40px 20px 40px;">
-                        <h1 style="color: #fb923c; margin: 0; font-size: 28px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">AlaTabla</h1>
+                      <td align="center" style="padding: 30px 40px 20px 40px; background-color: #0a0a0a;">
+                        <img src="${LOGO_URL}" alt="AlaTabla" style="width: 80px; height: 80px; border-radius: 50%;" />
                       </td>
                     </tr>
                     
