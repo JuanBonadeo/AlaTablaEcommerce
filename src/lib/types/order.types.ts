@@ -120,6 +120,7 @@ export const UpdateOrderSchema = z.object({
 export const CreatePaymentSchema = z.object({
   orderId: z.string().min(1, "El ID de la orden es requerido"),
   provider: z.nativeEnum(PaymentProvider),
+  status: z.nativeEnum(PaymentStatus).optional(),
   amount: z.number().min(0, "El monto debe ser mayor o igual a 0"),
   transactionId: z.string().optional(),
   notes: z.string().optional(),

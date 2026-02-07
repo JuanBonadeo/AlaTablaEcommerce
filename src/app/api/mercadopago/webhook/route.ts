@@ -81,11 +81,12 @@ export async function POST(req: NextRequest) {
       await PaymentDAO.create({
         orderId,
         provider: PaymentProvider.MERCADOPAGO,
+        status: paymentStatus,
         amount: transactionAmount,
         transactionId: String(paymentId),
         notes: `Método: ${paymentMethodId}${paymentInfo.status_detail ? ` - ${paymentInfo.status_detail}` : ''}`,
       });
-      console.log('Payment created in database for order:', orderId);
+      console.log('Payment created in database for order:', orderId, 'with status:', paymentStatus);
     } else {
       // Actualizar pago existente
       await PaymentDAO.update(existingPayment.id, {

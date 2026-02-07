@@ -8,6 +8,7 @@ export const PaymentDAO = {
       data: {
         orderId: data.orderId,
         provider: data.provider,
+        status: data.status,
         amount: data.amount,
         transactionId: data.transactionId,
         notes: data.notes,
