@@ -56,8 +56,13 @@ export default function CategoriesClient({ categories }: CategoriesClientProps) 
     setShowModal(true);
   };
 
-  const handleDelete = async (id: string) => {
-    setConfirmMessage('¿Estás seguro de eliminar esta categoría?');
+  const handleDelete = async (id: string, name: string, productCount?: number) => {
+    if (productCount && productCount > 0) {
+      setError(`No se puede eliminar "${name}" porque tiene ${productCount} producto(s) asociado(s)`);
+      setTimeout(() => setError(null), 5000);
+      return;
+    }
+    setConfirmMessage(`¿Estás seguro de eliminar la categoría "${name}"?`);
     setPendingDeleteId(id);
     setConfirmOpen(true);
   };
@@ -87,6 +92,13 @@ export default function CategoriesClient({ categories }: CategoriesClientProps) 
         </button>
       </div>
 
+      {/* Error Global */}
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg">
+          {error}
+        </div>
+      )}
+
       {/* Categories Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {categories.map((category) => (
@@ -107,7 +119,7 @@ export default function CategoriesClient({ categories }: CategoriesClientProps) 
                   <Edit size={16} />
                 </button>
                 <button
-                  onClick={() => handleDelete(category.id)}
+                  onClick={() => handleDelete(category.id, category.name, category._count?.products)}
                   disabled={isSubmitting}
                   className="p-2 text-red-400 hover:text-red-300 transition-colors disabled:opacity-50"
                   title="Eliminar"
@@ -116,7 +128,10 @@ export default function CategoriesClient({ categories }: CategoriesClientProps) 
                 </button>
               </div>
             </div>
-            <h3 className="text-white font-bold text-lg">{category.name}</h3>
+            <h3 className="text-white font-bold text-lg mb-2">{category.name}</h3>
+            <p className="text-sm text-gray-400">
+              {category._count?.products || 0} producto{(category._count?.products || 0) !== 1 ? 's' : ''}
+            </p>
           </div>
         ))}
 
@@ -212,20 +227,26 @@ export default function CategoriesClient({ categories }: CategoriesClientProps) 
           setIsSubmitting(true);
           try {
             const result = await deleteCategoryAction(pendingDeleteId);
+            setConfirmOpen(false);
+            setPendingDeleteId(null);
+            
             if (result.ok) {
               router.refresh();
             } else {
-              alert(result.message);
+              setError(result.message || 'Error al eliminar la categoría');
+              setTimeout(() => setError(null), 5000);
             }
-          } catch (error) {
-            alert('Error al eliminar la categoría');
+          } catch (err) {
+            setError('Error inesperado al eliminar la categoría');
+            setTimeout(() => setError(null), 5000);
           } finally {
             setIsSubmitting(false);
-            setConfirmOpen(false);
-            setPendingDeleteId(null);
           }
         }}
-        onCancel={() => { setConfirmOpen(false); setPendingDeleteId(null); }}
+        onCancel={() => { 
+          setConfirmOpen(false); 
+          setPendingDeleteId(null); 
+        }}
       />
     </div>
   );

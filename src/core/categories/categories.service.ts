@@ -51,6 +51,21 @@ export const CategoryService = {
     delete: async (id: string) => {
         try {
             cuidIdSchema.parse(id);
+            
+            // Verificar si la categoría existe y tiene productos
+            const category = await CategoriesDAO.getById(id);
+            if (!category) {
+                throw new NotFoundError("Categoría no encontrada");
+            }
+            
+            // @ts-expect-error - products existe en la consulta getById
+            if (category.products && category.products.length > 0) {
+                return ResponseHandler.error(
+                    "No se puede eliminar la categoría porque tiene productos asociados",
+                    400
+                );
+            }
+            
             await CategoriesDAO.delete(id);
             return ResponseHandler.deleted();
         } catch (error) {

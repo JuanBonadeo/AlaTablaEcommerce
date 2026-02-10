@@ -2,8 +2,14 @@ import { prisma } from "@/db/client";
 import { Category } from "@prisma/client";
 
 export const CategoriesDAO = {
-  getAll: async (): Promise<Category[]> => {
-    return prisma.category.findMany();
+  getAll: async () => {
+    return prisma.category.findMany({
+      include: {
+        _count: {
+          select: { products: true }
+        }
+      }
+    });
   },
 
   getById: async (id: string): Promise<Category | null> => {

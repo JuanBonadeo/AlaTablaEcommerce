@@ -5,7 +5,7 @@
 
 
 
-import { ApiResponse } from "@/lib/types/shared.types";
+import { ApiResponse, ApiError } from "@/lib/types/shared.types";
 
 export class ResponseHandler {
   // Métodos de éxito (siempre devuelven success: true)
@@ -23,6 +23,10 @@ export class ResponseHandler {
 
   static deleted(message = "Recurso eliminado"): ApiResponse {
     return { success: true, message };
+  }
+
+  static error(message: string, status?: number): ApiError {
+    return { success: false, message, status };
   }
 
   static paginated<T>(
