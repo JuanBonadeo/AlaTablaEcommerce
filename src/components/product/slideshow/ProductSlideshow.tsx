@@ -53,13 +53,13 @@ export const ProductSlideshow = ({ images, title, className }: Props) => {
 
         {
           images.map((image, index) => (
-            <SwiperSlide key={image + index} className="bg-[#0a0a0a]">
+            <SwiperSlide key={image + index} className="bg-[#0a0a0a] flex items-center justify-center aspect-square">
               <ProductImage
                 width={1024}
                 height={1024}
                 src={image}
                 alt={title}
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain p-4"
               />
             </SwiperSlide>
 
@@ -79,13 +79,13 @@ export const ProductSlideshow = ({ images, title, className }: Props) => {
       >
         {
           images.map((image, index) => (
-            <SwiperSlide key={image + index} className="rounded-lg overflow-hidden cursor-pointer opacity-60 hover:opacity-100 transition-opacity">
+            <SwiperSlide key={image + index} className="rounded-lg overflow-hidden cursor-pointer opacity-60 hover:opacity-100 transition-opacity aspect-square bg-[#0a0a0a]">
               <ProductImage
                 width={300}
                 height={300}
                 src={image}
                 alt={title}
-                className="w-full h-full object-cover rounded-lg"
+                className="w-full h-full object-contain rounded-lg p-2"
               />
             </SwiperSlide>
 

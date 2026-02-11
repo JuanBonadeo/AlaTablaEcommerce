@@ -31,8 +31,6 @@ export const ProductMobileSlideshow = ({ images, title, className }: Props) => {
       <Swiper
         style={{
           width: '100%',
-          height: '400px',
-          maxHeight: '500px'
         }}
         pagination={{
           clickable: true,
@@ -41,18 +39,18 @@ export const ProductMobileSlideshow = ({ images, title, className }: Props) => {
           delay: 2500
         }}
         modules={[FreeMode, Autoplay, Pagination]}
-        className="mySwiper2"
+        className="mySwiper2 aspect-square"
       >
 
         {
           images.map((image, index) => (
-            <SwiperSlide key={image + index} className="bg-[#0a0a0a] flex items-center justify-center">
+            <SwiperSlide key={image + index} className="bg-[#0a0a0a] flex items-center justify-center aspect-square">
               <Image
                 width={600}
                 height={600}
                 src={`${image}`}
                 alt={title}
-                className="object-contain w-full h-full"
+                className="object-contain w-full h-full p-4"
               />
             </SwiperSlide>
 
