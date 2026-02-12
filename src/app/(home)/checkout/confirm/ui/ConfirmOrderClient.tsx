@@ -331,7 +331,7 @@ const ConfirmOrderClient = () => {
                     </div>
                     <div className="min-w-0">
                       <div className={`font-semibold text-sm sm:text-base ${paymentMethod === 'transfer' ? 'text-white' : 'text-gray-300'}`}>Transferencia</div>
-                      <div className="text-[10px] sm:text-xs text-gray-500">10% de descuento</div>
+                      {/* <div className="text-[10px] sm:text-xs text-gray-500">10% de descuento</div> */}
                     </div>
                   </div>
                 </motion.label>

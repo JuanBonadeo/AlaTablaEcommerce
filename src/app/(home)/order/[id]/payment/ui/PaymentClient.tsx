@@ -10,8 +10,8 @@ import Image from 'next/image';
 import { PaymentClientSkeleton } from '@/components/ui/skeletons/PaymentClientSkeleton';
 import { CreditCard, ArrowLeft, CheckCircle, Copy, AlertTriangle, Package, MapPin, Truck, Loader2 } from 'lucide-react';
 
-const BANK_ALIAS = 'ALAT.ECOMMERCE.ALIAS';
-const BANK_ACCOUNT = 'CBU: 0000000000000000000000';
+const BANK_ALIAS = 'alatabla.store';
+const BANK_ACCOUNT = 'CBU: 0000003100039880469928';
 
 const PaymentClient = () => {
   const router = useRouter();
