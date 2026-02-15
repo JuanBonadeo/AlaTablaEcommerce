@@ -351,6 +351,28 @@ export default function EditProductClient({ product, categories }: EditProductCl
             </select>
           </div>
 
+          {/* Featured Product */}
+          <div className="bg-[#171718] border border-gray-800 rounded-xl p-6">
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="featured"
+                name="featured"
+                defaultChecked={product.featured || false}
+                className="w-5 h-5 text-orange-500 bg-[#0a0a0a] border-gray-800 rounded focus:ring-orange-500 focus:ring-2"
+              />
+              <label htmlFor="featured" className="text-sm font-medium text-gray-300 cursor-pointer">
+                <div className="flex items-center gap-2">
+                  <span className="text-yellow-500 text-xl">⭐</span>
+                  <div>
+                    <p className="font-semibold text-white">Producto Destacado</p>
+                    <p className="text-xs text-gray-500">Aparecerá primero en el listado</p>
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
+
           {/* Actions */}
           <div className="bg-[#171718] border border-gray-800 rounded-xl p-6">
             <button

@@ -59,6 +59,9 @@ export function ProductsTable({ products }: ProductsTableProps) {
                 <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
                   Stock
                 </th>
+                <th className="px-6 py-3 text-center text-xs font-medium  uppercase tracking-wider">
+                  Destacado
+                </th>
                 <th className="px-6 py-3 text-right text-xs font-medium  uppercase tracking-wider">
                   Acciones
                 </th>
@@ -117,6 +120,15 @@ export function ProductsTable({ products }: ProductsTableProps) {
                       {product.stock} unidades
                     </span>
                   </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-center">
+                    {product.featured ? (
+                      <span className="text-yellow-500 text-xl" title="Producto destacado">
+                        ⭐
+                      </span>
+                    ) : (
+                      <span className="text-gray-600 text-sm">—</span>
+                    )}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <Link
                       href={`/admin/products/${product.id}`}
@@ -156,7 +168,12 @@ export function ProductsTable({ products }: ProductsTableProps) {
                 </div>
               )}
               <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-medium text-gray-200 truncate">{product.name}</h3>
+                <h3 className="text-sm font-medium text-gray-200 truncate">
+                  {product.name}
+                  {product.featured && (
+                    <span className="ml-1 text-yellow-500" title="Producto destacado">⭐</span>
+                  )}
+                </h3>
                 <p className="text-xs text-gray-500 truncate">{product.slug}</p>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">

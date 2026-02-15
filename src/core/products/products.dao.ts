@@ -37,6 +37,10 @@ export const ProductDAO = {
         variants: true,
         offers: getOfferInclude(),
       },
+      orderBy: [
+        { featured: 'desc' }, // Primero los destacados
+        { createdAt: 'desc' }, // Luego por fecha de creación (más nuevos primero)
+      ],
     });
   },
 
@@ -57,6 +61,10 @@ export const ProductDAO = {
         variants: true,
         offers: getOfferInclude(),
       },
+      orderBy: [
+        { featured: 'desc' }, // Primero los destacados
+        { createdAt: 'desc' }, // Luego por fecha de creación (más nuevos primero)
+      ],
     });
   },
 

@@ -24,6 +24,7 @@ function mapFormDataToProduct(formData: FormData) {
     price: Number(formData.get("price")),
     costPrice: Number(formData.get("costPrice") || 0),
     stock: Number(formData.get("stock")),
+    featured: formData.get("featured") === "on" || formData.get("featured") === "true",
     weight: formData.get("weight") ? Number(formData.get("weight")) : undefined,
     length: formData.get("length") ? Number(formData.get("length")) : undefined,
     width: formData.get("width") ? Number(formData.get("width")) : undefined,

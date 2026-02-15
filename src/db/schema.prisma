@@ -113,6 +113,7 @@ model Product {
   width        Int?             @default(0) // en cm
   height       Int?             @default(0) // en cm
   costPrice    Float            @default(0) // Precio costo proveedor
+  featured     Boolean          @default(false) // Producto destacado
   categoryId   String
   images       ProductImage[]
   variants     ProductVariant[]

@@ -37,6 +37,8 @@ export const ProductSlideshow = ({ images, title, className }: Props) => {
         style={{
           '--swiper-navigation-color': '#fff',
           '--swiper-pagination-color': '#fff',
+          minHeight: '500px',
+          maxHeight: '650px',
         } as React.CSSProperties
         }
         spaceBetween={10}
@@ -48,18 +50,19 @@ export const ProductSlideshow = ({ images, title, className }: Props) => {
           swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null
         }}
         modules={[FreeMode, Navigation, Thumbs, Autoplay]}
-        className="mySwiper2 aspect-square rounded-xl overflow-hidden mb-4"
+        className="mySwiper2 rounded-xl overflow-hidden mb-4"
       >
 
         {
           images.map((image, index) => (
-            <SwiperSlide key={image + index} className="bg-[#0a0a0a] flex items-center justify-center aspect-square">
+            <SwiperSlide key={image + index} className="bg-[#0a0a0a] flex items-center justify-center !h-auto min-h-[500px] max-h-[650px]">
               <ProductImage
                 width={1024}
                 height={1024}
                 src={image}
                 alt={title}
-                className="w-full h-full object-contain p-4"
+                className="w-full max-h-[650px] !object-contain p-4"
+                style={{ objectFit: 'contain' }}
               />
             </SwiperSlide>
 

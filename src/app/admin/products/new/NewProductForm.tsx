@@ -26,6 +26,7 @@ export default function NewProductForm({ categories }: { categories: Category[] 
     width: '',
     height: '',
     categoryId: '',
+    featured: false,
   });
 
   const [images, setImages] = useState<string[]>([]);
@@ -68,6 +69,7 @@ export default function NewProductForm({ categories }: { categories: Category[] 
     if (formData.width) formDataToSend.append('width', formData.width);
     if (formData.height) formDataToSend.append('height', formData.height);
     formDataToSend.append('categoryId', formData.categoryId);
+    formDataToSend.append('featured', formData.featured.toString());
     formDataToSend.append('images', JSON.stringify(images));
     formDataToSend.append('variants', JSON.stringify(variants));
 
@@ -525,24 +527,24 @@ export default function NewProductForm({ categories }: { categories: Category[] 
             </div>
           </div>
 
-          {/* Status */}
+          {/* Featured Product */}
           <div className="bg-[#171718] border border-gray-800 rounded-xl p-6">
-            <h2 className="text-xl font-bold text-white mb-6">Estado</h2>
-            <div className="space-y-3">
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="w-5 h-5 rounded border-gray-800 bg-[#0a0a0a] text-orange-500 focus:ring-orange-500 focus:ring-offset-0"
-                  defaultChecked
-                />
-                <span className="text-gray-300">Publicar inmediatamente</span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="w-5 h-5 rounded border-gray-800 bg-[#0a0a0a] text-orange-500 focus:ring-orange-500 focus:ring-offset-0"
-                />
-                <span className="text-gray-300">Producto destacado</span>
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="featured"
+                checked={formData.featured}
+                onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+                className="w-5 h-5 text-orange-500 bg-[#0a0a0a] border-gray-800 rounded focus:ring-orange-500 focus:ring-2"
+              />
+              <label htmlFor="featured" className="text-sm font-medium text-gray-300 cursor-pointer">
+                <div className="flex items-center gap-2">
+                  <span className="text-yellow-500 text-xl">⭐</span>
+                  <div>
+                    <p className="font-semibold text-white">Producto Destacado</p>
+                    <p className="text-xs text-gray-500">Aparecerá primero en el listado</p>
+                  </div>
+                </div>
               </label>
             </div>
           </div>

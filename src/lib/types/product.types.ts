@@ -6,6 +6,7 @@ export interface ProductGridItem {
   slug: string;
   price: number;
   stock: number;
+  featured?: boolean;
   images: { id: string; url: string; productId: string }[];
   category?: { id: string; name: string }; // Agregado
   activeOffer?: {
@@ -32,6 +33,7 @@ export interface Product {
   price: number;
   costPrice: number; // Nuevo campo
   stock: number;
+  featured?: boolean;
   weight?: number | null;
   length?: number | null;
   width?: number | null;
@@ -80,6 +82,7 @@ export const CreateProductSchema = z.object({
   price: z.number().min(0, "El precio debe ser mayor o igual a 0"),
   costPrice: z.number().min(0, "El costo debe ser mayor o igual a 0").optional().default(0),
   stock: z.number().int().min(0, "El stock no puede ser negativo"),
+  featured: z.boolean().optional().default(false),
   weight: z.number().min(0, "El peso no puede ser negativo").optional(),
   length: z.number().min(0, "El largo no puede ser negativo").optional(),
   width: z.number().min(0, "El ancho no puede ser negativo").optional(),

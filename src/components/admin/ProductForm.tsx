@@ -233,6 +233,20 @@ export function ProductForm({ product, categories }: ProductFormProps) {
         </select>
       </div>
 
+      {/* Producto Destacado */}
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          id="featured"
+          name="featured"
+          defaultChecked={product?.featured || false}
+          className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+        />
+        <label htmlFor="featured" className="text-sm font-medium">
+          Producto Destacado
+        </label>
+      </div>
+
       {/* Imágenes */}
       <div className="flex flex-col mb-2 w-md text-bl">
         <label className="block text-sm font-medium mb-1">Fotos</label>

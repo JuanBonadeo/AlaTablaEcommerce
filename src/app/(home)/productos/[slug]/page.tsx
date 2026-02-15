@@ -86,23 +86,24 @@ export default async function Product({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
       />
-      <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 sm:px-6 lg:px-8">
-
-      {/* Slideshow */}
-      <div className="col-span-1 lg:col-span-2 bg-[#171718] rounded-xl overflow-hidden border border-gray-800 shadow-xl">
-
-        {/* Mobile Slideshow */}
+      
+      {/* Mobile Slideshow - Full Width */}
+      <div className="block lg:hidden -mx-1.5 md:-mx-4 -mt-5 md:-mt-4 mb-6">
         <ProductMobileSlideshow
           title={product.name}
           images={product.images?.map((img: { url: string }) => img.url) ?? []}
-          className="block lg:hidden"
+          className=""
         />
+      </div>
 
-        {/* Desktop Slideshow */}
+      <div className="mt-5 mb-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 sm:px-6 lg:px-8">
+
+      {/* Desktop Slideshow */}
+      <div className="hidden lg:block col-span-1 lg:col-span-2 bg-[#171718] rounded-xl overflow-hidden border border-gray-800 shadow-xl">
         <ProductSlideshow
           title={product.name}
           images={product.images?.map((img: { url: string }) => img.url) ?? []}
-          className="hidden lg:block"
+          className=""
         />
       </div>
 

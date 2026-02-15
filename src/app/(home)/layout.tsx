@@ -16,7 +16,7 @@ export default function HomeLayout({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
       />
       <Navbar />
-      <div className="max-w-6xl mx-auto pb-25 md:p-4 p-2">
+      <div className="max-w-6xl mx-auto pb-25 md:p-4 p-1.5">
         {children}
       </div>
       <Footer />
