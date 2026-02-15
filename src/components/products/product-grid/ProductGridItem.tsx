@@ -18,8 +18,8 @@ export const ProductGridItemComponent = ({ product }: Props) => {
   const [displayImage, setDisplayImage] = useState(product?.images?.[0]?.url || '/placeholder.png');
   const [showNotification, setShowNotification] = useState(false);
 
-  // Calcular precio con oferta
-  const activeOffer = product.offers?.[0] || null;
+  // Calcular precio con oferta - usar activeOffer si existe, sino el primero del array offers
+  const activeOffer = product.activeOffer || product.offers?.[0] || null;
   const priceInfo = calculatePrice(product.price, activeOffer);
 
   return (
@@ -54,7 +54,7 @@ export const ProductGridItemComponent = ({ product }: Props) => {
                 price: priceInfo.finalPrice, // Use final price including offer
                 image: product?.images?.[0]?.url || '/placeholder.png',
                 quantity: 1,
-                offer: product.activeOffer
+                offer: activeOffer
               });
               setShowNotification(true);
               setTimeout(() => setShowNotification(false), 3000);
