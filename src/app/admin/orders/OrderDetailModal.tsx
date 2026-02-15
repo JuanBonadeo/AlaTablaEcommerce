@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { X, Package, MapPin, CreditCard, Truck, User, Calendar, DollarSign } from 'lucide-react';
-import { Order } from '@/lib/types/order.types';
+import { X, Package, MapPin, CreditCard, Truck, User, Calendar, DollarSign, MessageCircle, Store } from 'lucide-react';
+import { Order, ShipmentStatus } from '@/lib/types/order.types';
 import { ProductImage } from '@/components/product/prduct-image/ProductImage';
 import { currencyFormat } from '@/lib/helpers/currencyFormat';
 import { createAndreaniShipmentAction } from '@/lib/actions/shipping/andreani.actions';
+import { updateShipmentStatusAction } from '@/lib/actions/shipping/shipping-actions';
 
 interface OrderDetailModalProps {
   order: Order;
@@ -25,6 +26,34 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
   const [statusError, setStatusError] = useState<string | null>(null);
   const [isCreatingShipment, setIsCreatingShipment] = useState(false);
   const [shipmentCreationError, setShipmentCreationError] = useState<string | null>(null);
+  const [isUpdatingShipmentStatus, setIsUpdatingShipmentStatus] = useState(false);
+
+  const handleWhatsAppContact = () => {
+    const phone = order.address?.phone || order.user?.email || '';
+    const cleanPhone = phone.replace(/\D/g, '');
+    const message = `Hola ${order.user?.name || 'cliente'}, te contacto desde AlaTabla respecto a tu orden #${order.id.slice(0, 8)}`;
+    const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  const handleUpdateShipmentStatus = async (newStatus: ShipmentStatus) => {
+    if (!order.shipment) return;
+    
+    try {
+      setIsUpdatingShipmentStatus(true);
+      const result = await updateShipmentStatusAction(order.shipment.id, newStatus);
+      
+      if (result.ok) {
+        window.location.reload();
+      } else {
+        alert(result.message || 'Error al actualizar el estado del envío');
+      }
+    } catch (error) {
+      alert('Error al actualizar el estado del envío');
+    } finally {
+      setIsUpdatingShipmentStatus(false);
+    }
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -142,12 +171,21 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
               <p className="text-gray-400 text-sm">#{order.id}</p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors"
-          >
-            <X size={24} />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleWhatsAppContact}
+              className="p-2 bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
+              title="Contactar por WhatsApp"
+            >
+              <MessageCircle className="text-white" size={20} />
+            </button>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              <X size={24} />
+            </button>
+          </div>
         </div>
 
         {/* Content */}
@@ -281,29 +319,28 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
                   ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
                   : 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
                   }`}>
-                  {order.shipment.carrier === 'ENTREGA_LOCAL' ? '🏠 Entrega Local' : '📦 ' + order.shipment.carrier}
+                  {order.shipment.carrier === 'ENTREGA_LOCAL' ? '🏠 Retira por Local' : '📦 ' + order.shipment.carrier}
                 </span>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <p className="text-gray-400 text-sm mb-1">Estado</p>
-                  <div className="flex items-center gap-2">
-                    <div className={`w-3 h-3 rounded-full ${order.shipment.status === 'DELIVERED' ? 'bg-green-500' :
-                      order.shipment.status === 'SHIPPED' ? 'bg-blue-500' :
-                        order.shipment.status === 'PENDING' ? 'bg-yellow-500' :
-                          'bg-gray-500'
-                      }`} />
-                    <p className={`font-semibold ${order.shipment.status === 'DELIVERED' ? 'text-green-400' :
-                      order.shipment.status === 'SHIPPED' ? 'text-blue-400' :
-                        order.shipment.status === 'PENDING' ? 'text-yellow-400' :
-                          'text-gray-400'
-                      }`}>
-                      {order.shipment.status === 'DELIVERED' ? 'Entregado' :
-                        order.shipment.status === 'SHIPPED' ? 'Enviado' :
-                          order.shipment.status === 'PENDING' ? 'Pendiente' :
-                            order.shipment.status}
-                    </p>
-                  </div>
+                  <p className="text-gray-400 text-sm mb-1">Estado del Envío</p>
+                  <select
+                    value={order.shipment.status}
+                    onChange={(e) => handleUpdateShipmentStatus(e.target.value as ShipmentStatus)}
+                    disabled={isUpdatingShipmentStatus}
+                    className={`w-full rounded-lg px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-orange-500 disabled:opacity-50 cursor-pointer border ${
+                      order.shipment.status === 'DELIVERED' ? 'bg-green-500/20 text-green-400 border-green-500/50' :
+                      order.shipment.status === 'SHIPPED' ? 'bg-blue-500/20 text-blue-400 border-blue-500/50' :
+                      order.shipment.status === 'PENDING' ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50' :
+                      'bg-red-500/20 text-red-400 border-red-500/50'
+                    }`}
+                  >
+                    <option value="PENDING">Pendiente</option>
+                    <option value="SHIPPED">Enviado</option>
+                    <option value="DELIVERED">Entregado</option>
+                    <option value="RETURNED">Devuelto</option>
+                  </select>
                 </div>
                 {order.shipment.serviceName && (
                   <div>
@@ -401,6 +438,24 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
                   )}
                 </div>
               )}
+            </div>
+          )}
+
+          {/* No Shipment - Retira por local */}
+          {!order.shipment && !order.address && (
+            <div className="bg-[#0a0a0a] border border-orange-800/50 rounded-lg p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-3 bg-orange-500/20 rounded-lg">
+                  <Store size={24} className="text-orange-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white">Modalidad de Entrega</h3>
+                  <p className="text-orange-400 font-semibold text-lg">Retira por Local</p>
+                </div>
+              </div>
+              <p className="text-gray-400 text-sm">
+                El cliente retirará sus productos en nuestro local. Asegúrate de coordinar el horario de retiro.
+              </p>
             </div>
           )}
 

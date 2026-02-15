@@ -4,10 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Search, Filter, Download, Package, Clock, CheckCircle, XCircle,
-  DollarSign, TrendingUp, ShoppingBag, Users, Eye
+  DollarSign, TrendingUp, ShoppingBag, Users, Eye, MessageCircle, Store
 } from 'lucide-react';
-import { Order, OrderList, OrderStatus } from '@/lib/types/order.types';
+import { Order, OrderList, OrderStatus, ShipmentStatus } from '@/lib/types/order.types';
 import { updateOrderStatusAction } from '@/lib/actions/order/order.actions';
+import { updateShipmentStatusAction } from '@/lib/actions/shipping/shipping-actions';
 import OrderDetailModal from './OrderDetailModal';
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
 import { currencyFormat } from '@/lib/helpers/currencyFormat';
@@ -35,6 +36,8 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [confirmMessage, setConfirmMessage] = useState('');
   const [pendingOrderChange, setPendingOrderChange] = useState<{ id: string; status: OrderStatus } | null>(null);
+  const [pendingShipmentChange, setPendingShipmentChange] = useState<{ id: string; status: ShipmentStatus } | null>(null);
+  const [isUpdatingShipment, setIsUpdatingShipment] = useState(false);
 
   const filteredOrders = initialOrders.items.filter(order => {
     const matchesSearch =
@@ -70,6 +73,40 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
       setConfirmOpen(false);
       setPendingOrderChange(null);
     }
+  };
+
+  const handleShipmentStatusChange = async (shipmentId: string, newStatus: ShipmentStatus) => {
+    setConfirmMessage('¿Estás seguro de cambiar el estado del envío?');
+    setPendingShipmentChange({ id: shipmentId, status: newStatus });
+    setConfirmOpen(true);
+  };
+
+  const confirmShipmentStatusChange = async () => {
+    if (!pendingShipmentChange) return;
+    setIsUpdatingShipment(true);
+    try {
+      const result = await updateShipmentStatusAction(pendingShipmentChange.id, pendingShipmentChange.status);
+      if (result.ok) {
+        router.refresh();
+      } else {
+        alert(result.message);
+      }
+    } catch (error) {
+      alert('Error al actualizar el estado del envío');
+    } finally {
+      setIsUpdatingShipment(false);
+      setConfirmOpen(false);
+      setPendingShipmentChange(null);
+    }
+  };
+
+  const handleWhatsAppContact = (order: Order) => {
+    const phone = order.address?.phone || order.user?.email || '';
+    // Limpiar el teléfono de caracteres no numéricos
+    const cleanPhone = phone.replace(/\D/g, '');
+    const message = `Hola ${order.user?.name || 'cliente'}, te contacto desde AlaTabla respecto a tu orden #${order.id.slice(0, 8)}`;
+    const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
   };
 
   const getStatusBadge = (status: OrderStatus) => {
@@ -311,24 +348,29 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
                       {order.shipment ? (
                         <div className="flex flex-col gap-1">
                           <div className="flex items-center gap-2">
-                            <div className={`w-2 h-2 rounded-full ${order.shipment.status === 'DELIVERED' ? 'bg-green-500' :
-                                order.shipment.status === 'SHIPPED' ? 'bg-blue-500' :
-                                  order.shipment.status === 'PENDING' ? 'bg-yellow-500' :
-                                    'bg-gray-500'
-                              }`} />
-                            <span className="text-gray-300 text-sm font-medium">
-                              {order.shipment.status === 'DELIVERED' ? 'Entregado' :
-                                order.shipment.status === 'SHIPPED' ? 'Enviado' :
-                                  order.shipment.status === 'PENDING' ? 'Pendiente' :
-                                    order.shipment.status}
-                            </span>
+                            <select
+                              value={order.shipment.status}
+                              onChange={(e) => handleShipmentStatusChange(order.shipment!.id, e.target.value as ShipmentStatus)}
+                              disabled={isUpdatingShipment}
+                              className={`text-xs rounded px-2 py-1 font-medium focus:outline-none focus:ring-2 focus:ring-orange-500 disabled:opacity-50 cursor-pointer border ${
+                                order.shipment.status === 'DELIVERED' ? 'bg-green-500/20 text-green-400 border-green-500/50' :
+                                order.shipment.status === 'SHIPPED' ? 'bg-blue-500/20 text-blue-400 border-blue-500/50' :
+                                order.shipment.status === 'PENDING' ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50' :
+                                'bg-red-500/20 text-red-400 border-red-500/50'
+                              }`}
+                            >
+                              <option value="PENDING">Pendiente</option>
+                              <option value="SHIPPED">Enviado</option>
+                              <option value="DELIVERED">Entregado</option>
+                              <option value="RETURNED">Devuelto</option>
+                            </select>
                           </div>
                           <div className="flex items-center gap-1 text-xs">
                             <span className={`px-2 py-0.5 rounded ${order.shipment.carrier === 'ENTREGA_LOCAL'
                                 ? 'bg-orange-500/20 text-orange-400'
                                 : 'bg-blue-500/20 text-blue-400'
                               }`}>
-                              {order.shipment.carrier === 'ENTREGA_LOCAL' ? 'Local' : order.shipment.carrier}
+                              {order.shipment.carrier === 'ENTREGA_LOCAL' ? '🏠 Local' : '📦 ' + order.shipment.carrier}
                             </span>
                           </div>
                           {order.shipment.tracking && (
@@ -338,7 +380,10 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
                           )}
                         </div>
                       ) : (
-                        <span className="text-gray-600 text-sm">Sin envío</span>
+                        <div className="flex items-center gap-1">
+                          <Store size={14} className="text-orange-400" />
+                          <span className="text-orange-400 text-sm font-medium">Retira por local</span>
+                        </div>
                       )}
                     </td>
                     <td className="py-4 px-4">
@@ -351,13 +396,22 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
                       </span>
                     </td>
                     <td className="py-4 px-4">
-                      <button
-                        onClick={() => setSelectedOrder(order)}
-                        className="text-orange-400 hover:text-orange-300 transition-colors"
-                        title="Ver detalles"
-                      >
-                        <Eye size={18} />
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => setSelectedOrder(order)}
+                          className="text-orange-400 hover:text-orange-300 transition-colors"
+                          title="Ver detalles"
+                        >
+                          <Eye size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleWhatsAppContact(order)}
+                          className="text-green-500 hover:text-green-400 transition-colors"
+                          title="Contactar por WhatsApp"
+                        >
+                          <MessageCircle size={18} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -382,13 +436,17 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
       </div>
       <ConfirmModal
         open={confirmOpen}
-        title="Cambiar estado"
+        title={pendingShipmentChange ? "Cambiar estado del envío" : "Cambiar estado"}
         message={confirmMessage}
         confirmLabel="Confirmar"
         cancelLabel="Cancelar"
-        loading={isUpdating}
-        onConfirm={confirmStatusChange}
-        onCancel={() => { setConfirmOpen(false); setPendingOrderChange(null); }}
+        loading={isUpdating || isUpdatingShipment}
+        onConfirm={pendingShipmentChange ? confirmShipmentStatusChange : confirmStatusChange}
+        onCancel={() => { 
+          setConfirmOpen(false); 
+          setPendingOrderChange(null);
+          setPendingShipmentChange(null);
+        }}
       />
     </>
   );

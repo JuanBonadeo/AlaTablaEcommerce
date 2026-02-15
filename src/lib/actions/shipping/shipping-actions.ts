@@ -101,3 +101,25 @@ export async function calculateCartShipping(data: CartShippingCalculation) {
     return ErrorHandler.format(error);
   }
 }
+
+/**
+ * Actualiza el estado de un envío
+ */
+export async function updateShipmentStatusAction(shipmentId: string, status: string) {
+  try {
+    const { ShipmentService } = await import("@/core/shipments/shipment.service");
+    const { revalidatePath } = await import("next/cache");
+
+    const result = await ShipmentService.update(shipmentId, { status });
+
+    if (result.success) {
+      revalidatePath("/admin/orders");
+      return ResponseHandler.success(result.data);
+    }
+
+    return ResponseHandler.error(result.message || "Error al actualizar el envío");
+  } catch (error) {
+    return ErrorHandler.format(error);
+  }
+}
+
