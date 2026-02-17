@@ -2,6 +2,8 @@ import { getProductByIdAction, getAllCategoriesAction } from '@/lib/actions/prod
 import { notFound } from 'next/navigation';
 import EditProductClient from './EditProductClient';
 
+export const dynamic = 'force-dynamic';
+
 interface EditProductPageProps {
   params: Promise<{
     id: string;

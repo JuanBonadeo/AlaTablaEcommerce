@@ -2,6 +2,8 @@ import { getDashboardStatsAction } from "@/lib/actions/admin/dashboard.actions";
 import DashboardClient from "./DashboardClient";
 import { DashboardData } from "@/core/admin/dashboard.service";
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminDashboardPage() {
   const result = await getDashboardStatsAction();
 
