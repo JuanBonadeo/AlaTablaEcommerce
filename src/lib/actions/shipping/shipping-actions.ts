@@ -6,6 +6,7 @@ import {
   CartShippingCalculation,
   CartShippingCalculationSchema,
 } from "@/lib/types/shipping.types";
+import { ShipmentStatus } from "@/lib/types/order.types";
 import { AndreaniService } from "@/core/shipments/andreani.service";
 import { ProductDAO } from "@/core/products/products.dao";
 import { Product } from "@/lib/types/product.types";
@@ -105,7 +106,7 @@ export async function calculateCartShipping(data: CartShippingCalculation) {
 /**
  * Actualiza el estado de un envío
  */
-export async function updateShipmentStatusAction(shipmentId: string, status: string) {
+export async function updateShipmentStatusAction(shipmentId: string, status: ShipmentStatus) {
   try {
     const { ShipmentService } = await import("@/core/shipments/shipment.service");
     const { revalidatePath } = await import("next/cache");
