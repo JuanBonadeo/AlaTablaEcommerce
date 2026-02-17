@@ -14,6 +14,7 @@ import { ResponseHandler } from "../shared/responseHandler";
 import { prisma } from "@/db/client";
 import { ShippingService } from "@/lib/types/shipping.types";
 import { sendOrderConfirmationEmail, sendPaymentConfirmationEmail } from "@/lib/email/resend";
+import { sendNewOrderNotification, sendPaymentConfirmedNotification } from "@/lib/notifications/telegram";
 
 export const OrderService = {
   create: async (data: CreateOrderInput) => {
@@ -245,6 +246,30 @@ export const OrderService = {
         // Don't fail the order creation if email fails
       }
 
+      // Send Telegram notification for new order
+      try {
+        if (order?.user?.email && order?.user?.name) {
+          await sendNewOrderNotification({
+            orderId: order.id,
+            customerName: order.user.name,
+            customerEmail: order.user.email,
+            total: order.total,
+            items: order.items.map(item => ({
+              name: item.variant 
+                ? `${item.product.name} - ${item.variant.name}`
+                : item.product.name,
+              quantity: item.quantity,
+              price: item.price,
+            })),
+            paymentMethod: validatedData.paymentMethod,
+            hasShipping: !!validatedData.addressId,
+          });
+        }
+      } catch (telegramError) {
+        console.error('Error sending Telegram notification:', telegramError);
+        // Don't fail the order creation if notification fails
+      }
+
       return ResponseHandler.created(order);
     } catch (error) {
       return ErrorHandler.format(error);
@@ -431,6 +456,20 @@ export const OrderService = {
         } catch (emailError) {
           console.error('Error sending payment confirmation email:', emailError);
           // Don't fail the status update if email fails
+        }
+
+        // Send Telegram notification for payment confirmation
+        try {
+          if (order.payment) {
+            await sendPaymentConfirmedNotification({
+              orderId: order.id,
+              amount: order.payment.amount,
+              paymentMethod: order.payment.provider,
+            });
+          }
+        } catch (telegramError) {
+          console.error('Error sending Telegram payment notification:', telegramError);
+          // Don't fail the status update if notification fails
         }
 
         return ResponseHandler.updated(order);

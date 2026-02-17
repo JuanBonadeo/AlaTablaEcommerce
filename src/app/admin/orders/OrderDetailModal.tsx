@@ -43,7 +43,7 @@ export default function OrderDetailModal({ order, onClose }: OrderDetailModalPro
       setIsUpdatingShipmentStatus(true);
       const result = await updateShipmentStatusAction(order.shipment.id, newStatus);
       
-      if (result.ok) {
+      if (result.success) {
         window.location.reload();
       } else {
         alert(result.message || 'Error al actualizar el estado del envío');

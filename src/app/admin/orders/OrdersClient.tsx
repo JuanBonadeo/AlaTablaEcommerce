@@ -86,7 +86,7 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
     setIsUpdatingShipment(true);
     try {
       const result = await updateShipmentStatusAction(pendingShipmentChange.id, pendingShipmentChange.status);
-      if (result.ok) {
+      if (result.success) {
         router.refresh();
       } else {
         alert(result.message);
