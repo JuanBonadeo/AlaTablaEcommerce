@@ -27,6 +27,7 @@ export const createOfferAction = async (formData: FormData) => {
 
     revalidatePath('/admin/offers');
     revalidatePath('/productos');
+    revalidatePath('/');
 
     return {
       ok: true,
@@ -55,6 +56,7 @@ export async function deleteOfferAction(id: string) {
 
     revalidatePath('/admin/offers');
     revalidatePath('/productos');
+    revalidatePath('/');
 
     return {
       ok: true,
@@ -83,6 +85,7 @@ export const updateOfferAction = async (id: string, formData: FormData) => {
 
     revalidatePath('/admin/offers');
     revalidatePath('/productos');
+    revalidatePath('/');
 
     return {
       ok: true,
