@@ -15,6 +15,55 @@ function mapFormDataToOffer(formData: FormData) {
 
 export const createOfferAction = async (formData: FormData) => {
   try {
+    const productIdsStr = formData.get("productIds") as string | null;
+    const descuento = Number(formData.get("descuento"));
+    const descripcion = formData.get("descripcion") ? String(formData.get("descripcion")) : undefined;
+    const desde = new Date(String(formData.get("desde")));
+    const hasta = new Date(String(formData.get("hasta")));
+
+    // Si viene productIds (array), crear múltiples ofertas
+    if (productIdsStr) {
+      const productIds: string[] = JSON.parse(productIdsStr);
+      
+      if (productIds.length === 0) {
+        return {
+          ok: false,
+          message: 'Selecciona al menos un producto',
+        };
+      }
+
+      const results = await Promise.all(
+        productIds.map(productId =>
+          OfferService.create({
+            productId,
+            descuento,
+            descripcion,
+            desde,
+            hasta,
+          })
+        )
+      );
+
+      const failedResults = results.filter(r => !r.success);
+      
+      if (failedResults.length > 0) {
+        return {
+          ok: false,
+          message: `Error al crear ${failedResults.length} de ${productIds.length} ofertas`,
+        };
+      }
+
+      revalidatePath('/admin/offers');
+      revalidatePath('/productos');
+      revalidatePath('/');
+
+      return {
+        ok: true,
+        message: `${productIds.length} oferta${productIds.length > 1 ? 's' : ''} creada${productIds.length > 1 ? 's' : ''} exitosamente`,
+      };
+    }
+
+    // Fallback: crear una sola oferta con productId (legacy)
     const data = mapFormDataToOffer(formData);
     const result = await OfferService.create(data);
     

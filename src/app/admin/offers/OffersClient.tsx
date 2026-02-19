@@ -41,6 +41,7 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
   const [editingOffer, setEditingOffer] = useState<Offer | null>(null);
   const [formData, setFormData] = useState({
     productId: '',
+    productIds: [] as string[], // Para crear nuevas ofertas con múltiples productos
     descuento: '',
     descripcion: '',
     desde: '',
@@ -57,36 +58,81 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
     setIsSubmitting(true);
     setError(null);
 
-    const data = new FormData();
-    data.append('productId', formData.productId);
-    data.append('descuento', formData.descuento);
-    data.append('descripcion', formData.descripcion);
-    data.append('desde', formData.desde);
-    data.append('hasta', formData.hasta);
+    // Convertir las fechas agregando las horas (00:00:00 y 23:59:59)
+    const desdeWithTime = `${formData.desde}T00:00:00`;
+    const hastaWithTime = `${formData.hasta}T23:59:59`;
 
-    try {
-      const result = editingOffer
-        ? await updateOfferAction(editingOffer.id, data)
-        : await createOfferAction(data);
+    // Si estamos editando, usamos productId (single)
+    // Si estamos creando, usamos productIds (multiple)
+    if (editingOffer) {
+      const data = new FormData();
+      data.append('productId', formData.productId);
+      data.append('descuento', formData.descuento);
+      data.append('descripcion', formData.descripcion);
+      data.append('desde', desdeWithTime);
+      data.append('hasta', hastaWithTime);
 
-      if (result.ok) {
-        setShowModal(false);
-        setEditingOffer(null);
-        setFormData({
-          productId: '',
-          descuento: '',
-          descripcion: '',
-          desde: '',
-          hasta: '',
-        });
-        router.refresh();
-      } else {
-        setError(result.message || 'Error al guardar la oferta');
+      try {
+        const result = await updateOfferAction(editingOffer.id, data);
+
+        if (result.ok) {
+          setShowModal(false);
+          setEditingOffer(null);
+          setFormData({
+            productId: '',
+            productIds: [],
+            descuento: '',
+            descripcion: '',
+            desde: '',
+            hasta: '',
+          });
+          router.refresh();
+        } else {
+          setError(result.message || 'Error al actualizar la oferta');
+        }
+      } catch (err) {
+        setError('Error inesperado al actualizar la oferta');
+      } finally {
+        setIsSubmitting(false);
       }
-    } catch (err) {
-      setError('Error inesperado al guardar la oferta');
-    } finally {
-      setIsSubmitting(false);
+    } else {
+      // Crear nuevas ofertas para cada producto seleccionado
+      if (formData.productIds.length === 0) {
+        setError('Selecciona al menos un producto');
+        setIsSubmitting(false);
+        return;
+      }
+
+      const data = new FormData();
+      data.append('productIds', JSON.stringify(formData.productIds));
+      data.append('descuento', formData.descuento);
+      data.append('descripcion', formData.descripcion);
+      data.append('desde', desdeWithTime);
+      data.append('hasta', hastaWithTime);
+
+      try {
+        const result = await createOfferAction(data);
+
+        if (result.ok) {
+          setShowModal(false);
+          setEditingOffer(null);
+          setFormData({
+            productId: '',
+            productIds: [],
+            descuento: '',
+            descripcion: '',
+            desde: '',
+            hasta: '',
+          });
+          router.refresh();
+        } else {
+          setError(result.message || 'Error al crear la oferta');
+        }
+      } catch (err) {
+        setError('Error inesperado al crear la oferta');
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -94,10 +140,11 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
     setEditingOffer(offer);
     setFormData({
       productId: offer.productId || '',
+      productIds: [],
       descuento: offer.descuento.toString(),
       descripcion: offer.descripcion || '',
-      desde: new Date(offer.desde).toISOString().slice(0, 16),
-      hasta: new Date(offer.hasta).toISOString().slice(0, 16),
+      desde: new Date(offer.desde).toISOString().slice(0, 10),
+      hasta: new Date(offer.hasta).toISOString().slice(0, 10),
     });
     setShowModal(true);
   };
@@ -129,12 +176,14 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
 
   const handleNew = () => {
     setEditingOffer(null);
+    const today = new Date().toISOString().slice(0, 10);
     setFormData({
       productId: '',
+      productIds: [],
       descuento: '',
       descripcion: '',
-      desde: '',
-      hasta: '',
+      desde: today,
+      hasta: today,
     });
     setError(null);
     setShowModal(true);
@@ -367,22 +416,80 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Producto <span className="text-red-500">*</span>
-                </label>
-                <select
-                  value={formData.productId}
-                  onChange={(e) => setFormData({ ...formData, productId: e.target.value })}
-                  required
-                  className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-orange-500 transition-colors"
-                >
-                  <option value="">Seleccionar producto</option>
-                  {products.map((product) => (
-                    <option key={product.id} value={product.id}>
-                      {product.name} - {currencyFormat(product.price)}
-                    </option>
-                  ))}
-                </select>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium text-gray-300">
+                    Producto{!editingOffer && 's'} <span className="text-red-500">*</span>
+                  </label>
+                  {!editingOffer && products.length > 0 && (
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setFormData({ ...formData, productIds: products.map(p => p.id) })}
+                        className="text-xs text-orange-400 hover:text-orange-300 transition-colors"
+                      >
+                        Seleccionar todos
+                      </button>
+                      <span className="text-gray-600">|</span>
+                      <button
+                        type="button"
+                        onClick={() => setFormData({ ...formData, productIds: [] })}
+                        className="text-xs text-gray-400 hover:text-gray-300 transition-colors"
+                      >
+                        Limpiar
+                      </button>
+                    </div>
+                  )}
+                </div>
+                {editingOffer ? (
+                  // Modo edición: select simple
+                  <select
+                    value={formData.productId}
+                    onChange={(e) => setFormData({ ...formData, productId: e.target.value })}
+                    required
+                    className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-orange-500 transition-colors"
+                  >
+                    <option value="">Seleccionar producto</option>
+                    {products.map((product) => (
+                      <option key={product.id} value={product.id}>
+                        {product.name} - {currencyFormat(product.price)}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  // Modo creación: checkboxes múltiples
+                  <div className="bg-[#0a0a0a] border border-gray-800 rounded-lg max-h-64 overflow-y-auto">
+                    {products.map((product) => (
+                      <label
+                        key={product.id}
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-800/50 cursor-pointer transition-colors border-b border-gray-800 last:border-0"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={formData.productIds.includes(product.id)}
+                          onChange={(e) => {
+                            const newProductIds = e.target.checked
+                              ? [...formData.productIds, product.id]
+                              : formData.productIds.filter((id) => id !== product.id);
+                            setFormData({ ...formData, productIds: newProductIds });
+                          }}
+                          className="w-4 h-4 rounded border-gray-700 text-orange-500 focus:ring-orange-500 focus:ring-offset-0 bg-[#0a0a0a]"
+                        />
+                        <span className="flex-1 text-white">{product.name}</span>
+                        <span className="text-gray-400 text-sm">{currencyFormat(product.price)}</span>
+                      </label>
+                    ))}
+                    {products.length === 0 && (
+                      <div className="px-4 py-6 text-center text-gray-500">
+                        No hay productos disponibles
+                      </div>
+                    )}
+                  </div>
+                )}
+                {!editingOffer && formData.productIds.length > 0 && (
+                  <p className="mt-2 text-sm text-gray-400">
+                    {formData.productIds.length} producto{formData.productIds.length !== 1 ? 's' : ''} seleccionado{formData.productIds.length !== 1 ? 's' : ''}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -421,12 +528,13 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
                     Fecha Inicio <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type="datetime-local"
+                    type="date"
                     value={formData.desde}
                     onChange={(e) => setFormData({ ...formData, desde: e.target.value })}
                     required
                     className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-orange-500 transition-colors"
                   />
+                  <p className="mt-1 text-xs text-gray-500">Empieza a las 00:00 hs</p>
                 </div>
 
                 <div>
@@ -434,38 +542,66 @@ export default function OffersClient({ offers, products }: OffersClientProps) {
                     Fecha Fin <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type="datetime-local"
+                    type="date"
                     value={formData.hasta}
                     onChange={(e) => setFormData({ ...formData, hasta: e.target.value })}
                     required
                     className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-orange-500 transition-colors"
                   />
+                  <p className="mt-1 text-xs text-gray-500">Termina a las 23:59 hs</p>
                 </div>
               </div>
 
               {/* Preview */}
-              {formData.productId && formData.descuento && (
+              {((editingOffer && formData.productId && formData.descuento) || 
+                (!editingOffer && formData.productIds.length > 0 && formData.descuento)) && (
                 <div className="bg-[#0a0a0a] border border-gray-800 rounded-lg p-4">
-                  <p className="text-gray-400 text-sm mb-2">Vista previa:</p>
-                  {(() => {
-                    const product = getProductById(formData.productId);
-                    const discount = parseFloat(formData.descuento) || 0;
-                    const originalPrice = product?.price || 0;
-                    const discountedPrice = originalPrice * (1 - discount / 100);
+                  <p className="text-gray-400 text-sm mb-3">Vista previa:</p>
+                  {editingOffer ? (
+                    // Vista previa para edición (un solo producto)
+                    (() => {
+                      const product = getProductById(formData.productId);
+                      const discount = parseFloat(formData.descuento) || 0;
+                      const originalPrice = product?.price || 0;
+                      const discountedPrice = originalPrice * (1 - discount / 100);
 
-                    return (
-                      <div>
-                        <p className="text-white font-medium mb-1">{product?.name}</p>
-                        <div className="flex items-center gap-3">
-                          <span className="text-gray-400 line-through">{currencyFormat(originalPrice)}</span>
-                          <span className="text-green-400 font-bold text-xl">{currencyFormat(discountedPrice)}</span>
-                          <span className="px-2 py-1 bg-orange-500/20 text-orange-400 rounded text-sm font-bold">
-                            -{discount}%
-                          </span>
+                      return (
+                        <div>
+                          <p className="text-white font-medium mb-1">{product?.name}</p>
+                          <div className="flex items-center gap-3">
+                            <span className="text-gray-400 line-through">{currencyFormat(originalPrice)}</span>
+                            <span className="text-green-400 font-bold text-xl">{currencyFormat(discountedPrice)}</span>
+                            <span className="px-2 py-1 bg-orange-500/20 text-orange-400 rounded text-sm font-bold">
+                              -{discount}%
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })()}
+                      );
+                    })()
+                  ) : (
+                    // Vista previa para creación (múltiples productos)
+                    <div className="space-y-3 max-h-48 overflow-y-auto">
+                      {formData.productIds.map((productId) => {
+                        const product = getProductById(productId);
+                        const discount = parseFloat(formData.descuento) || 0;
+                        const originalPrice = product?.price || 0;
+                        const discountedPrice = originalPrice * (1 - discount / 100);
+
+                        return (
+                          <div key={productId} className="pb-3 border-b border-gray-800 last:border-0 last:pb-0">
+                            <p className="text-white font-medium mb-1 text-sm">{product?.name}</p>
+                            <div className="flex items-center gap-3">
+                              <span className="text-gray-400 line-through text-sm">{currencyFormat(originalPrice)}</span>
+                              <span className="text-green-400 font-bold">{currencyFormat(discountedPrice)}</span>
+                              <span className="px-2 py-0.5 bg-orange-500/20 text-orange-400 rounded text-xs font-bold">
+                                -{discount}%
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               )}
 
