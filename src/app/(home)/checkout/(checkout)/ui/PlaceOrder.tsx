@@ -10,6 +10,7 @@ import { PlaceOrderSkeleton } from "@/components/ui/skeletons/PlaceOrderSkeleton
 import { getAddressByIdAction } from "@/lib/actions/address/address.actions";
 import { Address } from "@/lib/types/address.types";
 import { ShippingQuoteResponse } from "@/lib/types/shipping.types";
+import { calculatePrice } from "@/lib/utils/pricing";
 
 export const PlaceOrder = () => {
     const [loaded, setLoaded] = useState(false);
@@ -24,6 +25,7 @@ export const PlaceOrder = () => {
     const clearCart = useCartStore(state => state.clearCart)
     const shippingQuote = useCartStore(state => state.getShippingQuote())
     const setShippingQuote = useCartStore(state => state.setShippingQuote)
+    const clearShippingQuote = useCartStore(state => state.clearShippingQuote)
 
     const [shippingOptions, setShippingOptions] = useState<ShippingQuoteResponse[]>([])
     const [isLoadingShipping, setIsLoadingShipping] = useState(false)
@@ -46,6 +48,10 @@ export const PlaceOrder = () => {
                     console.error('Error cargando dirección:', error);
                     setErrorMessage('No se pudo cargar la dirección seleccionada');
                 }
+            } else {
+                // Si la dirección es null (Retiro en tienda), limpiamos envíos
+                clearShippingQuote();
+                setShippingOptions([]);
             }
         };
 
@@ -83,12 +89,15 @@ export const PlaceOrder = () => {
         setErrorMessage('');
 
         try {
-            const productsToOrder = cart.map(product => ({
-                productId: product.productId,
-                quantity: product.quantity,
-                price: product.price,
-                variantId: product.variantId,
-            }));
+            const productsToOrder = cart.map(product => {
+                const priceInfo = calculatePrice(product.price, product.offer);
+                return {
+                    productId: product.productId,
+                    quantity: product.quantity,
+                    price: priceInfo.finalPrice,
+                    variantId: product.variantId,
+                };
+            });
 
             // Crear la orden con información de envío
             const resp = await createOrderAction({

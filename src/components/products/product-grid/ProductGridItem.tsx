@@ -51,7 +51,7 @@ export const ProductGridItemComponent = ({ product }: Props) => {
                 productId: product.id,
                 slug: product.slug,
                 name: product.name,
-                price: priceInfo.finalPrice, // Use final price including offer
+                price: product.price, // Save base price, cart applies discount
                 image: product?.images?.[0]?.url || '/placeholder.png',
                 quantity: 1,
                 offer: activeOffer

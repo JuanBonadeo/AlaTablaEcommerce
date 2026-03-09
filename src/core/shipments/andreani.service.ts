@@ -318,9 +318,9 @@ trailer<< /Root 3 0 R >>
                     carrier: ShippingCarrier.ENTREGA_LOCAL,
                     service: ShippingService.CLASICO,
                     serviceName: "Envío Local Rosario",
-                    cost: 3000,
+                    cost: 0,
                     estimatedDays: 5,
-                    additionalInfo: "Entrega rápida",
+                    additionalInfo: "Entrega en 5 días gratuita",
                 },
             ];
         }

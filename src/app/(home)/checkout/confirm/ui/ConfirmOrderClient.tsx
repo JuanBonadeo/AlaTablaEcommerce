@@ -13,6 +13,7 @@ import { Address } from '@/lib/types/address.types';
 import { ConfirmOrderSkeleton } from '@/components/ui/skeletons/ConfirmOrderSkeleton';
 import { AlertOctagon, CheckCircle2, Info, MapPin, Package, Smartphone, X, Wallet, CreditCard, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { calculatePrice } from '@/lib/utils/pricing';
 
 const ConfirmOrderClient = () => {
   const router = useRouter();
@@ -54,8 +55,9 @@ const ConfirmOrderClient = () => {
           const found = list.find((a: Address) => a.id === addressId);
           setAddress(found || null);
         } else {
-          const def = list.find((a: Address) => a.isDefault) || list[0] || null;
-          setAddress(def);
+          // If addressId is null, it means the user selected Local Pickup explicitly.
+          // We shouldn't fallback to the default delivery address here.
+          setAddress(null);
         }
       } catch {
         setAddress(null);
@@ -91,12 +93,15 @@ const ConfirmOrderClient = () => {
         userId,
         addressId: address?.id,
         total,
-        items: cart.map(item => ({
-          productId: item.productId,
-          variantId: item.variantId,
-          quantity: item.quantity,
-          price: item.price,
-        })),
+        items: cart.map(item => {
+          const priceInfo = calculatePrice(item.price, item.offer);
+          return {
+            productId: item.productId,
+            variantId: item.variantId,
+            quantity: item.quantity,
+            price: priceInfo.finalPrice,
+          };
+        }),
         shipping: shippingQuote
           ? {
             carrier: shippingQuote.carrier,
@@ -276,8 +281,8 @@ const ConfirmOrderClient = () => {
                 </div>
                 <div className="flex justify-between text-gray-300 text-sm sm:text-base">
                   <span>Envío</span>
-                  <span className={shippingQuote ? 'font-medium text-white' : 'text-gray-500'}>
-                    {shippingQuote ? currencyFormat(shippingQuote.cost) : (address ? 'Calculando...' : '-')}
+                  <span className={shippingQuote ? 'font-medium text-white' : (address ? 'text-gray-500' : 'font-medium text-green-400')}>
+                    {shippingQuote ? currencyFormat(shippingQuote.cost) : (address ? 'Calculando...' : 'Gratis (Retiro en local)')}
                   </span>
                 </div>
                 <div className="border-t border-gray-800/50 pt-2 sm:pt-3 flex justify-between items-end">
