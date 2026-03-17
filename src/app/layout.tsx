@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ClarityProvider from "@/components/analytics/ClarityProvider";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
 
 
@@ -68,6 +69,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <ClarityProvider />
         <div className="min-h-screen  text-white bg-black">
             
           
