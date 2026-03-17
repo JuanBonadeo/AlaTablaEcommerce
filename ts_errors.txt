@@ -1,2 +1,0 @@
-src/components/admin/CategoriesTable.tsx(39,5): error TS2657: JSX expressions must have one parent element.
-src/components/admin/ProductsTable.tsx(42,5): error TS2657: JSX expressions must have one parent element.

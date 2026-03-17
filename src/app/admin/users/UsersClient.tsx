@@ -122,41 +122,43 @@ export default function UsersClient({ users }: UsersClientProps) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="rounded-2xl border border-slate-800/80 bg-gradient-to-r from-slate-900/90 via-slate-900/75 to-indigo-500/10 p-4 sm:p-6">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-1">Usuarios</h1>
-          <p className="text-gray-400">{users.length} usuarios registrados</p>
+          <h1 className="text-3xl font-bold text-slate-100 mb-1">Usuarios</h1>
+          <p className="text-slate-400">{users.length} usuarios registrados</p>
         </div>
         <button
           onClick={() => setShowEmailModal(true)}
           disabled={selectedUsers.length === 0}
-          className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg font-medium transition-colors"
+          className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 px-4 py-2 font-medium text-white transition-all disabled:cursor-not-allowed disabled:from-slate-600 disabled:to-slate-600"
         >
           <Mail size={18} />
           Email Marketing ({selectedUsers.length})
         </button>
+        </div>
       </div>
 
       {/* Search */}
-      <div className="bg-[#171718] border border-gray-800 rounded-xl p-4">
+      <div className="rounded-2xl border border-slate-800/80 bg-[#111a21]/80 p-4">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
           <input
             type="text"
             placeholder="Buscar por nombre o email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg pl-10 pr-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+            className="w-full rounded-lg border border-slate-700 bg-slate-900/70 py-2 pl-10 pr-4 text-slate-100 placeholder-slate-500 transition-colors focus:outline-none focus:border-orange-500"
           />
         </div>
       </div>
 
       {/* Users Table */}
-      <div className="bg-[#171718] border border-gray-800 rounded-xl overflow-hidden">
+      <div className="rounded-2xl border border-slate-800/80 bg-[#111a21]/80 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-gray-800 bg-[#0a0a0a]">
+              <tr className="border-b border-slate-800 bg-slate-900/70">
                 <th className="text-left py-3 px-4">
                   <input
                     type="checkbox"
@@ -165,17 +167,17 @@ export default function UsersClient({ users }: UsersClientProps) {
                     className="w-4 h-4 rounded border-gray-700 bg-gray-800 text-orange-500"
                   />
                 </th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Usuario</th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Email</th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Rol</th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Pedidos</th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Registro</th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Acciones</th>
+                <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Usuario</th>
+                <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Email</th>
+                <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Rol</th>
+                <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Pedidos</th>
+                <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Registro</th>
+                <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Acciones</th>
               </tr>
             </thead>
             <tbody>
               {filteredUsers.map((user) => (
-                <tr key={user.id} className="border-b border-gray-800 hover:bg-gray-900/50 transition-colors">
+                <tr key={user.id} className="border-b border-slate-800 hover:bg-slate-900/60 transition-colors">
                   <td className="py-4 px-4">
                     <input
                       type="checkbox"
@@ -190,14 +192,14 @@ export default function UsersClient({ users }: UsersClientProps) {
                         {user.name.charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <p className="text-white font-medium">{user.name}</p>
-                        {user.phone && <p className="text-gray-500 text-sm">{user.phone}</p>}
+                        <p className="text-slate-100 font-medium">{user.name}</p>
+                        {user.phone && <p className="text-slate-500 text-sm">{user.phone}</p>}
                       </div>
                     </div>
                   </td>
                   <td className="py-4 px-4">
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-300">{user.email}</span>
+                      <span className="text-slate-300">{user.email}</span>
                       {user.emailVerified && (
                         <span className="text-green-500 text-xs">✓ Verificado</span>
                       )}
@@ -208,20 +210,20 @@ export default function UsersClient({ users }: UsersClientProps) {
                       value={user.role}
                       onChange={(e) => handleRoleChange(user.id, e.target.value as Role)}
                       disabled={isUpdating}
-                      className="bg-[#0a0a0a] border border-gray-800 rounded-lg px-3 py-1.5 text-white text-sm focus:outline-none focus:border-orange-500 disabled:opacity-50"
+                      className="rounded-lg border border-slate-700 bg-slate-900/70 px-3 py-1.5 text-sm text-slate-100 focus:outline-none focus:border-orange-500 disabled:opacity-50"
                     >
                       <option value="USER">USER</option>
                       <option value="ADMIN">ADMIN</option>
                     </select>
                   </td>
                   <td className="py-4 px-4">
-                    <div className="flex items-center gap-1 text-gray-300">
-                      <ShoppingBag size={16} className="text-gray-500" />
+                    <div className="flex items-center gap-1 text-slate-300">
+                      <ShoppingBag size={16} className="text-slate-500" />
                       <span>{user._count.orders}</span>
                     </div>
                   </td>
                   <td className="py-4 px-4">
-                    <div className="flex items-center gap-1 text-gray-400 text-sm">
+                    <div className="flex items-center gap-1 text-slate-400 text-sm">
                       <Calendar size={14} />
                       {new Date(user.createdAt).toLocaleDateString('es-ES', {
                         year: 'numeric',
@@ -247,7 +249,7 @@ export default function UsersClient({ users }: UsersClientProps) {
 
           {filteredUsers.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-gray-400">No se encontraron usuarios</p>
+              <p className="text-slate-400">No se encontraron usuarios</p>
             </div>
           )}
         </div>

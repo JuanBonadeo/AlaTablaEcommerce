@@ -86,78 +86,80 @@ export default function ProductsList({ initialProducts, categories }: ProductsLi
   return (
     <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="rounded-2xl border border-slate-800/80 bg-gradient-to-r from-slate-900/90 via-slate-900/75 to-cyan-500/10 p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">Productos</h1>
-          <p className="text-sm sm:text-base text-gray-400">Gestiona tu catálogo de productos</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-1 sm:mb-2">Productos</h1>
+          <p className="text-sm sm:text-base text-slate-400">Gestiona tu catálogo de productos</p>
         </div>
         <Link
           href="/admin/products/new"
-          className="flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap"
+          className="flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 px-4 py-2 font-medium text-white shadow-[0_12px_20px_-16px_rgba(251,146,60,0.95)] transition-transform hover:scale-[1.02] whitespace-nowrap"
         >
           <Plus size={20} />
           <span className="hidden sm:inline">Nuevo Producto</span>
           <span className="sm:hidden">Nuevo</span>
         </Link>
+        </div>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
-        <div className="bg-[#171718] border border-gray-800 rounded-xl p-3">
+        <div className="rounded-2xl border border-slate-800/80 bg-[#111a21]/80 p-3">
           <div className="flex items-center justify-between mb-1">
-            <span className="text-xs text-gray-400">Total Productos</span>
+            <span className="text-xs text-slate-400">Total Productos</span>
             <Package size={16} className="text-blue-500" />
           </div>
-          <p className="text-lg sm:text-xl font-bold text-white">{initialProducts.length}</p>
+          <p className="text-lg sm:text-xl font-bold text-slate-100">{initialProducts.length}</p>
         </div>
-        <div className="bg-[#171718] border border-gray-800 rounded-xl p-3">
+        <div className="rounded-2xl border border-slate-800/80 bg-[#111a21]/80 p-3">
           <div className="flex items-center justify-between mb-1">
-            <span className="text-xs text-gray-400">Activos</span>
+            <span className="text-xs text-slate-400">Activos</span>
             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
           </div>
-          <p className="text-lg sm:text-xl font-bold text-white">{initialProducts.filter(p => p.stock > 0).length}</p>
+          <p className="text-lg sm:text-xl font-bold text-slate-100">{initialProducts.filter(p => p.stock > 0).length}</p>
         </div>
-        <div className="bg-[#171718] border border-gray-800 rounded-xl p-3">
+        <div className="rounded-2xl border border-slate-800/80 bg-[#111a21]/80 p-3">
           <div className="flex items-center justify-between mb-1">
-            <span className="text-xs text-gray-400">Stock Bajo</span>
+            <span className="text-xs text-slate-400">Stock Bajo</span>
             <AlertCircle size={16} className="text-yellow-500" />
           </div>
-          <p className="text-lg sm:text-xl font-bold text-white">{initialProducts.filter(p => p.stock > 0 && p.stock < 10).length}</p>
+          <p className="text-lg sm:text-xl font-bold text-slate-100">{initialProducts.filter(p => p.stock > 0 && p.stock < 10).length}</p>
         </div>
-        <div className="bg-[#171718] border border-gray-800 rounded-xl p-3">
+        <div className="rounded-2xl border border-slate-800/80 bg-[#111a21]/80 p-3">
           <div className="flex items-center justify-between mb-1">
-            <span className="text-xs text-gray-400">Sin Stock</span>
+            <span className="text-xs text-slate-400">Sin Stock</span>
             <div className="w-2 h-2 bg-red-500 rounded-full"></div>
           </div>
-          <p className="text-lg sm:text-xl font-bold text-white">{initialProducts.filter(p => p.stock === 0).length}</p>
+          <p className="text-lg sm:text-xl font-bold text-slate-100">{initialProducts.filter(p => p.stock === 0).length}</p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-[#171718] border border-gray-800 rounded-xl p-4">
+      <div className="rounded-2xl border border-slate-800/80 bg-[#111a21]/80 p-4">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={20} />
             <input
               type="text"
               placeholder="Buscar productos por nombre..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg pl-10 pr-4 py-2 text-gray-300 placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+              className="w-full rounded-lg border border-slate-700 bg-slate-900/70 py-2 pl-10 pr-4 text-slate-200 placeholder-slate-500 transition-colors focus:outline-none focus:border-orange-500"
             />
           </div>
           <div className="flex gap-2">
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="bg-[#0a0a0a] border border-gray-800 rounded-lg px-4 py-2 text-gray-300 focus:outline-none focus:border-orange-500 transition-colors"
+              className="rounded-lg border border-slate-700 bg-slate-900/70 px-4 py-2 text-slate-200 transition-colors focus:outline-none focus:border-orange-500"
             >
               <option value="all">Todas las categorías</option>
               {categories.map(cat => (
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
             </select>
-            <button className="flex items-center gap-2 bg-[#0a0a0a] border border-gray-800 hover:border-gray-700 text-gray-300 px-4 py-2 rounded-lg transition-colors">
+            <button className="flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-900/70 px-4 py-2 text-slate-300 transition-colors hover:border-slate-600">
               <Filter size={18} />
               Más filtros
             </button>
@@ -166,25 +168,25 @@ export default function ProductsList({ initialProducts, categories }: ProductsLi
       </div>
 
       {/* Products Table */}
-      <div className="bg-[#171718] border border-gray-800 rounded-xl overflow-hidden">
+      <div className="rounded-2xl border border-slate-800/80 bg-[#111a21]/80 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-[#0a0a0a] border-b border-gray-800">
+            <thead className="border-b border-slate-800 bg-slate-900/70">
               <tr>
-                <th className="text-left py-4 px-6 text-sm font-medium text-gray-400">Producto</th>
-                <th className="text-left py-4 px-6 text-sm font-medium text-gray-400">Categoría</th>
-                <th className="text-left py-4 px-6 text-sm font-medium text-gray-400">Precio</th>
-                <th className="text-left py-4 px-6 text-sm font-medium text-gray-400">Stock</th>
-                <th className="text-left py-4 px-6 text-sm font-medium text-gray-400">Estado</th>
-                <th className="text-right py-4 px-6 text-sm font-medium text-gray-400">Acciones</th>
+                <th className="text-left py-4 px-6 text-sm font-medium text-slate-400">Producto</th>
+                <th className="text-left py-4 px-6 text-sm font-medium text-slate-400">Categoría</th>
+                <th className="text-left py-4 px-6 text-sm font-medium text-slate-400">Precio</th>
+                <th className="text-left py-4 px-6 text-sm font-medium text-slate-400">Stock</th>
+                <th className="text-left py-4 px-6 text-sm font-medium text-slate-400">Estado</th>
+                <th className="text-right py-4 px-6 text-sm font-medium text-slate-400">Acciones</th>
               </tr>
             </thead>
             <tbody>
               {filteredProducts.map((product) => (
-                <tr key={product.id} className="border-b border-gray-800 hover:bg-gray-900/50 transition-colors">
+                <tr key={product.id} className="border-b border-slate-800 hover:bg-slate-900/60 transition-colors">
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-gray-800 rounded-lg overflow-hidden flex items-center justify-center">
+                      <div className="w-12 h-12 bg-slate-800 rounded-lg overflow-hidden flex items-center justify-center">
                         {product.images && product.images.length > 0 ? (
                           <Image
                             src={product.images[0].url}
@@ -194,17 +196,17 @@ export default function ProductsList({ initialProducts, categories }: ProductsLi
                             className="object-cover w-full h-full"
                           />
                         ) : (
-                          <Package size={24} className="text-gray-600" />
+                            <Package size={24} className="text-slate-600" />
                         )}
                       </div>
                       <div>
-                        <p className="font-medium text-white">{product.name}</p>
-                        <p className="text-xs text-gray-500">{product.slug}</p>
+                        <p className="font-medium text-slate-100">{product.name}</p>
+                        <p className="text-xs text-slate-500">{product.slug}</p>
                       </div>
                     </div>
                   </td>
                   <td className="py-4 px-6">
-                    <span className="text-gray-300">{product.category?.name || '-'}</span>
+                    <span className="text-slate-300">{product.category?.name || '-'}</span>
                   </td>
                   <td className="py-4 px-6">
                     {product.offer ? (
@@ -213,10 +215,10 @@ export default function ProductsList({ initialProducts, categories }: ProductsLi
                           <span className="font-medium text-orange-500">{currencyFormat(product.price * (1 - product.offer.descuento / 100))}</span>
                           <span className="text-xs bg-orange-500 text-white px-1.5 py-0.5 rounded">-{product.offer.descuento}%</span>
                         </div>
-                        <span className="text-xs text-gray-500 line-through">{currencyFormat(product.price)}</span>
+                        <span className="text-xs text-slate-500 line-through">{currencyFormat(product.price)}</span>
                       </div>
                     ) : (
-                      <span className="font-medium text-white">{currencyFormat(product.price)}</span>
+                      <span className="font-medium text-slate-100">{currencyFormat(product.price)}</span>
                     )}
                   </td>
                   <td className="py-4 px-6">
@@ -231,7 +233,7 @@ export default function ProductsList({ initialProducts, categories }: ProductsLi
                     <div className="flex items-center justify-end gap-2">
                       <Link
                         href={`/productos/${product.slug}`}
-                        className="p-2 text-gray-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all"
+                        className="p-2 text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg transition-all"
                         title="Ver detalles"
                         target="_blank"
                       >
@@ -239,14 +241,14 @@ export default function ProductsList({ initialProducts, categories }: ProductsLi
                       </Link>
                       <Link
                         href={`/admin/products/${product.id}`}
-                        className="p-2 text-gray-400 hover:text-orange-400 hover:bg-orange-500/10 rounded-lg transition-all"
+                        className="p-2 text-slate-400 hover:text-orange-400 hover:bg-orange-500/10 rounded-lg transition-all"
                         title="Editar"
                       >
                         <Edit size={18} />
                       </Link>
                       <button
                         onClick={() => openDeleteModal(product.id, product.name)}
-                        className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
+                        className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
                         title="Eliminar"
                       >
                         <Trash2 size={18} />
@@ -261,25 +263,25 @@ export default function ProductsList({ initialProducts, categories }: ProductsLi
 
         {filteredProducts.length === 0 && (
           <div className="text-center py-12">
-            <Package size={48} className="mx-auto text-gray-600 mb-4" />
-            <p className="text-gray-400 mb-2">No se encontraron productos</p>
-            <p className="text-sm text-gray-500">Intenta con otros filtros o crea un nuevo producto</p>
+            <Package size={48} className="mx-auto text-slate-600 mb-4" />
+            <p className="text-slate-400 mb-2">No se encontraron productos</p>
+            <p className="text-sm text-slate-500">Intenta con otros filtros o crea un nuevo producto</p>
           </div>
         )}
 
         {/* Pagination */}
         {filteredProducts.length > 0 && (
-          <div className="flex items-center justify-between px-6 py-4 border-t border-gray-800">
-            <p className="text-sm text-gray-400">
-              Mostrando <span className="font-medium text-white">{filteredProducts.length}</span> de{' '}
-              <span className="font-medium text-white">{initialProducts.length}</span> productos
+          <div className="flex items-center justify-between px-6 py-4 border-t border-slate-800">
+            <p className="text-sm text-slate-400">
+              Mostrando <span className="font-medium text-slate-100">{filteredProducts.length}</span> de{' '}
+              <span className="font-medium text-slate-100">{initialProducts.length}</span> productos
             </p>
             <div className="flex items-center gap-2">
-              <button className="px-3 py-1 bg-[#0a0a0a] border border-gray-800 text-gray-400 rounded hover:border-gray-700 transition-colors disabled:opacity-50" disabled>
+              <button className="px-3 py-1 rounded border border-slate-700 bg-slate-900/70 text-slate-400 transition-colors hover:border-slate-600 disabled:opacity-50" disabled>
                 Anterior
               </button>
               <button className="px-3 py-1 bg-orange-500 text-white rounded font-medium">1</button>
-              <button className="px-3 py-1 bg-[#0a0a0a] border border-gray-800 text-gray-400 rounded hover:border-gray-700 transition-colors">
+              <button className="px-3 py-1 rounded border border-slate-700 bg-slate-900/70 text-slate-400 transition-colors hover:border-slate-600">
                 Siguiente
               </button>
             </div>

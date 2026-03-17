@@ -77,24 +77,26 @@ export default function CategoriesClient({ categories }: CategoriesClientProps) 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="rounded-2xl border border-slate-800/80 bg-gradient-to-r from-slate-900/90 via-slate-900/75 to-fuchsia-500/10 p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">Categorías</h1>
-          <p className="text-sm sm:text-base text-gray-400">{categories.length} categorías en total</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-1">Categorías</h1>
+          <p className="text-sm sm:text-base text-slate-400">{categories.length} categorías en total</p>
         </div>
         <button
           onClick={handleNew}
-          className="flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap"
+          className="flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 px-4 py-2 font-medium text-white shadow-[0_12px_20px_-16px_rgba(251,146,60,0.95)] transition-transform hover:scale-[1.02] whitespace-nowrap"
         >
           <Plus size={18} />
           <span className="hidden sm:inline">Nueva Categoría</span>
           <span className="sm:hidden">Nueva</span>
         </button>
+        </div>
       </div>
 
       {/* Error Global */}
       {error && (
-        <div className="bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg">
+        <div className="rounded-lg border border-red-500/50 bg-red-500/10 px-4 py-3 text-red-400">
           {error}
         </div>
       )}
@@ -104,7 +106,7 @@ export default function CategoriesClient({ categories }: CategoriesClientProps) 
         {categories.map((category) => (
           <div
             key={category.id}
-            className="bg-[#171718] border border-gray-800 rounded-xl p-6 hover:border-orange-500/50 transition-all group"
+            className="group rounded-2xl border border-slate-800/80 bg-[#111a21]/80 p-6 transition-all hover:-translate-y-0.5 hover:border-orange-500/50"
           >
             <div className="flex items-start justify-between mb-4">
               <div className="p-3 bg-orange-500/20 rounded-lg">
@@ -128,8 +130,8 @@ export default function CategoriesClient({ categories }: CategoriesClientProps) 
                 </button>
               </div>
             </div>
-            <h3 className="text-white font-bold text-lg mb-2">{category.name}</h3>
-            <p className="text-sm text-gray-400">
+            <h3 className="mb-2 text-lg font-bold text-slate-100">{category.name}</h3>
+            <p className="text-sm text-slate-400">
               {category._count?.products || 0} producto{(category._count?.products || 0) !== 1 ? 's' : ''}
             </p>
           </div>
@@ -137,8 +139,8 @@ export default function CategoriesClient({ categories }: CategoriesClientProps) 
 
         {categories.length === 0 && (
           <div className="col-span-full text-center py-12">
-            <Tag className="mx-auto text-gray-600 mb-4" size={48} />
-            <p className="text-gray-400">No hay categorías creadas</p>
+            <Tag className="mx-auto text-slate-600 mb-4" size={48} />
+            <p className="text-slate-400">No hay categorías creadas</p>
             <button
               onClick={handleNew}
               className="mt-4 text-orange-400 hover:text-orange-300 transition-colors"
@@ -152,20 +154,20 @@ export default function CategoriesClient({ categories }: CategoriesClientProps) 
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#171718] border border-gray-800 rounded-xl max-w-md w-full">
+          <div className="w-full max-w-md rounded-xl border border-slate-800 bg-[#111a21]">
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-800">
+            <div className="flex items-center justify-between border-b border-slate-800 p-6">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-orange-500/20 rounded-lg">
                   <Tag className="text-orange-400" size={24} />
                 </div>
-                <h2 className="text-xl font-bold text-white">
+                <h2 className="text-xl font-bold text-slate-100">
                   {editingCategory ? 'Editar Categoría' : 'Nueva Categoría'}
                 </h2>
               </div>
               <button
                 onClick={() => setShowModal(false)}
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-slate-400 hover:text-slate-100 transition-colors"
               >
                 <X size={24} />
               </button>
@@ -174,13 +176,13 @@ export default function CategoriesClient({ categories }: CategoriesClientProps) 
             {/* Form */}
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
               {error && (
-                <div className="bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-lg">
+                <div className="rounded-lg border border-red-500/50 bg-red-500/10 px-4 py-3 text-red-400">
                   {error}
                 </div>
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="mb-2 block text-sm font-medium text-slate-300">
                   Nombre <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -189,12 +191,12 @@ export default function CategoriesClient({ categories }: CategoriesClientProps) 
                   onChange={(e) => setFormData({ name: e.target.value })}
                   required
                   placeholder="Ej: Cuchillos"
-                  className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+                  className="w-full rounded-lg border border-slate-700 bg-slate-900/70 px-4 py-2 text-slate-100 placeholder-slate-500 transition-colors focus:outline-none focus:border-orange-500"
                 />
               </div>
 
               {/* Actions */}
-              <div className="flex gap-3 pt-4 border-t border-gray-800">
+              <div className="flex gap-3 border-t border-slate-800 pt-4">
                 <button
                   type="submit"
                   disabled={isSubmitting}
@@ -206,7 +208,7 @@ export default function CategoriesClient({ categories }: CategoriesClientProps) 
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-6 py-2 border border-gray-700 rounded-lg hover:bg-gray-800 text-gray-300 transition-colors"
+                  className="rounded-lg border border-slate-700 px-6 py-2 text-slate-300 transition-colors hover:bg-slate-800"
                 >
                   Cancelar
                 </button>

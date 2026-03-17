@@ -166,66 +166,68 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
     <>
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="rounded-2xl border border-slate-800/80 bg-gradient-to-r from-slate-900/90 via-slate-900/75 to-sky-500/10 p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">Órdenes</h1>
-            <p className="text-sm sm:text-base text-gray-400">{stats.total} órdenes en total</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-100 mb-1">Órdenes</h1>
+            <p className="text-sm sm:text-base text-slate-400">{stats.total} órdenes en total</p>
           </div>
           <button
             onClick={exportToCSV}
-            className="flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap"
+            className="flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 px-4 py-2 font-medium text-white shadow-[0_12px_20px_-16px_rgba(251,146,60,0.95)] transition-transform hover:scale-[1.02] whitespace-nowrap"
           >
             <Download size={18} />
             <span className="hidden sm:inline">Exportar CSV</span>
             <span className="sm:hidden">Exportar</span>
           </button>
+          </div>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
-          <div className="bg-[#171718] border border-gray-800 rounded-xl p-3">
+          <div className="rounded-2xl border border-slate-800/80 bg-[#111a21]/80 p-3">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-gray-400 text-xs">Total</span>
-              <ShoppingBag className="text-gray-500" size={16} />
+              <span className="text-slate-400 text-xs">Total</span>
+              <ShoppingBag className="text-slate-500" size={16} />
             </div>
-            <p className="text-lg sm:text-xl font-bold text-white">{stats.total}</p>
+            <p className="text-lg sm:text-xl font-bold text-slate-100">{stats.total}</p>
           </div>
 
-          <div className="bg-[#171718] border border-yellow-800/50 rounded-xl p-3">
+          <div className="rounded-2xl border border-yellow-800/50 bg-[#111a21]/80 p-3">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-gray-400 text-xs">Pendientes</span>
+              <span className="text-slate-400 text-xs">Pendientes</span>
               <Clock className="text-yellow-500" size={16} />
             </div>
             <p className="text-lg sm:text-xl font-bold text-yellow-400">{stats.pending}</p>
           </div>
 
-          <div className="bg-[#171718] border border-blue-800/50 rounded-xl p-3">
+          <div className="rounded-2xl border border-blue-800/50 bg-[#111a21]/80 p-3">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-gray-400 text-xs">Pagadas</span>
+              <span className="text-slate-400 text-xs">Pagadas</span>
               <DollarSign className="text-blue-500" size={16} />
             </div>
             <p className="text-lg sm:text-xl font-bold text-blue-400">{stats.paid}</p>
           </div>
 
-          <div className="bg-[#171718] border border-purple-800/50 rounded-xl p-3">
+          <div className="rounded-2xl border border-purple-800/50 bg-[#111a21]/80 p-3">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-gray-400 text-xs">Enviadas</span>
+              <span className="text-slate-400 text-xs">Enviadas</span>
               <Package className="text-purple-500" size={16} />
             </div>
             <p className="text-lg sm:text-xl font-bold text-purple-400">{stats.shipped}</p>
           </div>
 
-          <div className="bg-[#171718] border border-green-800/50 rounded-xl p-3">
+          <div className="rounded-2xl border border-green-800/50 bg-[#111a21]/80 p-3">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-gray-400 text-xs">Entregadas</span>
+              <span className="text-slate-400 text-xs">Entregadas</span>
               <CheckCircle className="text-green-500" size={16} />
             </div>
             <p className="text-lg sm:text-xl font-bold text-green-400">{stats.delivered}</p>
           </div>
 
-          <div className="bg-[#171718] border border-orange-800/50 rounded-xl p-3">
+          <div className="rounded-2xl border border-orange-800/50 bg-[#111a21]/80 p-3">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-gray-400 text-xs">Ingresos</span>
+              <span className="text-slate-400 text-xs">Ingresos</span>
               <TrendingUp className="text-orange-500" size={16} />
             </div>
             <p className="text-lg sm:text-xl font-bold text-orange-400 truncate">{currencyFormat(stats.revenue)}</p>
@@ -233,25 +235,25 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
         </div>
 
         {/* Filters */}
-        <div className="bg-[#171718] border border-gray-800 rounded-xl p-4">
+        <div className="rounded-2xl border border-slate-800/80 bg-[#111a21]/80 p-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
               <input
                 type="text"
                 placeholder="Buscar por ID, cliente o email..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg pl-10 pr-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-colors"
+                className="w-full rounded-lg border border-slate-700 bg-slate-900/70 py-2 pl-10 pr-4 text-slate-100 placeholder-slate-500 transition-colors focus:outline-none focus:border-orange-500"
               />
             </div>
 
             <div className="relative">
-              <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
+              <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value as OrderStatus | 'ALL')}
-                className="w-full bg-[#0a0a0a] border border-gray-800 rounded-lg pl-10 pr-4 py-2 text-white focus:outline-none focus:border-orange-500 transition-colors appearance-none"
+                className="w-full appearance-none rounded-lg border border-slate-700 bg-slate-900/70 py-2 pl-10 pr-4 text-slate-100 transition-colors focus:outline-none focus:border-orange-500"
               >
                 <option value="ALL">Todos los estados</option>
                 <option value="PENDING">Pendientes</option>
@@ -265,36 +267,36 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
         </div>
 
         {/* Orders Table */}
-        <div className="bg-[#171718] border border-gray-800 rounded-xl overflow-hidden">
+        <div className="rounded-2xl border border-slate-800/80 bg-[#111a21]/80 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-800 bg-[#0a0a0a]">
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">ID</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Cliente</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Productos</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Total</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Estado</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Pago</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Envío</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Fecha</th>
-                  <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Acciones</th>
+                <tr className="border-b border-slate-800 bg-slate-900/70">
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">ID</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Cliente</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Productos</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Total</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Estado</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Pago</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Envío</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Fecha</th>
+                  <th className="text-left py-3 px-4 text-sm font-medium text-slate-400">Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredOrders.map((order) => (
-                  <tr key={order.id} className="border-b border-gray-800 hover:bg-gray-900/50 transition-colors">
+                  <tr key={order.id} className="border-b border-slate-800 hover:bg-slate-900/60 transition-colors">
                     <td className="py-4 px-4">
-                      <span className="text-gray-400 text-sm font-mono">#{order.id.slice(0, 8)}</span>
+                      <span className="text-slate-400 text-sm font-mono">#{order.id.slice(0, 8)}</span>
                     </td>
                     <td className="py-4 px-4">
                       <div>
-                        <p className="text-white font-medium">{order.user?.name}</p>
-                        <p className="text-gray-500 text-sm">{order.user?.email}</p>
+                        <p className="text-slate-100 font-medium">{order.user?.name}</p>
+                        <p className="text-slate-500 text-sm">{order.user?.email}</p>
                       </div>
                     </td>
                     <td className="py-4 px-4">
-                      <span className="text-gray-300">{order.items?.length || 0} items</span>
+                      <span className="text-slate-300">{order.items?.length || 0} items</span>
                     </td>
                     <td className="py-4 px-4">
                       <span className="text-green-400 font-medium">{formatPrice(order.total)}</span>
@@ -331,17 +333,17 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
                                 order.payment.status === 'PENDING' ? 'bg-yellow-500' :
                                   'bg-red-500'
                               }`} />
-                            <span className="text-gray-400 text-sm capitalize">
+                            <span className="text-slate-400 text-sm capitalize">
                               {order.payment.status === 'COMPLETED' ? 'Pagado' :
                                 order.payment.status === 'TRANSFERRED' ? 'Transferido' :
                                   order.payment.status === 'PENDING' ? 'Pendiente' :
                                     'Fallido'}
                             </span>
                           </div>
-                          <span className="text-gray-500 text-xs">{order.payment.provider}</span>
+                          <span className="text-slate-500 text-xs">{order.payment.provider}</span>
                         </div>
                       ) : (
-                        <span className="text-gray-600 text-sm">Sin pago</span>
+                        <span className="text-slate-600 text-sm">Sin pago</span>
                       )}
                     </td>
                     <td className="py-4 px-4">
@@ -374,7 +376,7 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
                             </span>
                           </div>
                           {order.shipment.tracking && (
-                            <span className="text-gray-500 text-xs font-mono">
+                            <span className="text-slate-500 text-xs font-mono">
                               #{order.shipment.tracking.slice(0, 10)}
                             </span>
                           )}
@@ -387,7 +389,7 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
                       )}
                     </td>
                     <td className="py-4 px-4">
-                      <span className="text-gray-400 text-sm">
+                      <span className="text-slate-400 text-sm">
                         {new Date(order.createdAt).toLocaleDateString('es-ES', {
                           year: 'numeric',
                           month: 'short',
@@ -420,7 +422,7 @@ export default function OrdersClient({ initialOrders, stats }: OrdersClientProps
 
             {filteredOrders.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-gray-400">No se encontraron órdenes</p>
+                <p className="text-slate-400">No se encontraron órdenes</p>
               </div>
             )}
           </div>
